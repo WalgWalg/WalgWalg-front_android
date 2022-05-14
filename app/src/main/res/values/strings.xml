@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WalgWalg-front_android</string>
+
+    <!--    하단 탭-->
+    <string name="tab_home">홈</string>
+    <string name="tab_map">지도</string>
+    <string name="tab_recommend">게시판</string>
+    <string name="tab_myPage">마이페이지</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
