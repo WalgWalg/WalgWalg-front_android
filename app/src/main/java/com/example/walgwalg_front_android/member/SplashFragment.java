@@ -3,64 +3,73 @@ package com.example.walgwalg_front_android.member;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.walgwalg_front_android.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SplashFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SplashFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Button btn_login, btn_register;
 
     public SplashFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SplashFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SplashFragment newInstance(String param1, String param2) {
-        SplashFragment fragment = new SplashFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        // 빈 상태의 구조체가 필수적으로 필요합니다.
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash, container, false);
+        View view = inflater.inflate(R.layout.fragment_splash, container, false);
+
+        // 하단 탭 제거 - true : 숨기기, false : 보이기
+        hideBottomNavigation(true);
+
+        // 레이아웃 아이템 연결 및 초기화 함수
+        init(view);
+
+        // 로그인 버튼 눌렀을때
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // splash에서 login으로 넘어가는 코드
+                Navigation.findNavController(getView()).navigate(R.id.action_splashFragment_to_loginFragment);
+            }
+        });
+
+        return view;
+    }
+
+    // 레이아웃 아이템 연결 및 초기화 함수
+    private void init(View view){
+        btn_login = view.findViewById(R.id.btn_login);
+        btn_register = view.findViewById(R.id.btn_register);
+    }
+
+    // SplashFragment 화면이 사라지면 작동할 코드
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideBottomNavigation(false);
+    }
+
+    // 하단 탭 제거 함수
+    public void hideBottomNavigation(Boolean bool) {
+        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottomNavigationView);
+        if (bool == true)
+            bottomNavigation.setVisibility(View.GONE);
+        else
+            bottomNavigation.setVisibility(View.VISIBLE);
     }
 }
