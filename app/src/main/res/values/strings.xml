@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">WalgWalg-front_android</string>
 
+<!--    splash-->
+    <string name="title">WalgWalg</string>
+    <string name="login">로그인</string>
+    <string name="register">회원가입</string>
+
     <!--    하단 탭-->
     <string name="tab_home">홈</string>
     <string name="tab_map">지도</string>
