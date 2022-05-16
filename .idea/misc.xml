@@ -5,9 +5,11 @@
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/WalgWalg-front_android/app/src/main/res/layout/fragment_login.xml" value="0.2597864768683274" />
         <entry key="..\:/Users/User/AndroidStudioProjects/WalgWalg-front_android/app/src/main/res/layout/fragment_splash.xml" value="0.33" />
+        <entry key="app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/layout/fragment_community_add.xml" value="0.31875" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.15406976744186046" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.21481481481481482" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1331168831168831" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31875" />
