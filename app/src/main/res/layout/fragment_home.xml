@@ -36,15 +36,18 @@
         </com.google.android.material.imageview.ShapeableImageView>
 
         <TextView
+            android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="26dp"
+            android:autoSizeMaxTextSize="25dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:autoSizeTextType="uniform"
             android:text="@string/Home_nickname"
-            android:id="@+id/tv_nickname"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
@@ -64,16 +67,60 @@
         app:cardCornerRadius="30dp"
         app:cardElevation="10dp"
         app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintTop_toTopOf="@+id/guideline"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
-<!--    <com.google.android.material.button.MaterialButton-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_start"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="25dp"
+        android:backgroundTint="@color/mainColor"
+        android:text="@string/Home_recordingStart"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:cornerRadius="15dp"
+        app:elevation="100dp"
+        app:icon="@drawable/ic_baseline_directions_run_24"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2">
+
+    </com.google.android.material.button.MaterialButton>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:mcv_selectionColor="@color/mainColor"
+        tools:layout_editor_absoluteX="25dp" />
+
+<!--    <CalendarView-->
+<!--        android:id="@+id/calendar"-->
 <!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/btn_start"-->
-<!--        android:text="@string/Home_recordingStart"-->
-<!--        android:backgroundTint="@color/mainColor"-->
-
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline3"/>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
