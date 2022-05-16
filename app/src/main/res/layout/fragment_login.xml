@@ -10,44 +10,58 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/mainColor"
+        android:gravity="bottom"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@color/mainColor"
-            app:title="Sign in"
-            app:titleCentered="false"
-            app:titleMarginStart="25dp"
-            app:titleMarginTop="45dp"
-            app:titleTextAppearance="@style/TextAppearance.AppCompat.Display2"
-            app:titleTextColor="@color/white" />
-
+        <TextView
+            android:id="@+id/text_SignIn"
+            android:layout_width="147dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="20dp"
+            android:text="Sign In"
+            android:textColor="@color/white"
+            android:textSize="45dp" />
     </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineV"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
 
     <TextView
         android:id="@+id/idText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="50dp"
         android:text="ID"
         android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/idInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintStart_toStartOf="@id/guideLineV"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineH"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/idInput"
         android:layout_width="350dp"
+        style="?attr/textInputFilledStyle"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
+        app:boxStrokeWidth="2dp"
         app:boxBackgroundColor="@color/subEdit"
         app:boxStrokeColor="@color/mainColor"
         app:layout_constraintStart_toStartOf="parent"
