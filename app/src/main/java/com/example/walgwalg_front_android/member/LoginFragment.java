@@ -1,14 +1,18 @@
 package com.example.walgwalg_front_android.member;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.home.HomeFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +29,8 @@ public class LoginFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Button btn_login;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -61,6 +67,19 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        init(view);
+
+        btn_login.setOnClickListener(task -> {
+            Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+        });
+
+        return view;
+    }
+
+
+    public void init(View view) {
+        btn_login = view.findViewById(R.id.btn_login);
     }
 }

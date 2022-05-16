@@ -5,6 +5,13 @@
     <string name="title">WalgWalg</string>
     <string name="login">로그인</string>
     <string name="register">회원가입</string>
+    
+    <!--    main-->
+    <string name="Home_nickname">닉네임</string>
+    <string name="Home_recordingStart">START</string>
+    <string name="Home_StepCount">걸음수</string>
+    <string name="Home_km">Km</string>
+    <string name="Home_Kcal">Kcal</string>
 
     <!--    하단 탭-->
     <string name="tab_home">홈</string>
