@@ -7,49 +7,83 @@
     android:background="@color/mainColor"
     tools:context=".member.SplashFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH1"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineV1"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineV2"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:autoSizeMaxTextSize="65dp"
+        android:autoSizeMinTextSize="30dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center_horizontal"
         android:text="@string/title"
         android:textColor="@color/white"
-        android:textSize="55sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.544" />
+        app:layout_constraintBottom_toTopOf="@id/btn_login"
+        app:layout_constraintEnd_toEndOf="@id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@id/guideLineV1"
+        app:layout_constraintTop_toTopOf="@id/guideLineH1" />
 
     <Button
         android:id="@+id/btn_login"
         style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
         android:text="@string/login"
-        android:textSize="20sp"
+        android:autoSizeMaxTextSize="25dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
         android:textColor="@color/black"
         app:elevation="100dp"
         app:backgroundTint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@id/guideLineV1"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Button
         android:id="@+id/btn_register"
         style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
         android:text="@string/register"
-        android:textSize="20sp"
+        android:autoSizeMaxTextSize="25dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
         android:textColor="@color/black"
         app:elevation="100dp"
         app:backgroundTint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@id/guideLineV1"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
 

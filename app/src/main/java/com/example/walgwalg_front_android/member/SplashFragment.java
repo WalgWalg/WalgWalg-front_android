@@ -48,6 +48,14 @@ public class SplashFragment extends Fragment {
             }
         });
 
+        btn_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // splash에서 register으로 넘어가는 코드
+                Navigation.findNavController(getView()).navigate(R.id.action_splashFragment_to_registerFragment);
+            }
+        });
+
         return view;
     }
 

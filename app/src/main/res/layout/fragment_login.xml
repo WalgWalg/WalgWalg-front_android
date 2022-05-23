@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:background="@color/mainColor"
         android:gravity="bottom"
-        app:layout_constraintBottom_toTopOf="@+id/guideLineH"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineH1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.2"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/text_SignIn"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="20dp"
@@ -37,11 +37,34 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideLineH"
+        android:id="@+id/guideLineH1"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.27" />
+        app:layout_constraintGuide_percent="0.25" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH2"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH3"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.42" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH4"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineV1"
@@ -60,87 +83,65 @@
     <TextView
         android:id="@+id/idText"
         android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:autoSizeMaxTextSize="40dp"
-        android:autoSizeMinTextSize="10dp"
+        android:layout_height="30dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeMinTextSize="1dp"
         android:autoSizeStepGranularity="1dp"
         android:autoSizeTextType="uniform"
         android:text="ID"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/idInput"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideLineV1"
-        app:layout_constraintTop_toBottomOf="@+id/guideLineH"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/guideLineH1" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/idInput"
         android:layout_width="0dp"
-        style="?attr/textInputFilledStyle"
-        android:layout_height="wrap_content"
-        app:boxStrokeWidth="2dp"
-        app:boxBackgroundColor="@color/subEdit"
-        app:boxStrokeColor="@color/mainColor"
-        app:layout_constraintStart_toStartOf="@id/guideLineV1"
-        app:layout_constraintEnd_toEndOf="@id/guideLineV2"
-        app:layout_constraintTop_toBottomOf="@+id/idText"
-        app:layout_constraintBottom_toTopOf="@id/pwText"
-        app:passwordToggleTint="@color/black"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint=""
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="40dp"
+        android:background="@color/subEdit"
+        android:ems="10"
+        android:inputType="text"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineH2"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/idText" />
 
     <TextView
         android:id="@+id/pwText"
         android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="50dp"
-        android:autoSizeMaxTextSize="40dp"
-        android:autoSizeMinTextSize="10dp"
+        android:layout_height="30dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeMinTextSize="1dp"
         android:autoSizeStepGranularity="1dp"
         android:autoSizeTextType="uniform"
         android:text="PW"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/pwInput"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideLineV1"
-        app:layout_constraintTop_toBottomOf="@+id/idInput"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineH3"
         app:layout_constraintVertical_bias="0.0" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/pwInput"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/subEdit"
-        app:boxStrokeColor="@color/mainColor"
-        app:layout_constraintTop_toBottomOf="@+id/pwText"
-        app:layout_constraintStart_toStartOf="@id/guideLineV1"
-        app:layout_constraintEnd_toEndOf="@id/guideLineV2"
-        app:layout_constraintBottom_toTopOf="@id/btn_login"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint=""
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="40dp"
+        android:background="@color/subEdit"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineH4"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/pwText" />
 
     <Button
         android:id="@+id/btn_login"
         style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
         android:text="@string/login"
         android:textColor="@color/black"
         android:autoSizeMaxTextSize="45dp"
