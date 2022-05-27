@@ -3,12 +3,18 @@ package com.example.walgwalg_front_android.location;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.walgwalg_front_android.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +22,11 @@ import com.example.walgwalg_front_android.R;
  * create an instance of this fragment.
  */
 public class LocationFragment extends Fragment {
+    private ImageView iv_map;
+    private TextView tv_distance;
+    private RecyclerView recyclerView;
+    private Location_Adapter lo_adapter;
+    private ArrayList<LocationItem> locationitem;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,18 +62,36 @@ public class LocationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_location, container, false);
+
+        init(view);
+
+        lo_adapter=new Location_Adapter();
+        recyclerView.setAdapter(lo_adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+
+        locationitem=new ArrayList<LocationItem>();
+
+        for(int i=0;i<10;i++){
+            locationitem.add(new LocationItem(R.drawable.test_location,i+"번째거리"));
+        }
+
+        lo_adapter.setArrayList(locationitem);
 
         return view;
     }
+
+    private void init(View view) {
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+    }
+
 }
