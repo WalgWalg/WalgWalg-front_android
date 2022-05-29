@@ -5,7 +5,9 @@ import static android.graphics.BlendMode.COLOR;
 import android.os.Bundle;
 
 import androidx.compose.ui.graphics.Color;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private MaterialCalendarView materialCalendarView;
+    private ImageFilterButton btn_weather;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -87,11 +90,15 @@ public class HomeFragment extends Fragment {
 //                .setCalendarDisplayMode(CalendarMode.MONTHS)
 //                .commit();
 
+        btn_weather.setOnClickListener(task -> {
+            Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_weatherFragment);
+        });
+
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     public void init(View view) {
         materialCalendarView = view.findViewById(R.id.calendar);
-
+        btn_weather = view.findViewById(R.id.btn_weather);
     }
 }
