@@ -12,6 +12,16 @@
     <string name="Home_StepCount">걸음수</string>
     <string name="Home_km">Km</string>
     <string name="Home_Kcal">Kcal</string>
+    <string name="initial">0</string>
+
+    <!--    weather-->
+    <string name="wt_day">Today</string>
+    <string name="wt_weak">Weak</string>
+    <string name="ex_date">2022-05-30</string>
+    <string name="ex_region">용인시</string>
+    <string name="ex_time">11am</string>
+    <string name="ex_temp">20°</string>
+    <string name="ex_day">Mom.</string>
 
     <!--    하단 탭-->
     <string name="tab_home">홈</string>

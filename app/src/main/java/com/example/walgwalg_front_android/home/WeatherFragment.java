@@ -2,6 +2,8 @@ package com.example.walgwalg_front_android.home;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.walgwalg_front_android.R;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +29,8 @@ public class WeatherFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Toolbar tb_weather;
 
     public WeatherFragment() {
         // Required empty public constructor
@@ -60,7 +66,20 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        init(view);
+
+
+        // Toolbar 활성화
+        ((AppCompatActivity)getActivity()).setSupportActionBar(tb_weather);
+        Objects.requireNonNull(((AppCompatActivity)getActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 생성
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(null); // Toolbar 제목 제거
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weather, container, false);
+        return view;
+    }
+
+    public void init(View view) {
+        tb_weather = view.findViewById(R.id.tb_weather);
     }
 }
