@@ -24,7 +24,8 @@ import java.util.Objects;
 public class WeatherFragment extends Fragment {
 
     private MaterialToolbar tb_weather;
-    private static FragmentManager fragmentManager;
+    FragmentManager fragmentManager;
+//    public FragmentManager fragmentManager = HomeFragment.fragmentManager.findFragmentById(R.id.homeFragment);
 
 
     public WeatherFragment() {
@@ -50,6 +51,8 @@ public class WeatherFragment extends Fragment {
         hideBottomNavigation(true);
         setHasOptionsMenu(true);
 
+        fragmentManager = getActivity().getSupportFragmentManager();
+
         // Toolbar 활성화
 
 //        fragmentManager = getActivity().getSupportFragmentManager();
@@ -68,10 +71,10 @@ public class WeatherFragment extends Fragment {
         switch (item.getItemId()) {
             case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
                 Log.d("WeatherFragment","BackButton");
-//                getActivity().finish();
-
-                fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(WeatherFragment.this).commit();
+//                Navigation.findNavController(getView()).navigate(R.id.action_weatherFragment_to_homeFragment);
+//                fragmentManager = getActivity().getSupportFragmentManager();
+//                fragmentManager.beginTransaction().remove(WeatherFragment.this).commit();
+//                fragmentManager.popBackStack();
                 fragmentManager.popBackStack();
                 return true;
             }

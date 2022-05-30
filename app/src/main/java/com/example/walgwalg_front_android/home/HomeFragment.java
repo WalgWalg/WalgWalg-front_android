@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     private MaterialCalendarView materialCalendarView;
     private MaterialButton btn_weather;
     private Button btn_start;
-    private static FragmentManager fragmentManager;
+    public static FragmentManager fragmentManager;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -97,8 +97,8 @@ public class HomeFragment extends Fragment {
 //                .commit();
 
         btn_weather.setOnClickListener(task -> {
-            fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.homeFragment, new WeatherFragment()).addToBackStack(null).commit();
+//            fragmentManager = getActivity().getSupportFragmentManager();
+//            fragmentManager.beginTransaction().replace(R.id.homeFragment, new WeatherFragment()).addToBackStack(null).commit();
 
             Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_weatherFragment);
         });
