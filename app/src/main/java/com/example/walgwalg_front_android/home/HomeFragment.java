@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void init(View view) {
-        materialCalendarView = view.findViewById(R.id.calendar);
+//        materialCalendarView = view.findViewById(R.id.calendar);
         btn_weather = view.findViewById(R.id.btn_weather);
     }
 }
