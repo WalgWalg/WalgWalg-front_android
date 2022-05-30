@@ -7,14 +7,18 @@ import android.os.Bundle;
 import androidx.compose.ui.graphics.Color;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 
 import com.example.walgwalg_front_android.R;
+import com.google.android.material.button.MaterialButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -38,7 +42,9 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private MaterialCalendarView materialCalendarView;
-    private ImageFilterButton btn_weather;
+    private MaterialButton btn_weather;
+    private Button btn_start;
+    private static FragmentManager fragmentManager;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -91,14 +97,22 @@ public class HomeFragment extends Fragment {
 //                .commit();
 
         btn_weather.setOnClickListener(task -> {
+            fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.homeFragment, new WeatherFragment()).addToBackStack(null).commit();
+
             Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_weatherFragment);
         });
 
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        btn_start.setOnClickListener(task ->{
+            Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_recordFragment);
+        });
+
+        return view;
     }
 
     public void init(View view) {
 //        materialCalendarView = view.findViewById(R.id.calendar);
         btn_weather = view.findViewById(R.id.btn_weather);
+        btn_start = view.findViewById(R.id.btn_start);
     }
 }

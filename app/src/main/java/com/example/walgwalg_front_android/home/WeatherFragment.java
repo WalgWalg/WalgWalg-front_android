@@ -5,81 +5,96 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.walgwalg_front_android.R;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WeatherFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class WeatherFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private MaterialToolbar tb_weather;
+    private static FragmentManager fragmentManager;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private Toolbar tb_weather;
 
     public WeatherFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WeatherFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static WeatherFragment newInstance(String param1, String param2) {
         WeatherFragment fragment = new WeatherFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_weather, container, false);
 
         init(view);
-
+        hideBottomNavigation(true);
+        setHasOptionsMenu(true);
 
         // Toolbar 활성화
+
+//        fragmentManager = getActivity().getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.weatherFragment, new HomeFragment()).addToBackStack(null).commit();
+
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb_weather);
         Objects.requireNonNull(((AppCompatActivity)getActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 생성
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(null); // Toolbar 제목 제거
-        // Inflate the layout for this fragment
+
         return view;
+    }
+
+    // Toolbar 뒤로가기 버튼 활성화 코드
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
+                Log.d("WeatherFragment","BackButton");
+//                getActivity().finish();
+
+                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(WeatherFragment.this).commit();
+                fragmentManager.popBackStack();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void init(View view) {
         tb_weather = view.findViewById(R.id.tb_weather);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideBottomNavigation(false);
+    }
+
+    // 하단 탭 제거 함수
+    public void hideBottomNavigation(Boolean bool) {
+        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottomNavigationView);
+        if (bool == true)
+            bottomNavigation.setVisibility(View.GONE);
+        else
+            bottomNavigation.setVisibility(View.VISIBLE);
     }
 }

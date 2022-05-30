@@ -17,6 +17,7 @@
         <entry key="app/src/main/res/drawable/edge_txtbox.xml" value="0.1115" />
         <entry key="app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_wb_sunny_24.xml" value="0.122" />
         <entry key="app/src/main/res/drawable/ic_outline_location_on_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23703703703703705" />
@@ -24,12 +25,13 @@
         <entry key="app/src/main/res/layout/fragment_community_add.xml" value="0.31875" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.2755208333333333" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1331168831168831" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.39455487139813317" />
+        <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.18703703703703703" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/fragment_record.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.16574074074074074" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2833333333333333" />
-        <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.22552083333333334" />
+        <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_location.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31875" />
       </map>
