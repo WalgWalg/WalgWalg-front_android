@@ -106,7 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideLineH1" />
 
     <EditText
-        android:id="@+id/idInput"
+        android:id="@+id/edt_idInput"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
@@ -135,7 +135,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/pwInput"
+        android:id="@+id/edt_pwInput"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
@@ -164,7 +164,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/pwCheckInput"
+        android:id="@+id/edt_pwCheckInput"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
@@ -191,7 +191,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideLineH4" />
 
     <EditText
-        android:id="@+id/nicknameInput"
+        android:id="@+id/edt_nicknameInput"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
@@ -218,7 +218,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideLineH5" />
 
     <EditText
-        android:id="@+id/addressInput"
+        android:id="@+id/edt_addressInput"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"

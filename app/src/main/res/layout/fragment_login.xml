@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideLineH1" />
 
     <EditText
-        android:id="@+id/idInput"
+        android:id="@+id/edt_idInput"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:background="@color/subEdit"
@@ -122,7 +122,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/pwInput"
+        android:id="@+id/edt_pwInput"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:background="@color/subEdit"
@@ -134,12 +134,21 @@
         app:layout_constraintStart_toStartOf="@+id/guideLineV1"
         app:layout_constraintTop_toBottomOf="@+id/pwText" />
 
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb_autoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toTopOf="@+id/guideLineH4"
+        android:text="@string/autoLogin"
+        android:enabled="false"/>
+
     <Button
         android:id="@+id/btn_login"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="70dp"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
         android:text="@string/login"
@@ -152,7 +161,7 @@
         app:elevation="100dp"
         app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
         app:layout_constraintStart_toStartOf="@+id/guideLineV1"
-        app:layout_constraintTop_toBottomOf="@+id/pwInput" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_pwInput" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
