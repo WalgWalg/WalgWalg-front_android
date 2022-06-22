@@ -78,8 +78,15 @@ public class LoginFragment extends Fragment {
                 alertDialog.show();
 
             } else {
+                /**
+                 * 로그인 통신 건너뛰고 싶으면
+                 * LoginResponse(id, pw) 주석 처리후
+                 * Navigation.find~~ 주석 풀기
+                 */
+
                 //로그인 통신
                 LoginResponse(id, pw);
+                //화면 넘어가기
                 //Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
             }
         });
