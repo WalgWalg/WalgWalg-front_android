@@ -138,7 +138,7 @@ public class LoginFragment extends Fragment {
                         }
 
                         Toast.makeText(getContext(), userID + "님 환영합니다.", Toast.LENGTH_LONG).show();
-//                        Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+                        Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
 
                     } else if (status.equals(errorId)) {
 
