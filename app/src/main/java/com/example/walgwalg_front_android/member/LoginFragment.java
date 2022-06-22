@@ -80,8 +80,8 @@ public class LoginFragment extends Fragment {
             } else {
                 //로그인 통신
                 LoginResponse(id, pw);
+                //Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
             }
-//            Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
         });
 
         return view;
