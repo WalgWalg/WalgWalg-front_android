@@ -135,7 +135,7 @@ public class WeatherFragment extends Fragment {
         tabPagerAdapter.addFragment(new WeekWeatherFragment(), "Week");
         viewPager.setAdapter(tabPagerAdapter);
 
-        //getWeatherInformation();
+        getWeatherInformation();
 
 
         // Toolbar 활성화
@@ -151,8 +151,11 @@ public class WeatherFragment extends Fragment {
     }
 
     private void getWeatherInformation() {
-        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(Common_Weather.current_location.getLatitude()),
-                                String.valueOf(Common_Weather.current_location.getLongitude()),
+        //TODO: 현위치 받는 오류 해결
+        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(37.4219983),
+                                String.valueOf(-122.084),
+//        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(Common_Weather.current_location.getLatitude()),
+//                                String.valueOf(Common_Weather.current_location.getLongitude()),
                                 Common_Weather.APP_ID,
                                 "metric")
                         .subscribeOn(Schedulers.io())
