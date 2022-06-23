@@ -13,12 +13,14 @@ public class WeatherResult {
     private Wind wind;
 //    private Rain rain;
     private Clouds clouds;
-    private int dt;
+    private int dt;             // 데이터 계싼 시간, 유닉스, UTC
     private Sys sys;
-    private int timezone;
-    private int id;
-    private String name;
+    private int timezone;       // UTC에서 초 단위로 이동
+    private int id;             // 도시 ID
+    private String name;        // 도시 이름
     private int cod;
+
+    private  CurrentWeather currentWeather;
 
     public WeatherResult(){
 
@@ -134,5 +136,14 @@ public class WeatherResult {
 
     public void setCod(int cod) {
         this.cod = cod;
+    }
+
+
+    public CurrentWeather getCurrentWeather() {
+        return currentWeather;
+    }
+
+    public void setCurrentWeather(CurrentWeather currentWeather) {
+        this.currentWeather = currentWeather;
     }
 }

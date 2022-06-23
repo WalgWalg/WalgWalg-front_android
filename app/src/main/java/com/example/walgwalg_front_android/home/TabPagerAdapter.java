@@ -21,22 +21,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-//        switch (position){
-//            case 0:
-//                HomeAlltabFragment homeAlltabFragment = new HomeAlltabFragment();
-//                return homeAlltabFragment;
-//
-//            case 1:
-//                HomeBesttabFragment homeBesttabFragment = new HomeBesttabFragment();
-//                return homeBesttabFragment;
-//
-//            case 2:
-//                HomeNewtabFragment homeNewtabFragment = new HomeNewtabFragment();
-//                return homeNewtabFragment;
-//
-//            default:
-//                return null;
-//        }
+
 
         return fragmentArrayList.get(position);
 
