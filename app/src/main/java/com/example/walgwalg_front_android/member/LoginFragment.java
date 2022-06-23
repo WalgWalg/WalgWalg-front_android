@@ -25,17 +25,24 @@ import com.example.walgwalg_front_android.member.DTO.LoginResponse;
 import com.example.walgwalg_front_android.member.Interface.LoginInterface;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
 
+    private String TAG = "LoginFragmentTAG";
+
     private Button btn_login;
     private MaterialCheckBox cb_autoLogin;
     private EditText edt_idInput, edt_pwInput;
     private RetrofitClient retrofitClient;
     private LoginInterface loginInterface;
+    private PreferenceHelper preferenceHelper;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -55,10 +62,10 @@ public class LoginFragment extends Fragment {
 
         init(view);
 
-        if (!getPreferenceString("autoLoginId").equals("") && !getPreferenceString("autoLoginPw").equals("")) {
-            cb_autoLogin.setChecked(true);
-            checkAutoLogin(getPreferenceString("autoLoginId"));
-        }
+//        if (!getPreferenceString("autoLoginId").equals("") && !getPreferenceString("autoLoginPw").equals("")) {
+//            cb_autoLogin.setChecked(true);
+//            checkAutoLogin(getPreferenceString("autoLoginId"));
+//        }
 
         btn_login.setOnClickListener(task -> {
 
@@ -116,12 +123,17 @@ public class LoginFragment extends Fragment {
                     //response.body()를 result에 저장
                     LoginResponse result = response.body();
 
-                    //받은 코드 저장
+                    // 받은 코드 저장
                     String status = result.getStatus();
 
+                    // 토큰 발급 시간
+                    String dateTime = result.getDateTime();
+
                     //받은 토큰 저장
-                    String accessToken = result.getAccessToken();
-                    String refreshToken = result.getRefreshToken();
+                    String accessToken = result.getTokenPOJO().accessToken;
+                    String refreshToken = result.getTokenPOJO().refreshToken;
+
+                    Log.d(TAG, "access: " + accessToken + "\nrefresh: " + refreshToken);
 
                     String success = "200"; //로그인 성공
                     String errorId = "404"; //아이디 일치x
@@ -132,19 +144,20 @@ public class LoginFragment extends Fragment {
                         String userID = edt_idInput.getText().toString();
                         String userPassword = edt_pwInput.getText().toString();
 
-                        //다른 통신을 하기 위해 token 저장
-                        setPreference(accessToken, accessToken);
+                        // 사용자 정보와 서버로부터 받은 정보 저장
+                        setPreference(userID, userPassword, dateTime, accessToken, refreshToken);
 
                         //자동 로그인 여부
-                        if (cb_autoLogin.isChecked()) {
-                            setPreference("autoLoginId", userID);
-                            setPreference("autoLoginPw", userPassword);
-                        } else {
-                            setPreference("autoLoginId", "");
-                            setPreference("autoLoginPw", "");
-                        }
+//                        if (cb_autoLogin.isChecked()) {
+//                            setPreference("autoLoginId", userID);
+//                            setPreference("autoLoginPw", userPassword);
+//                        } else {
+//                            setPreference("autoLoginId", "");
+//                            setPreference("autoLoginPw", "");
+//                        }
 
                         Toast.makeText(getContext(), userID + "님 환영합니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "토큰 값 : " + getPreferenceString(), Toast.LENGTH_LONG).show();
                         Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
 
                     } else if (status.equals(errorId)) {
@@ -192,17 +205,17 @@ public class LoginFragment extends Fragment {
     }
 
     //데이터를 내부 저장소에 저장하기
-    public void setPreference(String key, String value) {
-        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(key, value);
-        editor.apply();
+    public void setPreference(String userid, String password, String dateTime, String accessToken, String refreshToken) {
+        preferenceHelper.saveUserid(userid);
+        preferenceHelper.savePassword(password);
+        preferenceHelper.saveDateTime(dateTime);
+        preferenceHelper.saveAccessToken(accessToken);
+        preferenceHelper.saveRefreshToken(refreshToken);
     }
 
     //내부 저장소에 저장된 데이터 가져오기
-    public String getPreferenceString(String key) {
-        SharedPreferences pref = getActivity().getSharedPreferences("LOGIN", MODE_PRIVATE);
-        return pref.getString(key, "");
+    public String getPreferenceString() {
+        return preferenceHelper.getAccessToken();
     }
 
 
@@ -233,12 +246,12 @@ public class LoginFragment extends Fragment {
 //    }
 
     //자동 로그인 유저
-    public void checkAutoLogin(String id){
-
-        Toast.makeText(getContext(), id + "님 환영합니다.", Toast.LENGTH_LONG).show();
+//    public void checkAutoLogin(String id){
+//
+//        Toast.makeText(getContext(), id + "님 환영합니다.", Toast.LENGTH_LONG).show();
 //          Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
-
-    }
+//
+//    }
 
     //뒤로 가기 버튼 2번 클릭시 종료
 //    @Override public void onBackPressed() {
@@ -247,6 +260,9 @@ public class LoginFragment extends Fragment {
 //    }
 
     public void init(View view) {
+
+        preferenceHelper = new PreferenceHelper(view.getContext());
+
         cb_autoLogin = view.findViewById(R.id.cb_autoLogin);
         btn_login = view.findViewById(R.id.btn_login);
         edt_idInput = view.findViewById(R.id.edt_idInput);
