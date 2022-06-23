@@ -32,9 +32,11 @@
         <entry key="app/src/main/res/layout/fragment_record.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.16574074074074074" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2833333333333333" />
-        <entry key="app/src/main/res/layout/fragment_today_weather.xml" value="0.23072916666666668" />
+        <entry key="app/src/main/res/layout/fragment_today_weather.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/fragment_week_weather.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_location.xml" value="0.29010416666666666" />
+        <entry key="app/src/main/res/layout/item_weather.xml" value="0.2296875" />
         <entry key="app/src/main/res/layout/tab_custom.xml" value="0.2296875" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31875" />
       </map>
