@@ -2,6 +2,7 @@ package com.example.walgwalg_front_android.home;
 
 import static android.graphics.BlendMode.COLOR;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.compose.ui.graphics.Color;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.mypage.RecordActivity;
 import com.google.android.material.button.MaterialButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -106,7 +108,8 @@ public class HomeFragment extends Fragment {
         isNavigating = false;
         btn_start.setOnClickListener(task ->{
             isNavigating = true;
-            Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_recordFragment);
+//            Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_recordFragment);
+            startActivity(new Intent(getActivity(), RecordActivity.class));
         });
 
         return view;

@@ -7,8 +7,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.walgwalg_front_android"
-        minSdk 26
-        targetSdk 32
+        minSdk 23
+        targetSdk 29
         versionCode 1
         versionName "1.0"
 
@@ -35,10 +35,6 @@ android {
 //            path file('src/main/cpp/CMakeLists.txt')
             version '3.18.1'
         }
-    }
-
-    viewBinding{
-        enabled true
     }
 }
 
@@ -79,9 +75,7 @@ dependencies {
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -92,4 +86,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation "androidx.recyclerview:recyclerview:1.2.1"
+
+    implementation fileTree(dir: 'src\\main\\jniLibs', include: ['*.aar', '*.jar'], exclude: [])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation files('libs/libDaumMapAndroid.jar')
 }
