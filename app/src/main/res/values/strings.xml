@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">WalgWalg-front_android</string>
 
-<!--    splash-->
+    <!--    splash-->
     <string name="title">WalgWalg</string>
     <string name="login">로그인</string>
     <string name="register">회원가입</string>
     <string name="autoLogin">자동 로그인</string>
-    
+
     <!--    main-->
     <string name="Home_nickname">닉네임</string>
     <string name="Home_recordingStart">START</string>

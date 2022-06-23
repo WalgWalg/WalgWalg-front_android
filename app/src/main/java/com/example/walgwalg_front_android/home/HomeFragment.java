@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
     private MaterialButton btn_weather;
     private Button btn_start;
     public static FragmentManager fragmentManager;
+    private boolean isNavigating = false;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -99,11 +100,12 @@ public class HomeFragment extends Fragment {
         btn_weather.setOnClickListener(task -> {
 //            fragmentManager = getActivity().getSupportFragmentManager();
 //            fragmentManager.beginTransaction().replace(R.id.homeFragment, new WeatherFragment()).addToBackStack(null).commit();
-
+            isNavigating = true;
             Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_weatherFragment);
         });
-
+        isNavigating = false;
         btn_start.setOnClickListener(task ->{
+            isNavigating = true;
             Navigation.findNavController(getView()).navigate(R.id.action_homeFragment_to_recordFragment);
         });
 
