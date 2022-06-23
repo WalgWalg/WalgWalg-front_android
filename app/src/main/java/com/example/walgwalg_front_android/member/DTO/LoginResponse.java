@@ -1,6 +1,10 @@
 package com.example.walgwalg_front_android.member.DTO;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+import java.util.Map;
 
 public class LoginResponse {
 
@@ -13,11 +17,8 @@ public class LoginResponse {
     @SerializedName("status")
     public String status;
 
-    @SerializedName("accessToken")
-    public String accessToken;
-
-    @SerializedName("refreshToken")
-    public String refreshToken;
+    @SerializedName("list")
+    public TokenPOJO tokenPOJO;
 
     public String getId() {
         return id;
@@ -31,31 +32,11 @@ public class LoginResponse {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-    }
-
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public TokenPOJO getTokenPOJO() {
+        return tokenPOJO;
     }
 }
