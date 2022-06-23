@@ -126,9 +126,9 @@
     </fragment>
     <fragment
         android:id="@+id/recordFragment"
-        android:name="com.example.walgwalg_front_android.mypage.RecordFragment"
+        android:name="com.example.walgwalg_front_android.mypage.RecordFActivity"
         android:label="fragment_record"
-        tools:layout="@layout/fragment_record" >
+        tools:layout="@layout/activity_record" >
         <action
             android:id="@+id/action_recordFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />

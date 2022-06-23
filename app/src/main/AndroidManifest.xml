@@ -8,6 +8,7 @@
     <!-- Location Permisssion -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
 
     <application
@@ -18,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WalgWalgfront_android"
         android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="53b57a925f0a384df406e75d974000e5"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -27,6 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".mypage.RecordActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
