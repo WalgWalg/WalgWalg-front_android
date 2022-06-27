@@ -1,14 +1,22 @@
 package com.example.walgwalg_front_android.location;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +31,7 @@ import java.util.ArrayList;
  */
 public class LocationFragment extends Fragment {
     private ImageView iv_map;
-    private TextView tv_distance;
+    private TextView tv_distance,tv_location;
     private RecyclerView recyclerView;
     private Location_Adapter lo_adapter;
     private ArrayList<LocationItem> locationitem;
@@ -86,12 +94,35 @@ public class LocationFragment extends Fragment {
 
         lo_adapter.setArrayList(locationitem);
 
+        //주소
+        tv_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //주소 검색 웹뷰 화면으로 이동
+                Intent intent = new Intent(getContext(), SearchAddressActivity.class);
+                getSearchResult.launch(intent);
+
+            }
+        });
+
         return view;
     }
+    private final ActivityResultLauncher<Intent> getSearchResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
+                        String data = result.getData().getStringExtra("data");
+                        tv_location.setText(data);
+                    }
+                }
+            }
+    );
 
     private void init(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
+        tv_location = (TextView) view.findViewById(R.id.tv_location);
     }
+
 
 }

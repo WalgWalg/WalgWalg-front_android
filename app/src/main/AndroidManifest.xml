@@ -33,6 +33,8 @@
         </activity>
         <activity android:name=".mypage.RecordActivity"
             android:exported="false"/>
+        <activity android:name=".location.SearchAddressActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

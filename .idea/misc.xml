@@ -24,23 +24,20 @@
         <entry key="app/src/main/res/drawable/ic_outline_location_on_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/layout/activity_record.xml" value="0.23518850987432674" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_community.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/layout/fragment_community_add.xml" value="0.31875" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.2755208333333333" />
+        <entry key="app/src/main/res/layout/fragment_location_info.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.39455487139813317" />
         <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.18703703703703703" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/fragment_record.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.16574074074074074" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2833333333333333" />
-        <entry key="app/src/main/res/layout/fragment_today_weather.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.125" />
-        <entry key="app/src/main/res/layout/fragment_week_weather.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_location.xml" value="0.29010416666666666" />
-        <entry key="app/src/main/res/layout/item_weather.xml" value="0.2296875" />
-        <entry key="app/src/main/res/layout/tab_custom.xml" value="0.2296875" />
         <entry key="app/src/main/res/layout/network_security_config.xml" value="0.2953125" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31875" />
       </map>
