@@ -41,18 +41,16 @@
         android:content="@+id/content"
         android:handle="@+id/handle"
         android:orientation="vertical"
-        android:topOffset="400dp">
+        android:topOffset="450dp">
 
-        <com.example.walgwalg_front_android.FontAwesomeTextLight
-            android:id="@+id/handle"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text=""
-            android:textColor="#FFC900"
-            android:textSize="20dp" />
+            android:background="@color/white"
+            android:padding="15dp"
+            android:src="@drawable/bar"
+            android:id="@+id/handle"/>
+
 
         <LinearLayout
             android:id="@+id/content"
