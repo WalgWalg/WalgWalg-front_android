@@ -25,7 +25,7 @@ public class SearchAddressActivity extends Activity {
             }
         });
 //최초웹뷰로드
-        webView.loadUrl("https://bica-68326.web.app");
+        webView.loadUrl("http://bica-68326.web.app");
     }
 
     private class BridgeInterface{
