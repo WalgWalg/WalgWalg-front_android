@@ -1,13 +1,20 @@
 package com.example.walgwalg_front_android.home;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -74,9 +81,10 @@ public class WeatherFragment extends Fragment {
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private TextView txt_dateview, txt_cityview, txt_tempview;
-    ProgressBar loading;
+    private Double cur_latitude, cur_longitue;
     CompositeDisposable compositeDisposable;
     IOpenWeatherMap mService;
+    private LocationManager lm;
 
     public WeatherFragment() {
         // Required empty public constructor
@@ -103,37 +111,85 @@ public class WeatherFragment extends Fragment {
         init(view);
         hideBottomNavigation(true);
         setHasOptionsMenu(true);
-
-        //Request permission
-        Dexter.withActivity(getActivity())
-                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        buildLocationRequest();
-                        buildLocationCallBack();
-
-                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                            return;
-                        }
-                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-                        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-
-                    }
-                }).check();
-
+//
+//        lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext().getApplicationContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//
+//        }
+//        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                1000,
+//                1,
+//                mLocationListener);
+//
         tabLayout.setupWithViewPager(viewPager);
 
         tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         tabPagerAdapter.addFragment(new TodayWeatherFragment(), "Today");
         tabPagerAdapter.addFragment(new WeekWeatherFragment(), "Week");
         viewPager.setAdapter(tabPagerAdapter);
+
+        //Request permission
+//        Dexter.withActivity(getActivity())
+//                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
+//                        Manifest.permission.ACCESS_FINE_LOCATION)
+//                .withListener(new MultiplePermissionsListener() {
+//                    @Override
+//                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+//                        buildLocationRequest();
+//                        buildLocationCallBack();
+//
+//                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                            return;
+//                        }
+//                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+//                        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+//                        getWeatherInformation();
+//                    }
+//
+//                    @Override
+//                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+//
+//                    }
+//                }).check();
+
+        if(Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(getContext().getApplicationContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions((Activity) getActivity().getApplicationContext(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    0);
+        } else{
+            LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            String provider = location.getProvider();
+            double now_longitude = location.getLongitude();
+            double now_latitude = location.getLatitude();
+            double now_altitude = location.getAltitude();
+
+            cur_latitude = now_latitude;
+            cur_longitue = now_longitude;
+
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+        }
 
         getWeatherInformation();
 
@@ -150,14 +206,80 @@ public class WeatherFragment extends Fragment {
         return view;
     }
 
+    final LocationListener gpsLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(@NonNull Location location) {
+            String provider = location.getProvider();
+            double now_logitude = location.getLongitude();
+            double now_latitude = location.getLatitude();
+            double now_altitude = location.getAltitude();
+
+            cur_latitude = now_latitude;
+            cur_longitue = now_logitude;
+
+            LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+            if(ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                return;
+            }
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras){
+
+        }
+        public void onProviderEnabled(String provider){
+
+        }
+        public void onProviderDisabled(String provider){
+
+        }
+    };
+
+
+    private void buildLocationCallBack() {
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+
+                Common_Weather.current_location = locationResult.getLastLocation();
+                cur_latitude = locationResult.getLastLocation().getLatitude();
+                cur_longitue = locationResult.getLastLocation().getLongitude();
+
+                Log.d("Location", locationResult.getLastLocation().getLatitude() + "/" + locationResult.getLastLocation().getLongitude());
+
+            }
+        };
+    }
+
+    private void buildLocationRequest() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(10.0f);
+    }
+
     private void getWeatherInformation() {
         //TODO: 현위치 받는 오류 해결
-        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(37.4219983),
-                                String.valueOf(-122.084),
+        Log.d(TAG, cur_latitude + "/" + cur_longitue);
+
+//        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(37.4219983),
+//                                String.valueOf(-122.084),
+        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(37.432124),
+                String.valueOf(127.129064),
 //        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(Common_Weather.current_location.getLatitude()),
 //                                String.valueOf(Common_Weather.current_location.getLongitude()),
-                                Common_Weather.APP_ID,
-                                "metric")
+                Common_Weather.APP_ID,
+                "metric")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<WeatherResult>() {
@@ -167,8 +289,11 @@ public class WeatherFragment extends Fragment {
 //                        Picasso.get().load(new StringBuilder("http://openweathermap.org/img/wn/")
 //                                .append(weatherResult.getWeather().get(0).getIcon())
 //                                .append(".png").toString()).into(이미지 변수);
-
-                                txt_cityview.setText(weatherResult.getName());
+                                String name=weatherResult.getName();
+                                if(name.equals("Dongjinwon")){
+                                    name="Yongin-si";
+                                }
+                                txt_cityview.setText(name);
                                 txt_tempview.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
                                 txt_dateview.setText(Common_Weather.convertUnixToDate(weatherResult.getDt()));
 
@@ -200,27 +325,6 @@ public class WeatherFragment extends Fragment {
         );
     }
 
-    private void buildLocationCallBack() {
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-
-                Common_Weather.current_location = locationResult.getLastLocation();
-
-                Log.d("Location", locationResult.getLastLocation().getLatitude() + "/" + locationResult.getLastLocation().getLongitude());
-
-            }
-        };
-    }
-
-    private void buildLocationRequest() {
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setSmallestDisplacement(10.0f);
-    }
 
     // Toolbar 뒤로가기 버튼 활성화 코드
 //    @Override
