@@ -198,6 +198,9 @@ public class WeatherFragment extends Fragment {
             cur_latitude = now_latitude;
             cur_longitue = now_logitude;
 
+            Common_Weather.current_location.setLongitude(now_logitude);
+            Common_Weather.current_location.setLatitude(now_latitude);
+
             LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
             if(ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
@@ -288,6 +291,12 @@ public class WeatherFragment extends Fragment {
                             }
                         })
         );
+    }
+
+    @Override
+    public void onStop(){
+        compositeDisposable.clear();
+        super.onStop();
     }
 
 

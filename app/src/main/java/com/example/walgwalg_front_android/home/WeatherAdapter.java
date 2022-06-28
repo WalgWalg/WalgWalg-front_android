@@ -18,6 +18,7 @@ import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.model.CurrentWeather;
 import com.example.walgwalg_front_android.model.WeatherForecstResult;
 import com.example.walgwalg_front_android.model.WeatherResult;
+import com.example.walgwalg_front_android.weather.Common_Weather;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,6 +37,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
         this.mContext = mContext;
     }
 
+    public WeatherAdapter(Context mContext, WeatherForecstResult weatherForecstResult){
+        this.mContext = mContext;
+        this.weatherForecstResult = weatherForecstResult;
+    }
+
     @NonNull
     @Override
     public WeatherAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
@@ -50,15 +56,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
 
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.CustomViewHolder holder, int position){
-        holder.img_weather.setImageResource(arrayList.get(position).getIcon());   //TODO: 이미지 타입 확인
-        holder.txt_temp.setText( arrayList.get(position).getTemp());                           //TODO: 온도 타입 확인
-        holder.txt_time.setText(arrayList.get(position).getDt());
+//        holder.img_weather.setImageResource(arrayList.get(position).getIcon());   //TODO: 이미지 타입 확인
+//        holder.txt_temp.setText( arrayList.get(position).getTemp());                           //TODO: 온도 타입 확인
+//        holder.txt_time.setText(arrayList.get(position).getDt());
 
         // Load image - 현재 지역 기후에 따른 아이콘 변경
         //Todo: (13:53)
-//        Picasso.get().load(new StringBuilder("http://openweathermap.org/img/wn/")
-//                .append(WeatherForecstResult.list().get(0).getIcon())
-//                .append(".png").toString()).into(이미지 변수);
+        Picasso.get().load(new StringBuilder("http://openweathermapmap.org/img/wn/")
+                .append(weatherForecstResult.getHourly().getWeather().get(position).getIcon())
+                .append(".png").toString()).into(holder.img_weather);
+
+        holder.txt_time.setText(new StringBuilder(Common_Weather.convertUnixToHour(weatherForecstResult.getHourly().getDt())));
+        holder.txt_temp.setText(new StringBuilder(String.valueOf(weatherForecstResult.getHourly().getTemp())).append("°C"));
 
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
