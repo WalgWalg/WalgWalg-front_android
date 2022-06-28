@@ -15,6 +15,7 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/WalgWalg-front_android/app/src/main/res/layout/fragment_splash.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/WalgWalg-front_android/app/src/main/res/layout/fragment_weather.xml" value="0.38645833333333335" />
         <entry key="app/src/main/res/drawable/edge_btn.xml" value="0.1535" />
+        <entry key="app/src/main/res/drawable/edge_item.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/edge_loca.xml" value="0.146" />
         <entry key="app/src/main/res/drawable/edge_txtbox.xml" value="0.1115" />
         <entry key="app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.1" />
@@ -38,6 +39,8 @@
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_location.xml" value="0.29010416666666666" />
+        <entry key="app/src/main/res/layout/item_park.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/item_weather.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/network_security_config.xml" value="0.2953125" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31875" />
       </map>

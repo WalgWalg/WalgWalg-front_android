@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 
 import com.example.walgwalg_front_android.R;
-import com.example.walgwalg_front_android.mypage.RecordActivity;
+import com.example.walgwalg_front_android.location.RecordActivity;
 import com.google.android.material.button.MaterialButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
