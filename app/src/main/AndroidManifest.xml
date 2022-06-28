@@ -11,14 +11,13 @@
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="wonpa.alwaysweb.com.myloctest.permission.MAPS_RECEIVE" />
     <permission android:name="wonpa.alwaysweb.com.myloctest.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
-
-    <uses-permission android:name="wonpa.alwaysweb.com.myloctest.permission.MAPS_RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -28,18 +27,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WalgWalgfront_android"
         android:usesCleartextTraffic="true">
-<!--        <meta-data-->
-<!--            android:name="com.kakao.sdk.AppKey"-->
-<!--            android:value="53b57a925f0a384df406e75d974000e5"/>-->
+        <!-- goolge map -->
         <uses-library android:name="com.google.android.maps" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBk09u7UPrcLz5aHb9dF7l5yXBOQZ_KWgU" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

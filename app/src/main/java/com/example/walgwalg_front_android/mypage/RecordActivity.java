@@ -64,8 +64,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
     GPSListener gpsListener;
     private MapPolyline polyline;
     private List<Polyline> polylines=new ArrayList();
-    private  LatLng  startLatLng  =  new  LatLng(0,  0);                //polyline  시작점  
-    private  LatLng  endLatLng  =  new  LatLng(0,  0);                //polyline  끝점
+    private  LatLng  startLatLng  =  new  LatLng(0,  0);
+    private  LatLng  endLatLng  =  new  LatLng(0,  0);
 
     private int distance,predistance=0;
     private Timer timer;
@@ -83,7 +83,6 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
     private int mCounterSteps = 0;
     private SensorManager sensorManager;
     private Sensor stepCountSensor;
-    private int userloca=0;
 
 
     SupportMapFragment mapFragment;
@@ -91,8 +90,6 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
 
     Marker myMarker;
     MarkerOptions myLocationMarker;
-    Circle circle;
-    CircleOptions circle1KM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
