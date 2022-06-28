@@ -111,26 +111,6 @@ public class WeatherFragment extends Fragment {
         init(view);
         hideBottomNavigation(true);
         setHasOptionsMenu(true);
-//
-//        lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-//        if (ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext().getApplicationContext(),
-//                Manifest.permission.ACCESS_COARSE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//
-//        }
-//        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-//                1000,
-//                1,
-//                mLocationListener);
-//
         tabLayout.setupWithViewPager(viewPager);
 
         tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -163,6 +143,7 @@ public class WeatherFragment extends Fragment {
 //                    }
 //                }).check();
 
+        // 위치 받아오기
         if(Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getContext().getApplicationContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
@@ -268,18 +249,18 @@ public class WeatherFragment extends Fragment {
         locationRequest.setSmallestDisplacement(10.0f);
     }
 
+    // 날씨 정보 받아오기
     private void getWeatherInformation() {
-        //TODO: 현위치 받는 오류 해결
+        //TODO: 나갔다 돌아오면 화면 사라지는 오류 고치기
         Log.d(TAG, cur_latitude + "/" + cur_longitue);
 
-//        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(37.4219983),
-//                                String.valueOf(-122.084),
-        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(37.432124),
-                String.valueOf(127.129064),
 //        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(Common_Weather.current_location.getLatitude()),
 //                                String.valueOf(Common_Weather.current_location.getLongitude()),
-                Common_Weather.APP_ID,
-                "metric")
+        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(cur_latitude),
+                                String.valueOf(cur_longitue),
+                                Common_Weather.APP_ID,
+                                "metric",
+                                "kr")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<WeatherResult>() {
@@ -306,22 +287,6 @@ public class WeatherFragment extends Fragment {
                                 Toast.makeText(getActivity(), ""+throwable.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         })
-//                .subscribe((io.reactivex.functions.Consumer<? super WeatherResult>) weatherResult -> {
-//
-//                    //Load image - 현재 지역 기후에 따른 아이콘 변경
-////                        Picasso.get().load(new StringBuilder("http://openweathermap.org/img/wn/")
-////                                .append(weatherResult.getWeather().get(0).getIcon())
-////                                .append(".png").toString().into(이미지 변수);
-//
-//                    txt_cityview.setText(weatherResult.getName());
-//                    txt_tempview.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
-//                    txt_dateview.setText(Common_Weather.convertUnixToDate(weatherResult.getDt()));
-//                }, new io.reactivex.functions.Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) throws Exception {
-//                        Toast.makeText(getActivity(), ""+throwable.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                })
         );
     }
 
