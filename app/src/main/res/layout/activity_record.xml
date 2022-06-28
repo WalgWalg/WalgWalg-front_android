@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mypage.RecordActivity"
+    tools:context=".location.RecordActivity"
     android:orientation="vertical">
 
     <fragment
@@ -30,6 +30,47 @@
             android:textSize="20dp"
             tools:ignore="MissingConstraints" />
     </LinearLayout>
+    <SlidingDrawer
+        android:id="@+id/select_drawer"
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:allowSingleTap="true"
+        android:animateOnClick="true"
+        android:bottomOffset="0dp"
+        android:content="@+id/select_content"
+        android:handle="@+id/select_handle"
+        android:orientation="vertical"
+        android:topOffset="100dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="15dp"
+            android:src="@drawable/bar"
+            android:id="@+id/select_handle"/>
+
+        <LinearLayout
+            android:id="@+id/select_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+            </ScrollView>
+
+        </LinearLayout>
+    </SlidingDrawer>
+
+
 
     <SlidingDrawer
         android:id="@+id/sliding_drawer"

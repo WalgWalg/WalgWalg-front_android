@@ -47,7 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mypage.RecordActivity"
+        <activity android:name=".location.RecordActivity"
             android:exported="false"/>
         <activity android:name=".location.SearchAddressActivity"
             android:exported="false"/>

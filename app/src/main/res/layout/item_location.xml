@@ -56,12 +56,15 @@
             <com.example.walgwalg_front_android.FontAwesomeTextLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:text=""
                 android:textColor="#FFC900"
-                android:textSize="18dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_margin="10dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/tv_distance"
