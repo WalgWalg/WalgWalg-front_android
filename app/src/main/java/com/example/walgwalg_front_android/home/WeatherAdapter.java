@@ -16,7 +16,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.model.CurrentWeather;
+import com.example.walgwalg_front_android.model.WeatherForecstResult;
 import com.example.walgwalg_front_android.model.WeatherResult;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
     private Fragment fragment;
     private FragmentManager fragmentManager;
     private FragmentStateAdapter fragmentStateAdapter;
+    WeatherForecstResult weatherForecstResult;
 
     public WeatherAdapter(ArrayList<CurrentWeather> arrayList, Context mContext){
         this.arrayList = arrayList;
@@ -50,6 +53,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
         holder.img_weather.setImageResource(arrayList.get(position).getIcon());   //TODO: 이미지 타입 확인
         holder.txt_temp.setText( arrayList.get(position).getTemp());                           //TODO: 온도 타입 확인
         holder.txt_time.setText(arrayList.get(position).getDt());
+
+        // Load image - 현재 지역 기후에 따른 아이콘 변경
+        //Todo: (13:53)
+//        Picasso.get().load(new StringBuilder("http://openweathermap.org/img/wn/")
+//                .append(WeatherForecstResult.list().get(0).getIcon())
+//                .append(".png").toString()).into(이미지 변수);
 
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +94,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
             txt_temp = itemView.findViewById(R.id.txt_temp);
             txt_time = itemView.findViewById(R.id.txt_time);
             img_weather = itemView.findViewById(R.id.img_weather);
+
         }
     }
 }

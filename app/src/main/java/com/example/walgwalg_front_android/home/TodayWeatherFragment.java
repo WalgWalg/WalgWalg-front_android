@@ -84,13 +84,6 @@ public class TodayWeatherFragment extends Fragment {
         init(view);
 
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-        recyclerView1.setLayoutManager(linearLayoutManager);
-
-        recyclerView1.setAdapter(weatherAdapter);
-
-//        CurrentWeather currentWeather = new CurrentWeather(1, null, null, R.drawable.icon_cloud, 24, 36.0);
-//        arrayWeather.add(currentWeather);
-//        weatherAdapter.notifyDataSetChanged();
 
         for(int i=1; i<=10; i++){
             switch (i%5){
@@ -111,6 +104,34 @@ public class TodayWeatherFragment extends Fragment {
                     break;
             }
         }
+
+        recyclerView1.setLayoutManager(linearLayoutManager);
+
+        recyclerView1.setAdapter(weatherAdapter);
+
+//        CurrentWeather currentWeather = new CurrentWeather(1, null, null, R.drawable.icon_cloud, 24, 36.0);
+//        arrayWeather.add(currentWeather);
+//        weatherAdapter.notifyDataSetChanged();
+
+//        for(int i=1; i<=10; i++){
+//            switch (i%5){
+//                case 0:
+//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_cloud,"12", "21"));
+//                    break;
+//                case 1:
+//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_rain,"13", "22"));
+//                    break;
+//                case 2:
+//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_snow,"14", "23"));
+//                    break;
+//                case 3:
+//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_sun,"15", "24"));
+//                    break;
+//                case 4:
+//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_sun,"16", "25"));
+//                    break;
+//            }
+//        }
         weatherAdapter.notifyDataSetChanged();
 
         return view;

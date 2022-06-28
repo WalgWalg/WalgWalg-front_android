@@ -1,14 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mypage.PersonalInfoFragment">
+    tools:context=".home.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb_personal_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="0dp"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:buttonGravity="center_vertical"
+        android:background="@color/mainColor"
+        app:title="닉네임님의 개인정보에요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideLineH0"
+        >
 
-</FrameLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH0"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH1"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH2"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.32" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH3"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.44" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH4"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.56" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH5"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.68" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH6"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineH7"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.83" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineV1"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineV2"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineV3"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineV4"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardCornerRadius="90dp"
+        android:background="@color/mainColor"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineH2"
+        app:layout_constraintEnd_toEndOf="@id/guideLineV4"
+        app:layout_constraintStart_toStartOf="@id/guideLineV3"
+        app:layout_constraintTop_toBottomOf="@id/guideLineH1">
+
+        <ImageView
+            android:id="@+id/iv_profile_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_person_24"
+            android:background="@color/mainColor"
+            app:layout_constraintBottom_toTopOf="@+id/guideLineH2"
+            app:layout_constraintEnd_toEndOf="@id/guideLineV4"
+            app:layout_constraintStart_toStartOf="@id/guideLineV3"
+            app:layout_constraintTop_toBottomOf="@id/guideLineH1" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+    <TextView
+        android:id="@+id/pwText"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:text="PW"
+        android:textColor="@color/black"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineH3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/pwInput"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/subEdit"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineH4"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/pwText" />
+
+    <TextView
+        android:id="@+id/pwConfirmText"
+        android:layout_width="120dp"
+        android:layout_height="25dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:text="Confirm PW"
+        android:textColor="@color/black"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineH4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/pwConfirmInput"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/subEdit"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineH5"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/pwConfirmText" />
+
+    <TextView
+        android:id="@+id/nicknameText"
+        android:layout_width="120dp"
+        android:layout_height="25dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:text="Nickname"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineH2" />
+
+    <EditText
+        android:id="@+id/nicknameInput"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/subEdit"
+        android:ems="10"
+        android:inputType="text"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideLineH3"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/nicknameText" />
+
+    <TextView
+        android:id="@+id/addressText"
+        android:layout_width="120dp"
+        android:layout_height="25dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:text="Address"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/guideLineH5" />
+
+    <EditText
+        android:id="@+id/addressInput"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/subEdit"
+        android:ems="10"
+        android:inputType="text"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/guideLineH6"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@+id/addressText" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:text="확인"
+        android:textColor="@color/black"
+        android:autoSizeMaxTextSize="45dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        app:backgroundTint="@color/mainColor"
+        app:elevation="100dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineV2"
+        app:layout_constraintStart_toStartOf="@+id/guideLineV1"
+        app:layout_constraintTop_toBottomOf="@id/guideLineH7" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
