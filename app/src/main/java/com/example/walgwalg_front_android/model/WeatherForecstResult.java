@@ -1,31 +1,40 @@
 package com.example.walgwalg_front_android.model;
 
+import java.util.List;
+
 public class WeatherForecstResult {
-    private Coord coord;
-    private int timezone;       // 요청한 위치의 시간대 이름
-    private int timezone_offset;
-    Current current;
-    Minutely minutely;
-    Hourly hourly;
-    Daily daily;
-    Alerts alerts;
+    private double lat ;
+    private double lon ;
+    private String timezone ;
+    private int timezone_offset ;
+    private Current current ;
+    private List<Hourly> hourly ;
+    private List<Daily> daily;
 
     public WeatherForecstResult() {
     }
 
-    public Coord getCoord() {
-        return coord;
+    public double getLat() {
+        return lat;
     }
 
-    public void setCoord(Coord coord) {
-        this.coord = coord;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public int getTimezone() {
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public String getTimezone() {
         return timezone;
     }
 
-    public void setTimezone(int timezone) {
+    public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
 
@@ -45,35 +54,19 @@ public class WeatherForecstResult {
         this.current = current;
     }
 
-    public Minutely getMinutely() {
-        return minutely;
-    }
-
-    public void setMinutely(Minutely minutely) {
-        this.minutely = minutely;
-    }
-
-    public Hourly getHourly() {
+    public List<Hourly> getHourly() {
         return hourly;
     }
 
-    public void setHourly(Hourly hourly) {
+    public void setHourly(List<Hourly> hourly) {
         this.hourly = hourly;
     }
 
-    public Daily getDaily() {
+    public List<Daily> getDaily() {
         return daily;
     }
 
-    public void setDaily(Daily daily) {
+    public void setDaily(List<Daily> daily) {
         this.daily = daily;
-    }
-
-    public Alerts getAlerts() {
-        return alerts;
-    }
-
-    public void setAlerts(Alerts alerts) {
-        this.alerts = alerts;
     }
 }

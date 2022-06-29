@@ -3,24 +3,26 @@ package com.example.walgwalg_front_android.model;
 import java.util.List;
 
 public class Daily {
-    private int dt;
-    private int sunrise;
-    private int sunset;
-    private int moonrise;
-    private int moonset;
-    private int moon_phase;
-    private DailyTemp dailyTemp;
-    private int feels_like;
-    private int pressure;
-    private int humidity;
-    private int dew_point;
-    private Wind wind;
-    private Clouds clouds;
-    private int uvi;
-    private int pop;
-    private int rain;
-    private int snow;
-    private List<Weather> weather;
+
+    private int dt ;
+    private int sunrise ;
+    private int sunset ;
+    private int moonrise ;
+    private int moonset ;
+    private double moon_phase ;
+    private Temp temp ;
+    private FeelsLike feels_like ;
+    private int pressure ;
+    private int humidity ;
+    private double dew_point ;
+    private double wind_speed ;
+    private int wind_deg ;
+    private double wind_gust ;
+    private List<Weather> weather ;
+    private int clouds ;
+    private double pop ;
+    private double uvi ;
+    private double rain ;
 
     public Daily() {
     }
@@ -65,27 +67,27 @@ public class Daily {
         this.moonset = moonset;
     }
 
-    public int getMoon_phase() {
+    public double getMoon_phase() {
         return moon_phase;
     }
 
-    public void setMoon_phase(int moon_phase) {
+    public void setMoon_phase(double moon_phase) {
         this.moon_phase = moon_phase;
     }
 
-    public DailyTemp getDailyTemp() {
-        return dailyTemp;
+    public Temp getTemp() {
+        return temp;
     }
 
-    public void setDailyTemp(DailyTemp dailyTemp) {
-        this.dailyTemp = dailyTemp;
+    public void setTemp(Temp temp) {
+        this.temp = temp;
     }
 
-    public int getFeels_like() {
+    public FeelsLike getFeels_like() {
         return feels_like;
     }
 
-    public void setFeels_like(int feels_like) {
+    public void setFeels_like(FeelsLike feels_like) {
         this.feels_like = feels_like;
     }
 
@@ -105,60 +107,36 @@ public class Daily {
         this.humidity = humidity;
     }
 
-    public int getDew_point() {
+    public double getDew_point() {
         return dew_point;
     }
 
-    public void setDew_point(int dew_point) {
+    public void setDew_point(double dew_point) {
         this.dew_point = dew_point;
     }
 
-    public Wind getWind() {
-        return wind;
+    public double getWind_speed() {
+        return wind_speed;
     }
 
-    public void setWind(Wind wind) {
-        this.wind = wind;
+    public void setWind_speed(double wind_speed) {
+        this.wind_speed = wind_speed;
     }
 
-    public Clouds getClouds() {
-        return clouds;
+    public int getWind_deg() {
+        return wind_deg;
     }
 
-    public void setClouds(Clouds clouds) {
-        this.clouds = clouds;
+    public void setWind_deg(int wind_deg) {
+        this.wind_deg = wind_deg;
     }
 
-    public int getUvi() {
-        return uvi;
+    public double getWind_gust() {
+        return wind_gust;
     }
 
-    public void setUvi(int uvi) {
-        this.uvi = uvi;
-    }
-
-    public int getPop() {
-        return pop;
-    }
-
-    public void setPop(int pop) {
-        this.pop = pop;
-    }
-
-    public int getRain() {
-        return rain;
-    }
-
-    public void setRain(int rain) {
-        this.rain = rain;
-    }
-
-    public int getSnow() {
-        return snow;
-    }
-
-    public void setSnow(int snow) {
-        this.snow = snow;
+    public void setWind_gust(double wind_gust) {
+        this.wind_gust = wind_gust;
     }
 
     public List<Weather> getWeather() {
@@ -167,5 +145,37 @@ public class Daily {
 
     public void setWeather(List<Weather> weather) {
         this.weather = weather;
+    }
+
+    public int getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(int clouds) {
+        this.clouds = clouds;
+    }
+
+    public double getPop() {
+        return pop;
+    }
+
+    public void setPop(double pop) {
+        this.pop = pop;
+    }
+
+    public double getUvi() {
+        return uvi;
+    }
+
+    public void setUvi(double uvi) {
+        this.uvi = uvi;
+    }
+
+    public double getRain() {
+        return rain;
+    }
+
+    public void setRain(double rain) {
+        this.rain = rain;
     }
 }
