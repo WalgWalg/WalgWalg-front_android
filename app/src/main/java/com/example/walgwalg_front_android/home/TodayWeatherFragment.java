@@ -47,9 +47,10 @@ public class TodayWeatherFragment extends Fragment {
     private TextView txt_time, txt_temp;
     private ImageView img_weather;
 
+    private double cur_latitude, cur_longitude;
+
     CompositeDisposable compositeDisposable;
     IOpenWeatherMap mService;
-
 
     static TodayWeatherFragment instance;
 
@@ -111,6 +112,11 @@ public class TodayWeatherFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_today_weather, container, false);
 
         init(view);
+
+        if(getArguments() != null){
+            cur_longitude = getArguments().getDouble("cur_longitude");
+            cur_latitude = getArguments().getDouble("cur_latitude");
+        }
 
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
 
@@ -177,8 +183,8 @@ public class TodayWeatherFragment extends Fragment {
     private void getForecastWeatherInformation() {
 
         compositeDisposable.add(mService.getForecastWeatherByLatLng(
-                String.valueOf(Common_Weather.current_location.getLatitude()),
-                String.valueOf(Common_Weather.current_location.getLongitude()),
+                String.valueOf(cur_latitude),
+                String.valueOf(cur_longitude),
                 Common_Weather.APP_ID,
                 "metric",
                 "kr")
@@ -202,6 +208,7 @@ public class TodayWeatherFragment extends Fragment {
     private void displayForecastWeather(WeatherForecstResult weatherForecstResult) {
         WeatherAdapter adapter = new WeatherAdapter(getContext(), weatherForecstResult);
         recyclerView1.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void init(View view) {
