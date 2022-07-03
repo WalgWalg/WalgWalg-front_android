@@ -81,7 +81,7 @@ public class WeatherFragment extends Fragment {
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private TextView txt_dateview, txt_cityview, txt_tempview;
-    private Double cur_latitude, cur_longitue;
+    private double cur_latitude, cur_longitue;
     CompositeDisposable compositeDisposable;
     IOpenWeatherMap mService;
     private LocationManager lm;
@@ -111,37 +111,31 @@ public class WeatherFragment extends Fragment {
         init(view);
         hideBottomNavigation(true);
         setHasOptionsMenu(true);
-        tabLayout.setupWithViewPager(viewPager);
-
-        tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        tabPagerAdapter.addFragment(new TodayWeatherFragment(), "Today");
-        tabPagerAdapter.addFragment(new WeekWeatherFragment(), "Week");
-        viewPager.setAdapter(tabPagerAdapter);
 
         //Request permission
-//        Dexter.withActivity(getActivity())
-//                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
-//                        Manifest.permission.ACCESS_FINE_LOCATION)
-//                .withListener(new MultiplePermissionsListener() {
-//                    @Override
-//                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-//                        buildLocationRequest();
-//                        buildLocationCallBack();
-//
-//                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//                            return;
-//                        }
-//                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-//                        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+        Dexter.withActivity(getActivity())
+                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        buildLocationRequest();
+                        buildLocationCallBack();
+
+                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                            return;
+                        }
+                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+                        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
 //                        getWeatherInformation();
-//                    }
-//
-//                    @Override
-//                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-//
-//                    }
-//                }).check();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+                    }
+                }).check();
 
         // 위치 받아오기
         if(Build.VERSION.SDK_INT >= 23 &&
@@ -154,12 +148,20 @@ public class WeatherFragment extends Fragment {
             LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             String provider = location.getProvider();
+            String locationProvider = lm.NETWORK_PROVIDER;
+            location = lm.getLastKnownLocation(locationProvider);
+
             double now_longitude = location.getLongitude();
             double now_latitude = location.getLatitude();
             double now_altitude = location.getAltitude();
 
             cur_latitude = now_latitude;
             cur_longitue = now_longitude;
+
+//            Common_Weather.current_location.setLatitude(location.getLatitude());
+//            Common_Weather.current_location.setLongitude(location.getLongitude());
+//            Common_Weather.current_location.setLongitude(cur_longitue);
+//            Common_Weather.current_location.setLatitude(cur_latitude);
 
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     3000,
@@ -173,6 +175,13 @@ public class WeatherFragment extends Fragment {
         }
 
         getWeatherInformation();
+
+        tabLayout.setupWithViewPager(viewPager);
+
+        tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        tabPagerAdapter.addFragment(new TodayWeatherFragment(), "Today");
+        tabPagerAdapter.addFragment(new WeekWeatherFragment(), "Week");
+        viewPager.setAdapter(tabPagerAdapter);
 
 
         // Toolbar 활성화
@@ -197,6 +206,19 @@ public class WeatherFragment extends Fragment {
 
             cur_latitude = now_latitude;
             cur_longitue = now_logitude;
+
+            // 현재위치 넘기기
+            Bundle bundle = new Bundle();
+            bundle.putDouble("cur_latitude", cur_latitude);
+            bundle.putDouble("cur_longitude", cur_longitue);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
+            todayWeatherFragment.setArguments(bundle);
+            transaction.replace(R.id.recyclerView, todayWeatherFragment);
+            transaction.commit();
+
+//            Common_Weather.current_location.setLongitude(cur_longitue);
+//            Common_Weather.current_location.setLatitude(cur_latitude);
 
             LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
@@ -288,6 +310,12 @@ public class WeatherFragment extends Fragment {
                             }
                         })
         );
+    }
+
+    @Override
+    public void onStop(){
+        compositeDisposable.clear();
+        super.onStop();
     }
 
 

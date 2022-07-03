@@ -4,18 +4,20 @@ import java.util.List;
 
 public class Hourly {
 
-    private int dt;
-    private double temp;
-    private double feels_like;
-    private int pressure;
-    private int humidity;
-    private double dew_point;
-    private int uvi;
-    private int clouds;
-    private int visibility;
-    private Wind wind;
-    private int pop;
-    private List<Weather> weather;
+    public int dt ;
+    private double temp ;
+    private double feels_like ;
+    private int pressure ;
+    private int humidity ;
+    private double dew_point ;
+    private double uvi ;
+    private int clouds ;
+    private int visibility ;
+    private double wind_speed;
+    private int wind_deg ;
+    private double wind_gust ;
+    private List<Weather> weather ;
+    private int pop ;
 
     public Hourly() {
     }
@@ -68,11 +70,11 @@ public class Hourly {
         this.dew_point = dew_point;
     }
 
-    public int getUvi() {
+    public double getUvi() {
         return uvi;
     }
 
-    public void setUvi(int uvi) {
+    public void setUvi(double uvi) {
         this.uvi = uvi;
     }
 
@@ -92,20 +94,28 @@ public class Hourly {
         this.visibility = visibility;
     }
 
-    public Wind getWind() {
-        return wind;
+    public double getWind_speed() {
+        return wind_speed;
     }
 
-    public void setWind(Wind wind) {
-        this.wind = wind;
+    public void setWind_speed(double wind_speed) {
+        this.wind_speed = wind_speed;
     }
 
-    public int getPop() {
-        return pop;
+    public int getWind_deg() {
+        return wind_deg;
     }
 
-    public void setPop(int pop) {
-        this.pop = pop;
+    public void setWind_deg(int wind_deg) {
+        this.wind_deg = wind_deg;
+    }
+
+    public double getWind_gust() {
+        return wind_gust;
+    }
+
+    public void setWind_gust(double wind_gust) {
+        this.wind_gust = wind_gust;
     }
 
     public List<Weather> getWeather() {
@@ -114,5 +124,13 @@ public class Hourly {
 
     public void setWeather(List<Weather> weather) {
         this.weather = weather;
+    }
+
+    public int getPop() {
+        return pop;
+    }
+
+    public void setPop(int pop) {
+        this.pop = pop;
     }
 }
