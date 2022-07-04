@@ -2,7 +2,11 @@ package com.example.walgwalg_front_android.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,31 +35,26 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TodayWeatherFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TodayWeatherFragment extends Fragment {
 
     private String TAG = "TodayWeatherFragment";
-    private ArrayList<CurrentWeather> arrayWeather = new ArrayList<>();
-//    private WeatherAdapter weatherAdapter = new WeatherAdapter(arrayWeather, getContext());
     private RecyclerView recyclerView1;
     private RecyclerView.LayoutManager layoutManager;
     private LinearLayoutManager linearLayoutManager;
     private TextView txt_time, txt_temp;
     private ImageView img_weather;
+    Bundle bundle = new Bundle();
 
-    private double cur_latitude, cur_longitude;
+    private String cur_latitude = "00";
+    private String cur_longitude = "00";
 
     CompositeDisposable compositeDisposable;
     IOpenWeatherMap mService;
 
     static TodayWeatherFragment instance;
 
-    public static TodayWeatherFragment getInstance(){
-        if(instance == null){
+    public static TodayWeatherFragment getInstance() {
+        if (instance == null) {
             instance = new TodayWeatherFragment();
         }
         return instance;
@@ -79,14 +78,7 @@ public class TodayWeatherFragment extends Fragment {
 
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TodayWeatherFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static TodayWeatherFragment newInstance(String param1, String param2) {
         TodayWeatherFragment fragment = new TodayWeatherFragment();
@@ -100,10 +92,49 @@ public class TodayWeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        Log.d(TAG, "5 / " + cur_latitude + "/" + cur_longitude);
+//        WeatherFragment weatherFragment = new WeatherFragment();
+//        FragmentManager fragmentManager = weatherFragment.getParentFragmentManager();
+//        fragmentManager.setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+//            @Override
+//            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+//                String result = bundle.getString("bundleKey");
+//                Log.d(TAG, result);
+//                // Do something with the result..
+//            }
+//        });
+//        if (getArguments() != null) {
+////            mParam1 = getArguments().getString(ARG_PARAM1);
+////            mParam2 = getArguments().getString(ARG_PARAM2);
+//            cur_longitude = getArguments().getString("cur_longitude");
+//            cur_latitude = getArguments().getString("cur_latitude");
+//            Log.d(TAG, "2 / " + cur_latitude + "/" + cur_longitude);
+//        }
+//        Bundle mArgs = getArguments();
+//        if(mArgs != null){
+////            cur_longitude = mArgs.getString("cur_longitude");
+//            cur_latitude = mArgs.getString("test");
+//            Log.d(TAG, "2 / " + cur_latitude + "/" + cur_longitude);
+//        }
+
+//        getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+//            @Override
+//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+//                cur_longitude = result.getString("cur_longitude");
+//                cur_latitude = result.getString("cur_latitude");
+//                Log.d(TAG, "2 / " + cur_latitude + "/" + cur_longitude);
+//            }
+//        });
+
+//        getParentFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
+//            @Override
+//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+//                cur_longitude = result.getString("cur_longitude");
+//                cur_latitude = result.getString("cur_latitude");
+//                Log.d(TAG, "2 / " + cur_latitude + "/" + cur_longitude);
+//            }
+//        });
+
     }
 
     @Override
@@ -111,104 +142,77 @@ public class TodayWeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_weather, container, false);
 
+        WeatherViewModel weatherViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
+        weatherViewModel.getCur_latitude().observe(getViewLifecycleOwner(), item -> {
+            Log.d(TAG, "위도인지 고도인지 모르겠다"+weatherViewModel.getCur_latitude().getValue());
+        });
+
+        weatherViewModel.getCur_longitude().observe(getViewLifecycleOwner(), item -> {
+            Log.d(TAG, "위도인지 고도인지 모르겠다"+weatherViewModel.getCur_longitude().getValue());
+        });
+
         init(view);
 
-        if(getArguments() != null){
-            cur_longitude = getArguments().getDouble("cur_longitude");
-            cur_latitude = getArguments().getDouble("cur_latitude");
-        }
+//        Bundle bundle = getArguments();
+//
+//        if(getArguments() != null){ //야기
+//            cur_longitude = bundle.getString("cur_longitude");
+//            cur_latitude = bundle.getString("cur_latitude");
+//            Log.d(TAG, "2 / " + cur_latitude + "/" + cur_longitude);
+//        }
+
+        onCreate(bundle);
 
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-
-        getForecastWeatherInformation();
-
-//        for(int i=1; i<=10; i++){
-//            switch (i%5){
-//                case 0:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_cloud,"12", "21"));
-//                    break;
-//                case 1:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_rain,"13", "22"));
-//                    break;
-//                case 2:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_snow,"14", "23"));
-//                    break;
-//                case 3:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_sun,"15", "24"));
-//                    break;
-//                case 4:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_sun,"16", "25"));
-//                    break;
-//            }
-//        }
-
         recyclerView1.setLayoutManager(linearLayoutManager);
-//        recyclerView1.setAdapter(weatherAdapter);
-
-//        CurrentWeather currentWeather = new CurrentWeather(1, null, null, R.drawable.icon_cloud, 24, 36.0);
-//        arrayWeather.add(currentWeather);
-//        weatherAdapter.notifyDataSetChanged();
-
-//        for(int i=1; i<=10; i++){
-//            switch (i%5){
-//                case 0:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_cloud,"12", "21"));
-//                    break;
-//                case 1:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_rain,"13", "22"));
-//                    break;
-//                case 2:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_snow,"14", "23"));
-//                    break;
-//                case 3:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_sun,"15", "24"));
-//                    break;
-//                case 4:
-//                    arrayWeather.add(new CurrentWeather(null, null, null, R.drawable.icon_sun,"16", "25"));
-//                    break;
-//            }
-//        }
-
-//        weatherAdapter.notifyDataSetChanged();
+        getForecastWeatherInformation();
 
         return view;
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         compositeDisposable.clear();
         super.onStop();
     }
 
     private void getForecastWeatherInformation() {
 
-        compositeDisposable.add(mService.getForecastWeatherByLatLng(
-                String.valueOf(cur_latitude),
-                String.valueOf(cur_longitude),
-                Common_Weather.APP_ID,
-                "metric",
-                "kr")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<WeatherForecstResult>() {
-                    @Override
-                    public void accept(WeatherForecstResult weatherForecstResult) throws Exception {
-                        displayForecastWeather(weatherForecstResult);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.d(TAG, "" + throwable.getMessage());
+        Log.d(TAG, "4 " + cur_latitude + "/" + cur_longitude);
 
-                    }
-                })
+        compositeDisposable.add(mService.getForecastWeatherByLatLng(
+                                String.valueOf(cur_latitude),
+                                String.valueOf(cur_longitude),
+//                                "37.432124",
+//                                "127.129064",
+                                Common_Weather.APP_ID,
+                                "metric",
+                                "kr")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<WeatherForecstResult>() {
+                            @Override
+                            public void accept(WeatherForecstResult weatherForecstResult) throws Exception {
+                                Log.d(TAG, "TodayWeatherFragment Result: " + weatherForecstResult.hourly.get(0).weather.get(0).getIcon());
+                                displayForecastWeather(weatherForecstResult);
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.d(TAG, "Exception::: " + throwable.getMessage());
+
+                            }
+                        })
         );
     }
 
     private void displayForecastWeather(WeatherForecstResult weatherForecstResult) {
+
         WeatherAdapter adapter = new WeatherAdapter(getContext(), weatherForecstResult);
         recyclerView1.setAdapter(adapter);
+
         adapter.notifyDataSetChanged();
+        Log.d(TAG, "Check adapter");
     }
 
     public void init(View view) {
