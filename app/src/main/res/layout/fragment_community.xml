@@ -19,14 +19,14 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline_ver_1"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.95" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -154,7 +154,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.385" />
+        app:layout_constraintGuide_percent="0.39" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -216,7 +216,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.43" />
+        app:layout_constraintGuide_percent="0.44" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline_hor_8"
@@ -238,7 +238,7 @@
     android:layout_height="match_parent">
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/floating_action_button"
+      android:id="@+id/btn_add"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|right"
