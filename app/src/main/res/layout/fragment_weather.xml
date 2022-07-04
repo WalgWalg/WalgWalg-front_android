@@ -8,7 +8,8 @@
     android:orientation="vertical"
     android:background="@drawable/weatherbg_sunny">
 
-<!--    <com.google.android.material.appbar.MaterialToolbar-->
+
+<!--    <com.google.android.material.appbar.MaterialToolbar 이게 웨더프래그먼트  그리고 밑에 흰색 상자에 투데이랑 위크웨더-->
 <!--        android:id="@+id/tb_weather"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
