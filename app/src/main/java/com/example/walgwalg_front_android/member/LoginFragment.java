@@ -152,6 +152,7 @@ public class LoginFragment extends Fragment {
 
                         Toast.makeText(getContext(), userID + "님 환영합니다.", Toast.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "토큰 값 : " + getPreferenceString(), Toast.LENGTH_LONG).show();
+                        Log.d(TAG, getPreferenceString());
                         RecordActivity recordActivity=new RecordActivity();
                         recordActivity.gettoken(getPreferenceString());
                         LocationFragment locationFragment=new LocationFragment();

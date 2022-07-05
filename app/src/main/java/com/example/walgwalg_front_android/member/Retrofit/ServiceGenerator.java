@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String BASE_URL = "https://1dff926a-40bd-40b4-8fc7-ea2a6910daa5.mock.pstmn.io";
+    public static final String BASE_URL = "http://ec2-15-165-129-147.ap-northeast-2.compute.amazonaws.com:8080";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 

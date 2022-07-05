@@ -79,8 +79,8 @@ public class CommunityFragment extends Fragment {
 
         preferenceHelper = new PreferenceHelper(getContext());
 
-        communityInterface = ServiceGenerator.createService(CommunityInterface.class, "PMAK-62c2bb573eaf6129f000481d-7a7ec096d3dd182e419dc0fb7e0473d544");
-        communityTopRankInterface = ServiceGenerator.createService(CommunityTopRankInterface.class, "PMAK-62c2bb573eaf6129f000481d-7a7ec096d3dd182e419dc0fb7e0473d544");
+        communityInterface = ServiceGenerator.createService(CommunityInterface.class, preferenceHelper.getAccessToken());
+        communityTopRankInterface = ServiceGenerator.createService(CommunityTopRankInterface.class, preferenceHelper.getAccessToken());
 
         communityRequest = new CommunityRequest();
         communityInterface.getCommunityAddResponse()
@@ -99,20 +99,20 @@ public class CommunityFragment extends Fragment {
                             communityAdapterBottom = new CommunityAdapter_Bottom(boardData);
                             rv_bottom.setAdapter(communityAdapterBottom);
                             rv_bottom.setItemAnimator(new DefaultItemAnimator());
-                            Log.d(TAG, result.id);
-                            Log.d(TAG, result.dateTime);
-                            Log.d(TAG, result.status);
-                            Log.d(TAG, result.message);
-                            Log.d(TAG, result.communityPojo.get(0).title);
-                            Log.d(TAG, result.communityPojo.get(0).contents);
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).hashTags.length));
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).stepCount));
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).distance));
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).calorie));
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).course));
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).location));
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).nickname));
-                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).likes));
+//                            Log.d(TAG, result.id);
+//                            Log.d(TAG, result.dateTime);
+//                            Log.d(TAG, result.status);
+//                            Log.d(TAG, result.message);
+//                            Log.d(TAG, result.communityPojo.get(0).title);
+//                            Log.d(TAG, result.communityPojo.get(0).contents);
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).hashTags.length));
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).stepCount));
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).distance));
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).calorie));
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).course));
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).location));
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).nickname));
+//                            Log.d(TAG, String.valueOf(result.communityPojo.get(1).likes));
                         } else {
                             try {
                                 Log.d(TAG + " REST FAILED MESSAGE", response.errorBody().string());
@@ -142,12 +142,12 @@ public class CommunityFragment extends Fragment {
                             communityAdapterTop = new CommunityAdapter_Top(topRankData);
                             rv_top.setAdapter(communityAdapterTop);
                             rv_top.setItemAnimator(new DefaultItemAnimator());
-                            Log.d(TAG+"TOP", result.id);
-                            Log.d(TAG+"TOP", result.dateTime);
-                            Log.d(TAG+"TOP", result.status);
-                            Log.d(TAG+"TOP", result.message);
-                            Log.d(TAG+"TOP", result.communityTopRankPojo.get(0).image);
-                            Log.d(TAG+"TOP", result.communityTopRankPojo.get(0).parkName);
+//                            Log.d(TAG+"TOP", result.id);
+//                            Log.d(TAG+"TOP", result.dateTime);
+//                            Log.d(TAG+"TOP", result.status);
+//                            Log.d(TAG+"TOP", result.message);
+//                            Log.d(TAG+"TOP", result.communityTopRankPojo.get(0).image);
+//                            Log.d(TAG+"TOP", result.communityTopRankPojo.get(0).parkName);
                         } else {
                             try {
                                 Log.d(TAG + " TOP REST FAILED MESSAGE", response.errorBody().string());
