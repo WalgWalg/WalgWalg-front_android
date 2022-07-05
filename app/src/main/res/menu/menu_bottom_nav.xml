@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:icon="@drawable/ic_first_tab"
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:title="@string/tab_home"/>
     <item
+        android:icon="@drawable/ic_second_tab"
         android:id="@+id/locationFragment"
         android:enabled="true"
         android:title="@string/tab_map"/>
     <item
+        android:icon="@drawable/ic_third_tab"
         android:id="@+id/communityFragment"
         android:enabled="true"
         android:title="@string/tab_recommend"/>
     <item
+        android:icon="@drawable/ic_fourth_tab"
         android:id="@+id/myPageFragment"
         android:enabled="true"
         android:title="@string/tab_myPage"/>
