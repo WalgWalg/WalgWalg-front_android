@@ -100,6 +100,7 @@ public class CommunityAddFragment extends Fragment {
                             MyWalkResponse myWalkResponse = response.body();
                             myWalkData = response.body().myWalkPojo;
                             Log.d(TAG, String.valueOf(myWalkData.size()));
+                            Log.d(TAG, String.valueOf(myWalkData.get(0).location));
 
                             ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
@@ -107,6 +108,8 @@ public class CommunityAddFragment extends Fragment {
 
                             for (int i = 0; i < myWalkData.size(); i++) {
                                 item01.put("walkDate", myWalkData.get(i).walkDate);
+                                Log.d(TAG+i, String.valueOf(myWalkData.get(i).walkDate));
+                                Log.d(TAG+i, String.valueOf(myWalkData.get(i).location));
                                 item01.put("location", myWalkData.get(i).location);
 //                                item01.put("walkTime", myWalkData.get(i).walkTime);
 //                                item01.put("calorie", String.valueOf(myWalkData.get(i).calorie));
@@ -148,7 +151,9 @@ public class CommunityAddFragment extends Fragment {
                         String location = edt_location.getText().toString();
                         String contents = edt_content.getText().toString();
 
-                        communityAddRequest = new CommunityAddRequest(location, title, hashTag, contents);
+                        communityAddInterface = ServiceGenerator.createService(CommunityAddInterface.class, preferenceHelper.getAccessToken());
+
+                        communityAddRequest = new CommunityAddRequest("0c908994-fc3f-4caf-bdb7-2bc005d6b815", title, hashTag, contents);
                         communityAddInterface.getCommunityAddResponse(communityAddRequest)
                                 .enqueue(new Callback<CommunityAddResponse>() {
                                     @Override
@@ -193,7 +198,7 @@ public class CommunityAddFragment extends Fragment {
         builder.setView(view);
 
         String[] from = {"walkDate", "location"};
-        int[] to = new int[] {android.R.id.text1, android.R.id.text2};
+        int[] to = new int[] {R.id.tv_datetime, R.id.tv_location};
 
         final ListView listview = (ListView) view.findViewById(R.id.listview_alterdialog_list);
         final AlertDialog dialog = builder.create();
@@ -209,6 +214,7 @@ public class CommunityAddFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Log.d(TAG, myWalkData.get(position).location + "을 선택함");
+                edt_location.setText(myWalkData.get(position).location);
                 dialog.dismiss();
             }
         });
