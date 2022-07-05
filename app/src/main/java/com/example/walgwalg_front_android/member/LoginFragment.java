@@ -10,17 +10,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.walgwalg_front_android.MainActivity;
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.home.HomeFragment;
 import com.example.walgwalg_front_android.location.LocationFragment;
 import com.example.walgwalg_front_android.location.RecordActivity;
 import com.example.walgwalg_front_android.member.DTO.LoginRequest;
 import com.example.walgwalg_front_android.member.DTO.LoginResponse;
 import com.example.walgwalg_front_android.member.Interface.LoginInterface;
 import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import retrofit2.Call;
@@ -53,8 +57,9 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-
+        hideBottomNavigation(true);
         init(view);
+
 
 //        if (!getPreferenceString("autoLoginId").equals("") && !getPreferenceString("autoLoginPw").equals("")) {
 //            cb_autoLogin.setChecked(true);
@@ -157,6 +162,8 @@ public class LoginFragment extends Fragment {
                         recordActivity.gettoken(getPreferenceString());
                         LocationFragment locationFragment=new LocationFragment();
                         locationFragment.gettoken(getPreferenceString());
+                        HomeFragment homeFragment = new HomeFragment();
+                        homeFragment.gettoken(getPreferenceString());
                         Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
 
                     } else if (status.equals(errorId)) {
@@ -266,6 +273,21 @@ public class LoginFragment extends Fragment {
         btn_login = view.findViewById(R.id.btn_login);
         edt_idInput = view.findViewById(R.id.edt_idInput);
         edt_pwInput = view.findViewById(R.id.edt_pwInput);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideBottomNavigation(false);
+    }
+
+    // 하단 탭 제거 함수
+    public void hideBottomNavigation(Boolean bool) {
+        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottomNavigationView);
+        if (bool == true)
+            bottomNavigation.setVisibility(View.GONE);
+        else
+            bottomNavigation.setVisibility(View.VISIBLE);
     }
 
 }
