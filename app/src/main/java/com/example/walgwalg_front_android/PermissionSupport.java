@@ -19,6 +19,7 @@ public class PermissionSupport {
 
     //요청할 권한 배열 저장
     private String[] permissions = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_COARSE_LOCATION,
