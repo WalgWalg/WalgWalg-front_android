@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:icon="@drawable/ic_first_tab"
+        android:icon="@drawable/ic_outline_home_24"
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:title="@string/tab_home"/>
