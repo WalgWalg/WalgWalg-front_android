@@ -26,34 +26,6 @@
                 android:background="@drawable/test_location" />
 
             <com.example.walgwalg_front_android.FontAwesomeTextLight
-                android:id="@+id/tv_scrap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text=""
-                android:textColor="#E0E4ED"
-                android:textSize="20dp" />
-            <com.example.walgwalg_front_android.FontAwesomeTextLight
-                android:id="@+id/tv_nonscrap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text=""
-                android:textColor="#FFC900"
-                android:visibility="gone"
-                android:textSize="20dp" />
-
-            <com.example.walgwalg_front_android.FontAwesomeTextLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -79,7 +51,7 @@
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -91,8 +63,9 @@
                 android:backgroundTint="@color/white"
                 android:text="Detail"
                 android:textColor="@color/black"
+                android:id="@+id/btn_detail"
                 android:textSize="14dp"
-                app:cornerRadius="10dp"></com.google.android.material.button.MaterialButton>
+                app:cornerRadius="10dp"/>
         </RelativeLayout>
     </LinearLayout>
 

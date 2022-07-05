@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.location.LocationFragment;
 import com.example.walgwalg_front_android.location.RecordActivity;
 import com.example.walgwalg_front_android.member.DTO.LoginRequest;
 import com.example.walgwalg_front_android.member.DTO.LoginResponse;
@@ -153,6 +154,8 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(getContext(), "토큰 값 : " + getPreferenceString(), Toast.LENGTH_LONG).show();
                         RecordActivity recordActivity=new RecordActivity();
                         recordActivity.gettoken(getPreferenceString());
+                        LocationFragment locationFragment=new LocationFragment();
+                        locationFragment.gettoken(getPreferenceString());
                         Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
 
                     } else if (status.equals(errorId)) {
