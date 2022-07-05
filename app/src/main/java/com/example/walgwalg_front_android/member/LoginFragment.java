@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.location.RecordActivity;
 import com.example.walgwalg_front_android.member.DTO.LoginRequest;
 import com.example.walgwalg_front_android.member.DTO.LoginResponse;
 import com.example.walgwalg_front_android.member.Interface.LoginInterface;
@@ -150,6 +151,8 @@ public class LoginFragment extends Fragment {
 
                         Toast.makeText(getContext(), userID + "님 환영합니다.", Toast.LENGTH_LONG).show();
                         Toast.makeText(getContext(), "토큰 값 : " + getPreferenceString(), Toast.LENGTH_LONG).show();
+                        RecordActivity recordActivity=new RecordActivity();
+                        recordActivity.gettoken(getPreferenceString());
                         Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
 
                     } else if (status.equals(errorId)) {

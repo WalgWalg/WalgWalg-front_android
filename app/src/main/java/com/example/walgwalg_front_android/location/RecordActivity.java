@@ -16,6 +16,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -30,12 +32,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.member.PreferenceHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -46,7 +48,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
-import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 
 import java.io.File;
@@ -56,8 +57,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RecordActivity extends AppCompatActivity implements AutoPermissionsListener, SensorEventListener {
     private TextView btn_location, txt_km, txt_time, txt_step, txt_kcal;
@@ -70,38 +80,62 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
     private List<Polyline> polylines = new ArrayList();
     private LatLng startLatLng = new LatLng(0, 0);
     private LatLng endLatLng = new LatLng(0, 0);
+    private static double latitude,longitude;
 
-    private int distance, predistance = 0;
+    private static int distance, predistance = 0;
     private Timer timer;
     private TimerTask timerTask;
+    private static String walkTime="0";
     private Timer km;
     private TimerTask kmTask;
     private Timer kcal;
     private TimerTask kcalTask;
     private int one = 300;
-    private int kcals = 0;
+    private static int kcals = 0;
     private double time = 0.000;
     //현재 걸음 수
-    private int mSteps = 0;
+    private static int mSteps = 0;
     //리스너가 등록되고 난 후의 step count
     private int mCounterSteps = 0;
     private SensorManager sensorManager;
     private Sensor stepCountSensor;
 
-    private RecyclerView recyclerView;
-    private Park_Adapter park_adapter;
-    private ArrayList<ParkItem> parkItems;
+    private Timer gpsapi=new Timer();
+    private TimerTask gpsapiTask;
 
     SupportMapFragment mapFragment;
     GoogleMap map;
 
     Marker myMarker;
     MarkerOptions myLocationMarker;
+    Circle circle;
+    CircleOptions circle1KM;
 
+    TestItem dataList;
+    List<Data> dataInfo;
+    List<Data> dataresult= new ArrayList<>();
+    private RecyclerView recyclerView;
+    private Park_Adapter park_adapter;
+
+    Post post;
+    private String park_name,park_address;
+    private PreferenceHelper preferenceHelper;
+    private double first_latitude,first_longitude;
+    private static String usertoken;
+    private Date resultdate;
+    private ApiClient apiClient;
+
+    Gps gps;
+    private static String walkId="1";
+
+    Finish finish;
+    requestDto requestdto;
+    MultipartBody.Part file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
 
         btn_location = findViewById(R.id.btn_location);
         btn_end = (Button) findViewById(R.id.btn_end);
@@ -115,26 +149,9 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
         select_drawer.setVisibility(View.VISIBLE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        park_adapter = new Park_Adapter();
-        recyclerView.setAdapter(park_adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-
-        parkItems = new ArrayList<ParkItem>();
-
-        for (int i = 0; i < 10; i++) {
-            parkItems.add(new ParkItem(i + "번째 공원이름", i + "번째 공원주소"));
-        }
-
-        park_adapter.setArrayList(parkItems);
-        park_adapter.setOnItemClickListener(new Park_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                select_drawer.setVisibility(View.GONE);
-                sliding_drawer.setVisibility(View.VISIBLE);
-            }
-        });
+        preferenceHelper = new PreferenceHelper(getApplicationContext());
+        apiClient=new ApiClient(usertoken);
 
         // 디바이스에 걸음 센서의 존재 여부 체크
         if (stepCountSensor == null) {
@@ -150,6 +167,7 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
         kcal = new Timer();
         startKcal();
 
+//        gpsapi=new Timer();
 
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //폴리라인 그리기
@@ -188,11 +206,76 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 AutoPermissions.Companion.loadAllPermissions(RecordActivity.this, 101);
                 mapFragment.getView().setVisibility(View.VISIBLE);
                 startLocationService();
+
+                Geocoder g = new Geocoder(getApplicationContext());
+                List<Address> address=null;
+                String region;
+
+                try {
+//                    first_latitude=35.8767887;    //대구
+//                    first_longitude=128.5962455;
+                    Log.d("test",String.valueOf(latitude)+"  "+String.valueOf(longitude));
+                    address = g.getFromLocation(latitude,longitude,10);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d("test","입출력오류");
+                }
+
+                region=address.get(0).getAddressLine(0);
+                region=region.substring(5);
+                String [] arr=region.split(" ");
+                String result;
+                result=arr[0];
+                result+=" "+arr[1];
+                result+=" "+arr[2];
+                Log.d("test",result);
+
+
+                dataInfo=new ArrayList<>();
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+
+                ApiInterface apiInterface = apiClient.getClient().create(ApiInterface.class);
+                Call<TestItem> call = apiInterface.getData(result);
+
+                call.enqueue(new Callback<TestItem>() {
+
+                    @Override
+                    public void onResponse(Call<TestItem> call, Response<TestItem> response) {
+
+                        dataList = response.body();
+
+                        Log.d("RecordActivity", dataList.tolist());
+
+                        dataInfo=dataList.list;
+//                        for (int i = 0; i < dataInfo.size(); i++) {
+//                            if("35.5459538599".equals(dataInfo.get(i).getLatitude())){
+//                                dataresult.add(dataInfo.get(i));
+//                            }
+//                        }
+
+                        park_adapter = new Park_Adapter(getApplicationContext(), dataInfo);
+
+                        recyclerView.setAdapter(park_adapter);
+
+                        park_adapter.setOnItemClickListener(new Park_Adapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View v, int position) {
+                                select_drawer.setVisibility(View.GONE);
+                                sliding_drawer.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<TestItem> call, Throwable t) {
+                        Log.d("Park", t.toString());
+                    }
+                });
+
             }
         });
 
-        // 최초 지도 숨김
-//        mapFragment.getView().setVisibility(View.GONE);
+
 
         btn_location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,10 +286,16 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
         btn_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (gpsapiTask != null){
+                    gpsapiTask.cancel();
+                    gpsapiTask = null;
+                }
                 timerTask.cancel();
                 kmTask.cancel();
                 kcalTask.cancel();
                 manager.removeUpdates(gpsListener);
+
+                //캡쳐
                 map.snapshot(new GoogleMap.SnapshotReadyCallback() {
                     @Override
                     public void onSnapshotReady(Bitmap bitmap) {
@@ -215,26 +304,175 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                         String dateString = formatter.format(currentTime_1);
                         String filename = dateString + "screenshot.png";
 
-                        File file = new File(Environment.getExternalStorageDirectory() + "/Pictures", filename);
-                        Log.i("RecordActivity", Environment.getExternalStorageDirectory() + "/Pictures");
+                        File infile = new File(Environment.getExternalStorageDirectory() + "/Pictures", filename);
+                        Log.i("finish", Environment.getExternalStorageDirectory() + "/Pictures");
                         try {
-                            FileOutputStream os = new FileOutputStream(file);
+                            FileOutputStream os = new FileOutputStream(infile);
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, os); //PNG파일로 만들기
-                            Log.d("RecordActivity", "저장성공");
+
+                            RequestBody requestFile=RequestBody.create(MediaType.parse("image/png"),infile);
+                            file = MultipartBody.Part.createFormData("file", infile.getName(), requestFile);
+
+                            Log.d("finish", infile.getName());
+                            Log.d("finish", String.valueOf(requestFile.contentType()));
+                            Log.d("finish", "캡쳐성공");
+                            Log.d("finish", String.valueOf(file.body().contentType()));
+
+                            requestdto = new requestDto(walkId,mSteps,distance,kcals,walkTime);
+                            Log.d("requestdto",requestdto.getWalkId()+" "+requestdto.getStep_count()+" "+requestdto.getDistance()+" "
+                                    +requestdto.getCalorie()+" "+requestdto.getWalkTime());
+
+                            finish=new Finish(file,requestdto);
+
+                            FinishInterface finishInterface = apiClient.getClient().create(FinishInterface.class);
+                            Call<FinishResponse> call = finishInterface.CreateWalk(file,requestdto);
+
+                            call.enqueue(new Callback<FinishResponse>() {
+                                @Override
+                                public void onResponse(Call<FinishResponse> call, Response<FinishResponse> response) {
+                                    if(response.isSuccessful()){
+                                        FinishResponse finishResponse = response.body();
+
+                                        String content = "success: " + finishResponse.getMessage();
+                                        Log.d("finish", content);
+                                    }
+                                    if (!response.isSuccessful()) {
+                                        try {
+                                            String body=response.errorBody().string();
+
+                                            Log.d("finish", "response fail : "+body);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<FinishResponse> call, Throwable t) {
+                                    Log.d("finish", t.getMessage());
+                                }
+                            });
                             os.close();
+                            Toast.makeText(getApplicationContext(),"end",Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        if (file != null) {
-                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-                            Toast.makeText(getApplicationContext(), "캡쳐성공", Toast.LENGTH_SHORT).show();
-                        }
+//                        if (file != null) {
+//                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+//                            Toast.makeText(getApplicationContext(), "저장성공", Toast.LENGTH_SHORT).show();
+//                        }
 
                     }
                 });
+
+//
+
             }
         });
 
+    }//oncreate-end
+
+    public void postintent_parkname(String title){
+        park_name=title;
+    }
+    public void postintent_parkaddress(String num){
+        park_address=num;
+    }
+
+    public void gettoken(String token){
+        usertoken=token;
+        Log.d("post","로그인에서 받아온 토큰: "+usertoken);
+    }
+
+    public void parkpost(String name, String numaddress){
+
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ", Locale.KOREA);
+        TimeZone tz;
+        tz=TimeZone.getTimeZone("GMT");
+        mFormat.setTimeZone(tz);
+        Date mDate= new Date();
+        String date=mFormat.format(mDate);
+
+        post = new Post(date,name,numaddress);
+
+        Log.d("post",post.getWalkDate()+post.getLocation()+post.getAddress());
+        PostInterface postInterface = apiClient.getClient().create(PostInterface.class);
+        Call<PostResponse> call = postInterface.CreatePost(post);
+
+        call.enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                if(response.isSuccessful()){
+                    PostResponse postResponse = response.body();
+
+                    String content = "success: " + postResponse.getMessage();
+                    walkId=postResponse.getList().getWalkId();
+                    Log.d("gps walkId", walkId);
+                    Log.d("post", content);
+                    gpsapi();
+                }
+                if (!response.isSuccessful()) {
+                    try {
+                        String body=response.errorBody().string();
+
+                        Log.d("post", "response fail : "+body);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                Log.d("post", t.getMessage());
+            }
+        });
+    }
+private GpsInterface gpsInterface = apiClient.getClient().create(GpsInterface.class);
+    //gpsapi
+    private void gpsapi() {
+        gpsapiTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        gps = new Gps(walkId,String.valueOf(latitude),String.valueOf(longitude));
+                        Log.d("gps",gps.getWalkId()+" latitude: "+gps.getLatitude()+"longitude: "+gps.getLongitude());
+                        Call<GpsResponse> call = gpsInterface.CreateGps(gps);
+
+                        call.enqueue(new Callback<GpsResponse>() {
+                            @Override
+                            public void onResponse(Call<GpsResponse> call, Response<GpsResponse> response) {
+                                if(response.isSuccessful()){
+                                    GpsResponse gpsResponse = response.body();
+
+                                    String content = "success: " + gpsResponse.getMessage();
+
+                                    Log.d("gps", content);
+                                }
+                                if (!response.isSuccessful()) {
+                                    try {
+                                        String body=response.errorBody().string();
+
+                                        Log.d("gps", "response fail : "+body);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<GpsResponse> call, Throwable t) {
+                                Log.d("gps", t.getMessage());
+                            }
+                        });
+                    }
+                });
+            }
+
+        };
+        gpsapi.scheduleAtFixedRate(gpsapiTask, 0, 200000);
     }
 
     //km
@@ -288,6 +526,7 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                     public void run() {
                         time++;
                         txt_time.setText(getTimerText());
+                        walkTime=getTimerText();
                     }
                 });
             }
@@ -321,8 +560,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
                     String message = "최근 위치1 -> Latitude : " + latitude + " Longitude : " + longitude;
 
                     showCurrentLocation(latitude, longitude);
@@ -340,8 +579,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
 
                 location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
                     String message = "최근 위치2 -> Latitude : " + latitude + "\n Longitude : " + longitude;
 
                     Log.i("RecordActivity", "최근 위치1 " + message);
@@ -390,22 +629,23 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
         // 위치 확인되었을때 자동으로 호출됨 (일정시간 and 일정거리)
         @Override
         public void onLocationChanged(Location location) {
-            double latitude = location.getLatitude(), longtitude = location.getLongitude();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
 
             if (myMarker != null) myMarker.remove();
             location = location;
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(new LatLng(latitude, longtitude));
+            markerOptions.position(new LatLng(latitude, longitude));
             myMarker = map.addMarker(markerOptions);
 
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-            endLatLng = new LatLng(latitude, longtitude);//현재  위치를  끝점으로  설정
+            endLatLng = new LatLng(latitude, longitude);//현재  위치를  끝점으로  설정
             drawPath();//polyline  그리기
-            startLatLng = new LatLng(latitude, longtitude);//시작점을  끝점으로  다시  설정
-            Log.d("RecordActivity", "위도 " + latitude + " 경도 " + longtitude);
+            startLatLng = new LatLng(latitude, longitude);//시작점을  끝점으로  다시  설정
+            Log.d("RecordActivity", "위도 " + latitude + " 경도 " + longitude);
             distance = distance + 1;
             Log.d("RecordActivity", "km " + distance);
-            showCurrentLocation(latitude, longtitude);
+            showCurrentLocation(latitude, longitude);
 
         }
 
@@ -509,6 +749,20 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
             myMarker = map.addMarker(myLocationMarker);
         }
 
+        // 반경추가
+        if (circle1KM == null) {
+            circle1KM = new CircleOptions().center(curPoint) // 원점
+                    .radius(1000)       // 반지름 단위 : m
+                    .strokeWidth(1.0f);    // 선너비 0f : 선없음
+            //.fillColor(Color.parseColor("#1AFFFFFF")); // 배경색
+            circle = map.addCircle(circle1KM);
+
+        } else {
+            circle.remove(); // 반경삭제
+            circle1KM.center(curPoint);
+            circle = map.addCircle(circle1KM);
+        }
+
 
     }
 
@@ -529,4 +783,5 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
 //        Toast.makeText(getApplicationContext(),"permissions granted : " + permissions.length, Toast.LENGTH_SHORT).show();
     }
 }
+
 
