@@ -12,12 +12,21 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
+import com.example.walgwalg_front_android.member.Interface.TokenInterface;
+import com.example.walgwalg_front_android.member.PreferenceHelper;
+import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
+
+    private RetrofitClient retrofitClient;
+    private TokenInterface tokenInterface;
+    private PreferenceHelper preferenceHelper;
+    private String accessToken;
+    private String refreshToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

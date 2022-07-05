@@ -1,17 +1,26 @@
 package com.example.walgwalg_front_android.home;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -61,22 +70,29 @@ import retrofit2.Retrofit;
 public class WeatherFragment extends Fragment {
 
     private String TAG = "WeatherFragment";
+
+    private WeatherViewModel weatherViewModel;
+
     //    private MaterialToolbar tb_weather;
     FragmentManager fragmentManager;
     //    public FragmentManager fragmentManager = HomeFragment.fragmentManager.findFragmentById(R.id.homeFragment);
-    TodayWeatherFragment todayWeatherFragment;
     WeekWeatherFragment weekWeatherFragment;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private TabPagerAdapter tabPagerAdapter;
 
+    private HomeFragment homeFragment;
+
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private TextView txt_dateview, txt_cityview, txt_tempview;
-    ProgressBar loading;
+    private double cur_latitude = 0;
+    private double cur_longitue = 0;
     CompositeDisposable compositeDisposable;
     IOpenWeatherMap mService;
+    private LocationManager lm;
+    Bundle bundle = new Bundle();
 
     public WeatherFragment() {
         // Required empty public constructor
@@ -93,7 +109,42 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "Is value exist?"+cur_longitue);
+
+        Bundle result = new Bundle();
+        result.putString("bundleKey", "result");
+
+        // The child fragment needs to still set the result on its parent fragment manager
+//        TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
+//        FragmentManager fragmentManager = todayWeatherFragment.getParentFragmentManager();
+//        fragmentManager.setFragmentResult("requestKey", result);
+
+//        Bundle result = new Bundle();
+//        result.putString("test", String.valueOf(2));
+////        result.putString("cur_longitude", String.valueOf(cur_longitue));
+//
+//        TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
+//        todayWeatherFragment.setArguments(result);
+//        getParentFragmentManager().setFragmentResult("key", result);
+
+//        savedInstanceState = new Bundle();
+//
+//        TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
+//        savedInstanceState.putString("cur_latitude", String.valueOf(cur_latitude));
+//        savedInstanceState.putString("cur_longitude", String.valueOf(cur_longitue));
+//
+
+//        getParentFragmentManager().setFragmentResult("requestKey", savedInstanceState);
+//        todayWeatherFragment.setArguments(savedInstanceState);
+//
+////        transaction.replace(R.id.viewpager, todayWeatherFragment);
+////        transaction.commit();
+//
+//        Log.d(TAG, "6 " + savedInstanceState.getString("cur_latitude") + "/" + savedInstanceState.getString("cur_longitude"));
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,6 +171,7 @@ public class WeatherFragment extends Fragment {
                         }
                         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
                         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+//                        getWeatherInformation();
                     }
 
                     @Override
@@ -128,15 +180,65 @@ public class WeatherFragment extends Fragment {
                     }
                 }).check();
 
+        // 위치 받아오기
+        if(Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(getContext().getApplicationContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions((Activity) getActivity().getApplicationContext(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    0);
+        } else{
+            LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            String provider = location.getProvider();
+            String locationProvider = lm.NETWORK_PROVIDER;
+            location = lm.getLastKnownLocation(locationProvider);
+
+            double now_longitude = location.getLongitude();
+            double now_latitude = location.getLatitude();
+            double now_altitude = location.getAltitude();
+
+            cur_latitude = now_latitude;
+            cur_longitue = now_longitude;
+
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+        }
+
+        getWeatherInformation();
+
+        Log.d(TAG, "3 " + cur_latitude + "/" + cur_longitue);
+
+        weatherViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
+        weatherViewModel.save(cur_longitue, cur_latitude);
+
+        onCreate(bundle);
+
+//        // 현재위치 넘기기 여기서
+//        Bundle bundle = new Bundle();
+//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//        Fragment todayWeatherFragment = new TodayWeatherFragment();
+//        bundle.putString("cur_latitude", String.valueOf(cur_latitude));
+//        bundle.putString("cur_longitude", String.valueOf(cur_longitue));
+////        getParentFragmentManager().setFragmentResult("requestKey", bundle);
+//        todayWeatherFragment.setArguments(bundle);
+//        transaction.replace(R.id.viewpager, todayWeatherFragment);
+//        transaction.commit();
+//        Log.d(TAG, "7 " + bundle.getString("cur_latitude") + "/" + bundle.getString("cur_longitude"));
+
         tabLayout.setupWithViewPager(viewPager);
 
         tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         tabPagerAdapter.addFragment(new TodayWeatherFragment(), "Today");
         tabPagerAdapter.addFragment(new WeekWeatherFragment(), "Week");
         viewPager.setAdapter(tabPagerAdapter);
-
-        getWeatherInformation();
-
 
         // Toolbar 활성화
 
@@ -150,55 +252,43 @@ public class WeatherFragment extends Fragment {
         return view;
     }
 
-    private void getWeatherInformation() {
-        //TODO: 현위치 받는 오류 해결
-        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(37.4219983),
-                                String.valueOf(-122.084),
-//        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(Common_Weather.current_location.getLatitude()),
-//                                String.valueOf(Common_Weather.current_location.getLongitude()),
-                                Common_Weather.APP_ID,
-                                "metric")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<WeatherResult>() {
-                            @Override
-                            public void accept(WeatherResult weatherResult) throws Exception {
-                                //Load image - 현재 지역 기후에 따른 아이콘 변경
-//                        Picasso.get().load(new StringBuilder("http://openweathermap.org/img/wn/")
-//                                .append(weatherResult.getWeather().get(0).getIcon())
-//                                .append(".png").toString()).into(이미지 변수);
+    final LocationListener gpsLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(@NonNull Location location) {
+            String provider = location.getProvider();
+            double now_logitude = location.getLongitude();
+            double now_latitude = location.getLatitude();
+            double now_altitude = location.getAltitude();
 
-                                txt_cityview.setText(weatherResult.getName());
-                                txt_tempview.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
-                                txt_dateview.setText(Common_Weather.convertUnixToDate(weatherResult.getDt()));
+            cur_latitude = now_latitude;
+            cur_longitue = now_logitude;
 
-                                //날씨 상태
-                                //변수.setText(new StringBuilder("Weather in ").append(weatherResult.getName()).toString());
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                Toast.makeText(getActivity(), ""+throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        })
-//                .subscribe((io.reactivex.functions.Consumer<? super WeatherResult>) weatherResult -> {
-//
-//                    //Load image - 현재 지역 기후에 따른 아이콘 변경
-////                        Picasso.get().load(new StringBuilder("http://openweathermap.org/img/wn/")
-////                                .append(weatherResult.getWeather().get(0).getIcon())
-////                                .append(".png").toString().into(이미지 변수);
-//
-//                    txt_cityview.setText(weatherResult.getName());
-//                    txt_tempview.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
-//                    txt_dateview.setText(Common_Weather.convertUnixToDate(weatherResult.getDt()));
-//                }, new io.reactivex.functions.Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) throws Exception {
-//                        Toast.makeText(getActivity(), ""+throwable.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                })
-        );
-    }
+            LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+            if(ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                return;
+            }
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    3000,
+                    1,
+                    gpsLocationListener);
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras){
+
+        }
+        public void onProviderEnabled(String provider){
+
+        }
+        public void onProviderDisabled(String provider){
+
+        }
+    };
+
 
     private void buildLocationCallBack() {
         locationCallback = new LocationCallback() {
@@ -207,6 +297,8 @@ public class WeatherFragment extends Fragment {
                 super.onLocationResult(locationResult);
 
                 Common_Weather.current_location = locationResult.getLastLocation();
+                cur_latitude = locationResult.getLastLocation().getLatitude();
+                cur_longitue = locationResult.getLastLocation().getLongitude();
 
                 Log.d("Location", locationResult.getLastLocation().getLatitude() + "/" + locationResult.getLastLocation().getLongitude());
 
@@ -221,6 +313,54 @@ public class WeatherFragment extends Fragment {
         locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10.0f);
     }
+
+    // 날씨 정보 받아오기
+    private void getWeatherInformation() {
+        //TODO: 나갔다 돌아오면 화면 사라지는 오류 고치기
+        Log.d(TAG, cur_latitude + "/" + cur_longitue);
+
+//        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(Common_Weather.current_location.getLatitude()),
+//                                String.valueOf(Common_Weather.current_location.getLongitude()),
+        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(cur_latitude),
+                                String.valueOf(cur_longitue),
+                                Common_Weather.APP_ID,
+                                "metric",
+                                "kr")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<WeatherResult>() {
+                            @Override
+                            public void accept(WeatherResult weatherResult) throws Exception {
+                                //Load image - 현재 지역 기후에 따른 아이콘 변경
+//                        Picasso.get().load(new StringBuilder("http://openweathermap.org/img/wn/")
+//                                .append(weatherResult.getWeather().get(0).getIcon())
+//                                .append(".png").toString()).into(이미지 변수);
+                                String name=weatherResult.getName();
+                                if(name.equals("Dongjinwon")){
+                                    name="Yongin-si";
+                                }
+                                txt_cityview.setText(name);
+                                txt_tempview.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
+                                txt_dateview.setText(Common_Weather.convertUnixToDate(weatherResult.getDt()));
+
+                                //날씨 상태
+                                //변수.setText(new StringBuilder("Weather in ").append(weatherResult.getName()).toString());
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Toast.makeText(getActivity(), ""+throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+        );
+    }
+
+    @Override
+    public void onStop(){
+        compositeDisposable.clear();
+        super.onStop();
+    }
+
 
     // Toolbar 뒤로가기 버튼 활성화 코드
 //    @Override
@@ -241,6 +381,7 @@ public class WeatherFragment extends Fragment {
 
     public void init(View view) {
 //        tb_weather = view.findViewById(R.id.tb_weather);
+        homeFragment = new HomeFragment();
         tabLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         txt_cityview = view.findViewById(R.id.txt_cityview);

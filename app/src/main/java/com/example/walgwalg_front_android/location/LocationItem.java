@@ -1,28 +1,78 @@
 package com.example.walgwalg_front_android.location;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class LocationItem {
-    String tv_distance;
-    int iv_map;
+    @SerializedName("id")
+    public String id;
 
-    public LocationItem(int iv_map, String tv_distance) {
-        this.iv_map = iv_map;
-        this.tv_distance = tv_distance;
+    @SerializedName("dateTime")
+    public String dateTime;
+
+    @SerializedName("status")
+    public String status;
+
+    @SerializedName("message")
+    public String message;
+
+    @SerializedName("list")
+    public List<LocationData> list;
+
+    public String tolist(){
+        return "list="+list+
+                "}";
     }
 
-    public String getTv_distance() {
-        return tv_distance;
+    public LocationItem(String id,String dateTime,String status,String message,List<LocationData> list){
+        this.id=id;
+        this.dateTime=dateTime;
+        this.status=status;
+        this.message=message;
+        this.list=list;
     }
 
-    public void setTv_distance(String tv_distance) {
-        this.tv_distance = tv_distance;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getIv_map() {
-        return iv_map;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public void setIv_map(int iv_map) {
-        this.iv_map = iv_map;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+
+    public void setList(List<LocationData> list) {
+        this.list = list;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+
+    public List<LocationData> getList() {
+        return list;
     }
 
 }

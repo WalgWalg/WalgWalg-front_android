@@ -17,6 +17,7 @@ import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.member.DTO.RegisterRequest;
 import com.example.walgwalg_front_android.member.DTO.RegisterResponse;
 import com.example.walgwalg_front_android.member.Interface.RegisterInterface;
+import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;

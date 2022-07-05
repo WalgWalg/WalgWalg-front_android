@@ -12,14 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walgwalg_front_android.R;
-import com.example.walgwalg_front_android.member.DTO.LoginResponse;
 import com.example.walgwalg_front_android.member.DTO.TokenRequest;
 import com.example.walgwalg_front_android.member.DTO.TokenResponse;
 import com.example.walgwalg_front_android.member.Interface.TokenInterface;
 import com.example.walgwalg_front_android.member.PreferenceHelper;
-import com.example.walgwalg_front_android.member.ServiceGenerator;
-
-import java.io.IOException;
+import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,6 +1,7 @@
 package com.example.walgwalg_front_android.home;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +17,23 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.model.CurrentWeather;
+import com.example.walgwalg_front_android.model.WeatherForecstResult;
 import com.example.walgwalg_front_android.model.WeatherResult;
+import com.example.walgwalg_front_android.weather.Common_Weather;
+import com.kakao.util.maps.helper.Utility;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomViewHolder> {
-    private ArrayList<CurrentWeather> arrayList;
+
     private String TAG = "WeatherAdapter";
     private Context mContext;
-    private Fragment fragment;
-    private FragmentManager fragmentManager;
-    private FragmentStateAdapter fragmentStateAdapter;
+    WeatherForecstResult weatherForecstResult;
 
-    public WeatherAdapter(ArrayList<CurrentWeather> arrayList, Context mContext){
-        this.arrayList = arrayList;
+    public WeatherAdapter(Context mContext, WeatherForecstResult weatherForecstResult){
         this.mContext = mContext;
+        this.weatherForecstResult = weatherForecstResult;
     }
 
     @NonNull
@@ -47,9 +50,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
 
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.CustomViewHolder holder, int position){
-        holder.img_weather.setImageResource(arrayList.get(position).getIcon());   //TODO: 이미지 타입 확인
-        holder.txt_temp.setText( arrayList.get(position).getTemp());                           //TODO: 온도 타입 확인
-        holder.txt_time.setText(arrayList.get(position).getDt());
+
+        // Load image - 현재 지역 기후에 따른 아이콘 변경
+//        holder.img_weather.setImageResource(Utility.getArtResourceForWeatherCondition(weatherForecstResult.hourly.get(position).weather.get(0).getId()));
+//        Log.d(TAG, String.valueOf(weatherForecstResult.timezone_offset));
+
+        Picasso.get().load(new StringBuilder("https://openweathermap.org/img/wn/")
+                .append(weatherForecstResult.hourly.get(position).weather.get(0).getIcon())
+                .append("@2x.png").toString()).into(holder.img_weather);
+        Log.d(TAG, "getIcon " + weatherForecstResult.hourly.get(position).weather.get(0).getIcon());
+
+        holder.txt_time.setText(new StringBuilder(Common_Weather.convertUnixToHour(weatherForecstResult.hourly.get(position).dt)));
+        holder.txt_temp.setText(new StringBuilder(String.valueOf(weatherForecstResult.hourly.get(position).getTemp())).append("°C"));
 
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -62,12 +74,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
 
     @Override
     public int getItemCount() {
-        return (null != arrayList ? arrayList.size() : 0);
+        return 24;
     }
 
     public void remove(int position){
         try{
-            arrayList.remove(position);
+            weatherForecstResult.hourly.remove(position);
             notifyItemRemoved(position);
         }catch (IndexOutOfBoundsException ex){
             ex.printStackTrace();
@@ -85,6 +97,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
             txt_temp = itemView.findViewById(R.id.txt_temp);
             txt_time = itemView.findViewById(R.id.txt_time);
             img_weather = itemView.findViewById(R.id.img_weather);
+
         }
     }
+
 }
