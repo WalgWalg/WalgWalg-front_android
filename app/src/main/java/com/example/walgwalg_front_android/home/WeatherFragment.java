@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -68,23 +70,29 @@ import retrofit2.Retrofit;
 public class WeatherFragment extends Fragment {
 
     private String TAG = "WeatherFragment";
+
+    private WeatherViewModel weatherViewModel;
+
     //    private MaterialToolbar tb_weather;
     FragmentManager fragmentManager;
     //    public FragmentManager fragmentManager = HomeFragment.fragmentManager.findFragmentById(R.id.homeFragment);
-    TodayWeatherFragment todayWeatherFragment;
     WeekWeatherFragment weekWeatherFragment;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private TabPagerAdapter tabPagerAdapter;
 
+    private HomeFragment homeFragment;
+
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private TextView txt_dateview, txt_cityview, txt_tempview;
-    private double cur_latitude, cur_longitue;
+    private double cur_latitude = 0;
+    private double cur_longitue = 0;
     CompositeDisposable compositeDisposable;
     IOpenWeatherMap mService;
     private LocationManager lm;
+    Bundle bundle = new Bundle();
 
     public WeatherFragment() {
         // Required empty public constructor
@@ -101,7 +109,42 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "Is value exist?"+cur_longitue);
+
+        Bundle result = new Bundle();
+        result.putString("bundleKey", "result");
+
+        // The child fragment needs to still set the result on its parent fragment manager
+//        TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
+//        FragmentManager fragmentManager = todayWeatherFragment.getParentFragmentManager();
+//        fragmentManager.setFragmentResult("requestKey", result);
+
+//        Bundle result = new Bundle();
+//        result.putString("test", String.valueOf(2));
+////        result.putString("cur_longitude", String.valueOf(cur_longitue));
+//
+//        TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
+//        todayWeatherFragment.setArguments(result);
+//        getParentFragmentManager().setFragmentResult("key", result);
+
+//        savedInstanceState = new Bundle();
+//
+//        TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
+//        savedInstanceState.putString("cur_latitude", String.valueOf(cur_latitude));
+//        savedInstanceState.putString("cur_longitude", String.valueOf(cur_longitue));
+//
+
+//        getParentFragmentManager().setFragmentResult("requestKey", savedInstanceState);
+//        todayWeatherFragment.setArguments(savedInstanceState);
+//
+////        transaction.replace(R.id.viewpager, todayWeatherFragment);
+////        transaction.commit();
+//
+//        Log.d(TAG, "6 " + savedInstanceState.getString("cur_latitude") + "/" + savedInstanceState.getString("cur_longitude"));
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -158,11 +201,6 @@ public class WeatherFragment extends Fragment {
             cur_latitude = now_latitude;
             cur_longitue = now_longitude;
 
-//            Common_Weather.current_location.setLatitude(location.getLatitude());
-//            Common_Weather.current_location.setLongitude(location.getLongitude());
-//            Common_Weather.current_location.setLongitude(cur_longitue);
-//            Common_Weather.current_location.setLatitude(cur_latitude);
-
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     3000,
                     1,
@@ -176,13 +214,31 @@ public class WeatherFragment extends Fragment {
 
         getWeatherInformation();
 
+        Log.d(TAG, "3 " + cur_latitude + "/" + cur_longitue);
+
+        weatherViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
+        weatherViewModel.save(cur_longitue, cur_latitude);
+
+        onCreate(bundle);
+
+//        // 현재위치 넘기기 여기서
+//        Bundle bundle = new Bundle();
+//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//        Fragment todayWeatherFragment = new TodayWeatherFragment();
+//        bundle.putString("cur_latitude", String.valueOf(cur_latitude));
+//        bundle.putString("cur_longitude", String.valueOf(cur_longitue));
+////        getParentFragmentManager().setFragmentResult("requestKey", bundle);
+//        todayWeatherFragment.setArguments(bundle);
+//        transaction.replace(R.id.viewpager, todayWeatherFragment);
+//        transaction.commit();
+//        Log.d(TAG, "7 " + bundle.getString("cur_latitude") + "/" + bundle.getString("cur_longitude"));
+
         tabLayout.setupWithViewPager(viewPager);
 
         tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         tabPagerAdapter.addFragment(new TodayWeatherFragment(), "Today");
         tabPagerAdapter.addFragment(new WeekWeatherFragment(), "Week");
         viewPager.setAdapter(tabPagerAdapter);
-
 
         // Toolbar 활성화
 
@@ -206,19 +262,6 @@ public class WeatherFragment extends Fragment {
 
             cur_latitude = now_latitude;
             cur_longitue = now_logitude;
-
-            // 현재위치 넘기기
-            Bundle bundle = new Bundle();
-            bundle.putDouble("cur_latitude", cur_latitude);
-            bundle.putDouble("cur_longitude", cur_longitue);
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            TodayWeatherFragment todayWeatherFragment = new TodayWeatherFragment();
-            todayWeatherFragment.setArguments(bundle);
-            transaction.replace(R.id.recyclerView, todayWeatherFragment);
-            transaction.commit();
-
-//            Common_Weather.current_location.setLongitude(cur_longitue);
-//            Common_Weather.current_location.setLatitude(cur_latitude);
 
             LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
@@ -338,6 +381,7 @@ public class WeatherFragment extends Fragment {
 
     public void init(View view) {
 //        tb_weather = view.findViewById(R.id.tb_weather);
+        homeFragment = new HomeFragment();
         tabLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         txt_cityview = view.findViewById(R.id.txt_cityview);

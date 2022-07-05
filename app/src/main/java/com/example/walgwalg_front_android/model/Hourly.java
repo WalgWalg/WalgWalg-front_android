@@ -5,19 +5,19 @@ import java.util.List;
 public class Hourly {
 
     public int dt ;
-    private double temp ;
-    private double feels_like ;
-    private int pressure ;
-    private int humidity ;
-    private double dew_point ;
-    private double uvi ;
-    private int clouds ;
-    private int visibility ;
-    private double wind_speed;
-    private int wind_deg ;
-    private double wind_gust ;
-    private List<Weather> weather ;
-    private int pop ;
+    public double temp ;
+    public double feels_like ;
+    public int pressure ;
+    public int humidity ;
+    public double dew_point ;
+    public double uvi ;
+    public int clouds ;
+    public int visibility ;
+    public double wind_speed;
+    public int wind_deg ;
+    public double wind_gust ;
+    public List<Weather> weather ;
+    public float pop ;
 
     public Hourly() {
     }
@@ -126,11 +126,11 @@ public class Hourly {
         this.weather = weather;
     }
 
-    public int getPop() {
+    public float getPop() {
         return pop;
     }
 
-    public void setPop(int pop) {
+    public void setPop(float pop) {
         this.pop = pop;
     }
 }

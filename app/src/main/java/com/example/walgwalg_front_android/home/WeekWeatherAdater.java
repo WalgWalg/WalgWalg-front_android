@@ -6,62 +6,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.walgwalg_front_android.R;
-import com.example.walgwalg_front_android.model.CurrentWeather;
 import com.example.walgwalg_front_android.model.WeatherForecstResult;
-import com.example.walgwalg_front_android.model.WeatherResult;
 import com.example.walgwalg_front_android.weather.Common_Weather;
-import com.kakao.util.maps.helper.Utility;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+public class WeekWeatherAdater extends RecyclerView.Adapter<WeekWeatherAdater.CustomViewHolder>{
 
-public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomViewHolder> {
-
-    private String TAG = "WeatherAdapter";
+    private String TAG = "WeekWeatherAdapter";
     private Context mContext;
     WeatherForecstResult weatherForecstResult;
 
-    public WeatherAdapter(Context mContext, WeatherForecstResult weatherForecstResult){
+    public WeekWeatherAdater(Context mContext, WeatherForecstResult weatherForecstResult) {
         this.mContext = mContext;
         this.weatherForecstResult = weatherForecstResult;
     }
 
+
     @NonNull
     @Override
-    public WeatherAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+    public WeekWeatherAdater.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.item_weather, parent, false);
-        WeatherAdapter.CustomViewHolder holder = new WeatherAdapter.CustomViewHolder(view);
+        WeekWeatherAdater.CustomViewHolder holder = new WeekWeatherAdater.CustomViewHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WeatherAdapter.CustomViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull WeekWeatherAdater.CustomViewHolder holder, int position){
 
         // Load image - 현재 지역 기후에 따른 아이콘 변경
 //        holder.img_weather.setImageResource(Utility.getArtResourceForWeatherCondition(weatherForecstResult.hourly.get(position).weather.get(0).getId()));
 //        Log.d(TAG, String.valueOf(weatherForecstResult.timezone_offset));
 
         Picasso.get().load(new StringBuilder("https://openweathermap.org/img/wn/")
-                .append(weatherForecstResult.hourly.get(position).weather.get(0).getIcon())
+                .append(weatherForecstResult.daily.get(position).weather.get(0).getIcon())
                 .append("@2x.png").toString()).into(holder.img_weather);
-        Log.d(TAG, "getIcon " + weatherForecstResult.hourly.get(position).weather.get(0).getIcon());
+        Log.d(TAG, "getIcon " + weatherForecstResult.daily.get(position).weather.get(0).getIcon());
 
-        holder.txt_time.setText(new StringBuilder(Common_Weather.convertUnixToHour(weatherForecstResult.hourly.get(position).dt)));
-        holder.txt_temp.setText(new StringBuilder(String.valueOf(weatherForecstResult.hourly.get(position).getTemp())).append("°C"));
+        holder.txt_time.setText(new StringBuilder(Common_Weather.convertUnixToDateV2(weatherForecstResult.daily.get(position).dt)));
+        holder.txt_temp.setText(new StringBuilder(String.valueOf(weatherForecstResult.daily.get(position).getTemp().getDay())).append("°C"));
 
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -74,12 +66,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.CustomVi
 
     @Override
     public int getItemCount() {
-        return 24;
+        return weatherForecstResult.daily.size();
     }
 
     public void remove(int position){
         try{
-            weatherForecstResult.hourly.remove(position);
+            weatherForecstResult.daily.remove(position);
             notifyItemRemoved(position);
         }catch (IndexOutOfBoundsException ex){
             ex.printStackTrace();

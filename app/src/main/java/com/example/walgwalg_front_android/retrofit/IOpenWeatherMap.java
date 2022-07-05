@@ -20,6 +20,13 @@ public interface IOpenWeatherMap {
     Observable<WeatherForecstResult> getForecastWeatherByLatLng (@Query("lat") String lat,
                                                                 @Query("lon") String lng,
                                                                 @Query("appid") String appid,
-                                                                @Query("units") String unit,
+                                                                @Query("units") String units,
                                                                  @Query("lang") String lang);
+
+//    @GET("forecast/hourly")
+//    Observable<WeatherForecstHourlyResult> getForecastWeatherHourlyByLatLng (@Query("lat") String lat,
+//                                                                 @Query("lon") String lng,
+//                                                                 @Query("appid") String appid,
+//                                                                 @Query("units") String unit,
+//                                                                 @Query("lang") String lang);
 }

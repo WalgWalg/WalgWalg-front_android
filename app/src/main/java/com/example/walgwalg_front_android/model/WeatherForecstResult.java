@@ -3,13 +3,13 @@ package com.example.walgwalg_front_android.model;
 import java.util.List;
 
 public class WeatherForecstResult {
-    private double lat ;
-    private double lon ;
-    private String timezone ;
-    private int timezone_offset ;
-    private Current current ;
-    private List<Hourly> hourly ;
-    private List<Daily> daily;
+    public double lat ;
+    public double lon ;
+    public String timezone ;
+    public int timezone_offset ;
+    public Current current ;
+    public List<Hourly> hourly ;
+    public List<Daily> daily;
 
     public WeatherForecstResult() {
     }
