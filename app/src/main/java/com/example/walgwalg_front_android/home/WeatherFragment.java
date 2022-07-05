@@ -190,7 +190,7 @@ public class WeatherFragment extends Fragment {
         } else{
             LocationManager lm = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            String provider = location.getProvider();
+//            String provider = location.getProvider();
             String locationProvider = lm.NETWORK_PROVIDER;
             location = lm.getLastKnownLocation(locationProvider);
 
