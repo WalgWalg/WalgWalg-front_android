@@ -1,10 +1,6 @@
 package com.example.walgwalg_front_android.member;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,11 +18,8 @@ import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.member.DTO.LoginRequest;
 import com.example.walgwalg_front_android.member.DTO.LoginResponse;
 import com.example.walgwalg_front_android.member.Interface.LoginInterface;
+import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
 import com.google.android.material.checkbox.MaterialCheckBox;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
