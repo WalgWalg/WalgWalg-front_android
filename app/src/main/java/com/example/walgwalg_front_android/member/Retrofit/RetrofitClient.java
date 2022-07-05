@@ -4,6 +4,8 @@ import com.example.walgwalg_front_android.member.Interface.CommunityAddInterface
 import com.example.walgwalg_front_android.member.Interface.LoginInterface;
 import com.example.walgwalg_front_android.member.Interface.RegisterInterface;
 import com.example.walgwalg_front_android.member.Interface.TokenInterface;
+import com.example.walgwalg_front_android.member.Interface.UserInfoInterface;
+import com.example.walgwalg_front_android.member.Interface.WalkTotalInterface;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -17,6 +19,8 @@ public class RetrofitClient {
     private static RegisterInterface registerInterface;
     private static TokenInterface tokenInterface;
     private static CommunityAddInterface communityAddInterface;
+    private static UserInfoInterface userInfoInterface;
+    private static WalkTotalInterface walkTotalInterface;
     //사용하고 있는 서버 BASE 주소
     private static String baseUrl = "http://ec2-15-165-129-147.ap-northeast-2.compute.amazonaws.com:8080";
 
@@ -47,6 +51,12 @@ public class RetrofitClient {
 
         // 게시판 등록
         communityAddInterface = retrofit.create(CommunityAddInterface.class);
+
+        // 회원정보 조회
+        userInfoInterface = retrofit.create(UserInfoInterface.class);
+
+        // 산책 통계 조회
+        walkTotalInterface = retrofit.create(WalkTotalInterface.class);
     }
 
     public static RetrofitClient getInstance() {
@@ -69,5 +79,13 @@ public class RetrofitClient {
     }
 
     public static CommunityAddInterface getCommunityAddInterface() {return communityAddInterface;}
+
+    public static UserInfoInterface getUserInfoInterface(){
+        return userInfoInterface;
+    }
+
+    public static WalkTotalInterface getWalkTotalInterface() {
+        return walkTotalInterface;
+    }
 
 }
