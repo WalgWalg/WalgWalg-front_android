@@ -91,6 +91,7 @@
         app:layout_constraintTop_toTopOf="@+id/top_guideline_hor_3">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_top"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollIndicators="bottom"
@@ -154,7 +155,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.39" />
+        app:layout_constraintGuide_percent="0.40" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -216,16 +217,17 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.44" />
+        app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline_hor_8"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.44" />
+        app:layout_constraintGuide_percent="0.47" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bottom"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
