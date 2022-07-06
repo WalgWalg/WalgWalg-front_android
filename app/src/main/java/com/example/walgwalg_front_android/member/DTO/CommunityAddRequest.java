@@ -17,7 +17,7 @@ public class CommunityAddRequest {
     public String contents;
 
     public CommunityAddRequest(String walkId, String title, String[] hashTags, String contents) {
-        this.walkId = "0c908994-fc3f-4caf-bdb7-2bc005d6b815";
+        this.walkId = walkId;
         this.title = title;
         this.hashTags = hashTags;
         this.contents = contents;

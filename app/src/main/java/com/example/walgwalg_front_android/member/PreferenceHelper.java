@@ -12,6 +12,7 @@ public class PreferenceHelper {
     private final String DATETIME = "dateTime";
     private final String ACCESSTOKEN = "accessToken";
     private final String REFRESHTOKEN = "refreshToken";
+    private final String AUTOLOGIN = "AUTOLOGIN";
     private SharedPreferences user_prefs;
     private Context context;
 
@@ -19,6 +20,14 @@ public class PreferenceHelper {
         user_prefs = context.getSharedPreferences("shared", 0);
         this.context = context;
     }
+
+    public void saveAutoLogin(Boolean isAutoLogin) {
+        SharedPreferences.Editor edit = user_prefs.edit();
+        edit.putBoolean(AUTOLOGIN, isAutoLogin);
+        edit.apply();
+    }
+
+    public Boolean getAutoLogin() {return user_prefs.getBoolean(AUTOLOGIN, false);}
 
     public void saveUserid(String userId) {
         SharedPreferences.Editor edit = user_prefs.edit();

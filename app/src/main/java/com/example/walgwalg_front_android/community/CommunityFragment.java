@@ -56,6 +56,7 @@ public class CommunityFragment extends Fragment {
 
     private ArrayList<CommunityPojo> boardData;
     private ArrayList<CommunityTopRankPojo> topRankData;
+    private ArrayList<CommunityTopRankPojo> testData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,13 @@ public class CommunityFragment extends Fragment {
                     public void onResponse(Call<CommunityTopRankResponse> call, Response<CommunityTopRankResponse> response) {
                         if (response.isSuccessful()) {
                             CommunityTopRankResponse result = response.body();
-                            topRankData = result.communityTopRankPojo;
+//                            topRankData = result.communityTopRankPojo;
+
+                            CommunityTopRankPojo communityTopRankPojo = new CommunityTopRankPojo();
+                            communityTopRankPojo.image = "https://walgwalgbucket.s3.ap-northeast-2.amazonaws.com/course/b105996a-9b06-4346-b5d2-b1d898dd81ac20220706035317screenshot.png";
+                            communityTopRankPojo.parkName = "탄천";
+
+                            topRankData.add(communityTopRankPojo);
                             rv_top.setHasFixedSize(true);
                             rv_top.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
                             rv_top.scrollToPosition(0);

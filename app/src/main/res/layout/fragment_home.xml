@@ -63,6 +63,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="left"
                 android:background="@drawable/ic_baseline_wb_sunny_24"
+                app:backgroundTint="@color/white"
                 android:backgroundTint="#00000000"/>
 
         </LinearLayout>

@@ -82,7 +82,7 @@ public class CommunityAdapter_Bottom extends RecyclerView.Adapter<CommunityAdapt
         String title = localDataSet.get(position).title;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < localDataSet.get(position).hashTags.length; i++) {
-            if (i != localDataSet.get(position).hashTags.length - 1) {
+            if (i != localDataSet.get(position).hashTags.length) {
                 sb.append("#");
             }
             sb.append(localDataSet.get(position).hashTags[i]);

@@ -60,6 +60,7 @@ public class CommunityAddFragment extends Fragment {
     private MyWalkInterface myWalkInterface;
     private PreferenceHelper preferenceHelper;
     private String authToken;
+    private String walkId;
     private TextInputEditText edt_title, edt_hashtag, edt_location, edt_content;
     private MaterialToolbar toolbar;
 
@@ -147,13 +148,13 @@ public class CommunityAddFragment extends Fragment {
                     case R.id.finish:
                         Log.d("MyPageFragment", "버튼 누름");
                         String title = edt_title.getText().toString();
-                        String[] hashTag = {"동백", "호수", "공원", "이쁘다", "산책스타그램"};
+                        String[] hashTag = {"벚꽃", "산책"};
                         String location = edt_location.getText().toString();
                         String contents = edt_content.getText().toString();
 
                         communityAddInterface = ServiceGenerator.createService(CommunityAddInterface.class, preferenceHelper.getAccessToken());
 
-                        communityAddRequest = new CommunityAddRequest("0c908994-fc3f-4caf-bdb7-2bc005d6b815", title, hashTag, contents);
+                        communityAddRequest = new CommunityAddRequest(walkId, title, hashTag, contents);
                         communityAddInterface.getCommunityAddResponse(communityAddRequest)
                                 .enqueue(new Callback<CommunityAddResponse>() {
                                     @Override
@@ -214,6 +215,7 @@ public class CommunityAddFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Log.d(TAG, myWalkData.get(position).location + "을 선택함");
+                walkId = myWalkData.get(position).id;
                 edt_location.setText(myWalkData.get(position).location);
                 dialog.dismiss();
             }
