@@ -10,6 +10,7 @@
     <!--    main-->
     <string name="Home_nickname">닉네임</string>
     <string name="Home_recordingStart">START</string>
+    <string name="Home_calendar">7월 6일의 기록</string>
     <string name="Home_StepCount">걸음수</string>
     <string name="Home_km">Km</string>
     <string name="Home_Kcal">Kcal</string>

@@ -22,8 +22,7 @@
             <ImageView
                 android:id="@+id/iv_map"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/test_location" />
+                android:layout_height="match_parent" />
 
             <com.example.walgwalg_front_android.FontAwesomeTextLight
                 android:layout_width="wrap_content"

@@ -321,7 +321,10 @@ public class WeatherFragment extends Fragment {
 
 //        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(Common_Weather.current_location.getLatitude()),
 //                                String.valueOf(Common_Weather.current_location.getLongitude()),
-        compositeDisposable.add(mService.getWeatherByLatLng(String.valueOf(cur_latitude),
+        compositeDisposable.add(mService.getWeatherByLatLng(
+//                        "37.432124",
+//                        "127.129064",
+                                String.valueOf(cur_latitude),
                                 String.valueOf(cur_longitue),
                                 Common_Weather.APP_ID,
                                 "metric",
