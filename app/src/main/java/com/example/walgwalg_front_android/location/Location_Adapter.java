@@ -40,7 +40,7 @@ public class Location_Adapter extends RecyclerView.Adapter<Location_Adapter.View
     @Override
     public void onBindViewHolder(@NonNull Location_Adapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        holder.tv_distance.setText(dataList.get(position).getDistance());
+//        holder.tv_distance.setText(dataList.get(position).getDistance());
         Glide.with(holder.itemView.getContext()).load(dataList.get(position).getCourse()).into(holder.iv_map);
 
         holder.btn_detail.setOnClickListener (new View.OnClickListener () {
