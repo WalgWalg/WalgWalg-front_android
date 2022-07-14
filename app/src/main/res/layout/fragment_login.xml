@@ -140,8 +140,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/guideLineV1"
         app:layout_constraintTop_toTopOf="@+id/guideLineH4"
-        android:text="@string/autoLogin"
-        android:enabled="false"/>
+        android:text="@string/autoLogin"/>
 
     <Button
         android:id="@+id/btn_login"

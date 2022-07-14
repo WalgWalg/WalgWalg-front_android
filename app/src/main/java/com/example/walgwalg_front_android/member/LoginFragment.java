@@ -41,6 +41,10 @@ public class LoginFragment extends Fragment {
     private RetrofitClient retrofitClient;
     private LoginInterface loginInterface;
     private PreferenceHelper preferenceHelper;
+    private String status;
+    private String dateTime;
+    private String accessToken;
+    private String refreshToken;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -60,12 +64,19 @@ public class LoginFragment extends Fragment {
         hideBottomNavigation(true);
         init(view);
 
-
+//        // 자동 로그인 코드
 //        if (!getPreferenceString("autoLoginId").equals("") && !getPreferenceString("autoLoginPw").equals("")) {
 //            cb_autoLogin.setChecked(true);
 //            checkAutoLogin(getPreferenceString("autoLoginId"));
 //        }
+        Log.d(TAG, "자동 로그인 전");
+        if (preferenceHelper.getAutoLogin() != null && preferenceHelper.getAutoLogin() && !preferenceHelper.getUserid().equals("") && !preferenceHelper.getPassword().equals("")) {
+            Log.d(TAG, "자동 로그인 코드");
+            cb_autoLogin.setChecked(true);
+            LoginResponse(preferenceHelper.getUserid(), preferenceHelper.getPassword());
+        }
 
+        // 버튼 로그인 코드
         btn_login.setOnClickListener(task -> {
 
             String id = edt_idInput.getText().toString();
@@ -84,16 +95,10 @@ public class LoginFragment extends Fragment {
                 alertDialog.show();
 
             } else {
-                /**
-                 * 로그인 통신 건너뛰고 싶으면
-                 * LoginResponse(id, pw) 주석 처리후
-                 * Navigation.find~~ 주석 풀기
-                 */
-
                 //로그인 통신
                 LoginResponse(id, pw);
-                //화면 넘어가기
-                //Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+                // setPreference(cb_autoLogin.isChecked(), id, pw, dateTime, accessToken, refreshToken);
+                // Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
             }
         });
 
@@ -118,34 +123,21 @@ public class LoginFragment extends Fragment {
 
                 //통신 성공
                 if (response.isSuccessful() && response.body() != null) {
-
                     //response.body()를 result에 저장
                     LoginResponse result = response.body();
-
                     // 받은 코드 저장
-                    String status = result.getStatus();
-
+                    status = result.getStatus();
                     // 토큰 발급 시간
-                    String dateTime = result.getDateTime();
-
+                    dateTime = result.getDateTime();
                     //받은 토큰 저장
-                    String accessToken = result.getTokenPOJO().accessToken;
-                    String refreshToken = result.getTokenPOJO().refreshToken;
-
+                    accessToken = result.getTokenPOJO().accessToken;
+                    refreshToken = result.getTokenPOJO().refreshToken;
                     Log.d(TAG, "access: " + accessToken + "\nrefresh: " + refreshToken);
 
                     String success = "200"; //로그인 성공
-                    String errorId = "404"; //아이디 일치x
-                    String errorPw = "404"; //비밀번호 일치x
-
 
                     if (status.equals(success)) {
-                        String userID = edt_idInput.getText().toString();
-                        String userPassword = edt_pwInput.getText().toString();
-
-                        // 사용자 정보와 서버로부터 받은 정보 저장
-                        setPreference(userID, userPassword, dateTime, accessToken, refreshToken);
-
+                        setPreference(cb_autoLogin.isChecked(), userID, userPassword, dateTime, accessToken, refreshToken);
                         //자동 로그인 여부
 //                        if (cb_autoLogin.isChecked()) {
 //                            setPreference("autoLoginId", userID);
@@ -156,43 +148,17 @@ public class LoginFragment extends Fragment {
 //                        }
 
                         Toast.makeText(getContext(), userID + "님 환영합니다.", Toast.LENGTH_LONG).show();
-                        Toast.makeText(getContext(), "토큰 값 : " + getPreferenceString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), "토큰 값 : " + getPreferenceString(), Toast.LENGTH_LONG).show();
                         Log.d(TAG, getPreferenceString());
-                        RecordActivity recordActivity=new RecordActivity();
+                        RecordActivity recordActivity = new RecordActivity();
                         recordActivity.gettoken(getPreferenceString());
-                        LocationFragment locationFragment=new LocationFragment();
+                        LocationFragment locationFragment = new LocationFragment();
                         locationFragment.gettoken(getPreferenceString());
                         HomeFragment homeFragment = new HomeFragment();
                         homeFragment.gettoken(getPreferenceString());
                         Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
-
-                    } else if (status.equals(errorId)) {
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("알림")
-                                .setMessage("아이디가 존재하지 않습니다.\n 고객센터에 문의바랍니다.")
-                                .setPositiveButton("확인", null)
-                                .create()
-                                .show();
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-
-                    } else if (status.equals(errorPw)) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("알림")
-                                .setMessage("비밀번호가 일치하지 않습니다.\n 고객" +
-                                        "센터에 문의바랍니다.")
-                                .setPositiveButton("확인", null)
-                                .create()
-                                .show();
                     } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("알림")
-                                .setMessage("예기치 못한 오류가 발생하였습니다.\n 고객센터에 문의바랍니다.")
-                                .setPositiveButton("확인", null)
-                                .create()
-                                .show();
-
+                        showError(status);
                     }
                 }
             }
@@ -211,7 +177,8 @@ public class LoginFragment extends Fragment {
     }
 
     //데이터를 내부 저장소에 저장하기
-    public void setPreference(String userid, String password, String dateTime, String accessToken, String refreshToken) {
+    public void setPreference(Boolean AutoLogin, String userid, String password, String dateTime, String accessToken, String refreshToken) {
+        preferenceHelper.saveAutoLogin(AutoLogin);
         preferenceHelper.saveUserid(userid);
         preferenceHelper.savePassword(password);
         preferenceHelper.saveDateTime(dateTime);
@@ -222,6 +189,23 @@ public class LoginFragment extends Fragment {
     //내부 저장소에 저장된 데이터 가져오기
     public String getPreferenceString() {
         return preferenceHelper.getAccessToken();
+    }
+
+    public void showError(String eCode) {
+        setPreference(null, "", "", "", "", "");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("알림");
+        switch (eCode) {
+            case "404":
+                builder.setMessage("아이디와 비밀번호를 확인하시기 바랍니다.");
+            default:
+                builder.setMessage("예기치 못한 오류가 발생하였습니다.\n 고객센터에 문의바랍니다.");
+        }
+        builder.setPositiveButton("확인", null)
+                .create()
+                .show();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 
