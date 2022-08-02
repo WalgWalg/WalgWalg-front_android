@@ -47,6 +47,7 @@ public class Location_Adapter extends RecyclerView.Adapter<Location_Adapter.View
             @Override
             public void onClick(View view) {
                 Log.d("post","어댑터: "+dataList.get(position).getBoardId()+" "+dataList.get(position).getTitle());
+
             }
         });
 

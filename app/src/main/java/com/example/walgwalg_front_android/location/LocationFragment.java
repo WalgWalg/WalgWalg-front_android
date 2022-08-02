@@ -137,11 +137,11 @@ public class LocationFragment extends Fragment {
         region = region.substring(5);
         String[] arr = region.split(" ");
         String result;
-        result = arr[0];
+        result = arr[2];
         result += " " + arr[1];
-        result += " " + arr[2];
+        result += " " + arr[0];
         Log.d("LocationFragment", result);
-        tv_location.setText(region);
+        tv_location.setText("region");
         tv_ment.setText(region+"에서");
 
         dataInfo = new ArrayList<>();

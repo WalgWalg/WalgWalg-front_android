@@ -15,13 +15,11 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/WalgWalg-front_android/app/src/main/res/layout/fragment_splash.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/WalgWalg-front_android/app/src/main/res/layout/fragment_weather.xml" value="0.38645833333333335" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2525" />
-        <entry key="app/src/main/res/drawable-v24/menu_selector_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/corner_radius.xml" value="0.39" />
         <entry key="app/src/main/res/drawable/edge_btn.xml" value="0.1535" />
         <entry key="app/src/main/res/drawable/edge_datepicker.xml" value="0.2525" />
         <entry key="app/src/main/res/drawable/edge_item.xml" value="0.2525" />
         <entry key="app/src/main/res/drawable/edge_loca.xml" value="0.146" />
-        <entry key="app/src/main/res/drawable/edge_profile.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/edge_txtbox.xml" value="0.1115" />
         <entry key="app/src/main/res/drawable/ic_add_post_24.xml" value="0.39" />
         <entry key="app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.1" />
@@ -30,20 +28,17 @@
         <entry key="app/src/main/res/drawable/ic_baseline_wb_sunny_24.xml" value="0.122" />
         <entry key="app/src/main/res/drawable/ic_bookmark_24.xml" value="0.2525" />
         <entry key="app/src/main/res/drawable/ic_filter_24.xml" value="0.2525" />
-        <entry key="app/src/main/res/drawable/ic_first_tab.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_location_24.xml" value="0.39" />
-        <entry key="app/src/main/res/drawable/ic_outline_home_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_outline_location_on_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_person_24.xml" value="0.2525" />
         <entry key="app/src/main/res/drawable/ic_search_24.xml" value="0.2525" />
-        <entry key="app/src/main/res/drawable/ic_third_tab.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/ic_title_24.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_location_info.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/layout/activity_record.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_community.xml" value="0.3505686442057292" />
         <entry key="app/src/main/res/layout/fragment_community_add.xml" value="0.2925" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/fragment_location_info.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.39455487139813317" />
@@ -52,12 +47,14 @@
         <entry key="app/src/main/res/layout/fragment_record.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.16574074074074074" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2833333333333333" />
-        <entry key="app/src/main/res/layout/fragment_today_weather.xml" value="0.125" />
         <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/item_community_bottom.xml" value="0.287962962962963" />
+        <entry key="app/src/main/res/layout/item_community.xml" value="0.37916666666666665" />
+        <entry key="app/src/main/res/layout/item_community_bottom.xml" value="0.37916666666666665" />
+        <entry key="app/src/main/res/layout/item_community_top.xml" value="0.46253611246744786" />
         <entry key="app/src/main/res/layout/item_location.xml" value="0.29010416666666666" />
+        <entry key="app/src/main/res/layout/item_park.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/item_weather.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/network_security_config.xml" value="0.2953125" />
-        <entry key="app/src/main/res/layout/tab_custom.xml" value="0.287962962962963" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31875" />
         <entry key="app/src/main/res/menu/menu_community_add.xml" value="0.34322916666666664" />
         <entry key="app/src/main/res/menu/menu_mypage.xml" value="0.34427083333333336" />

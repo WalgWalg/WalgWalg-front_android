@@ -93,9 +93,9 @@
     </fragment>
     <fragment
         android:id="@+id/locationInfoFragment"
-        android:name="com.example.walgwalg_front_android.location.LocationInfoFragment"
+        android:name="com.example.walgwalg_front_android.location.LocationInfoActivity"
         android:label="fragment_location_info"
-        tools:layout="@layout/fragment_location_info" >
+        tools:layout="@layout/activity_location_info" >
         <action
             android:id="@+id/action_locationInfoFragment_to_locationFragment"
             app:destination="@id/locationFragment" />

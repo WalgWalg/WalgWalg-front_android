@@ -87,7 +87,7 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
     private List<Polyline> polylines = new ArrayList();
     private LatLng startLatLng = new LatLng(0, 0);
     private LatLng endLatLng = new LatLng(0, 0);
-    private double latitude,longitude;
+    private static double latitude,longitude;
 
     private static int distance, predistance = 0;
     private Timer timer;
@@ -217,6 +217,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
+
+                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
                 map.setMyLocationEnabled(true);
                 AutoPermissions.Companion.loadAllPermissions(RecordActivity.this, 101);
                 mapFragment.getView().setVisibility(View.VISIBLE);
@@ -226,6 +228,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 List<Address> address=null;
                 String region;
 
+//                latitude=35.8767887;    //대구
+//                longitude=128.5962455;
                 try {
                     Log.d("test",String.valueOf(latitude)+"  "+String.valueOf(longitude));
                     address = g.getFromLocation(latitude,longitude,10);
@@ -238,9 +242,9 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 region=region.substring(5);
                 String [] arr=region.split(" ");
                 String result;
-                result=arr[0];
+                result=arr[2];
                 result+=" "+arr[1];
-                result+=" "+arr[2];
+                result+=" "+arr[0];
                 Log.d("test",result);
 
 

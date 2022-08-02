@@ -71,7 +71,6 @@
     </SlidingDrawer>
 
 
-
     <SlidingDrawer
         android:id="@+id/sliding_drawer"
         android:layout_width="350dp"
@@ -86,12 +85,12 @@
         android:topOffset="450dp">
 
         <ImageView
+            android:id="@+id/handle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:padding="15dp"
-            android:src="@drawable/bar"
-            android:id="@+id/handle"/>
+            android:src="@drawable/bar" />
 
         <LinearLayout
             android:id="@+id/content"
@@ -236,11 +235,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginVertical="20dp"
                 android:background="@drawable/edge_btn"
                 android:gravity="center"
-                android:layout_gravity="bottom"
                 android:orientation="horizontal">
 
                 <com.example.walgwalg_front_android.FontAwesomeTextLight
