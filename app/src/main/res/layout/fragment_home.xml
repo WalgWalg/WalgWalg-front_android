@@ -96,7 +96,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
@@ -223,7 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginHorizontal="25dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/mainColor"
                 android:text="@string/Home_recordingStart"
                 android:textColor="@color/black"
@@ -234,7 +234,7 @@
                 app:icon="@drawable/ic_baseline_directions_run_24"
                 app:iconGravity="textStart"
                 app:iconTint="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
+                app:layout_constraintBottom_toTopOf="@+id/materialcalendar1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -244,129 +244,143 @@
 
             <!-- ToDo: 자바에서 수정해보기(또는 MterialDatePicker 사용 -->
 
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/materialcalendar1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginVertical="15dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_start"
+                app:mcv_selectionColor="@color/mainColor"
+                app:mcv_showOtherDates="all" />
+
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView2"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
+                android:layout_marginBottom="100dp"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/calendar"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_start">
+                app:layout_constraintTop_toBottomOf="@id/materialcalendar1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="12dp">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="7월 6일의 기록"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="20dp"/>
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerviewRecord"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
+                        android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"/>
 
-                        <androidx.constraintlayout.utils.widget.ImageFilterView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/logo"
-                            android:layout_marginHorizontal="5dp"/>
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:orientation="horizontal">-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1243"
-                            android:textSize="20dp"
-                            android:textStyle="normal"
-                            android:textColor="@color/black"/>
+<!--                        <androidx.constraintlayout.utils.widget.ImageFilterView-->
+<!--                            android:layout_width="25dp"-->
+<!--                            android:layout_height="25dp"-->
+<!--                            android:layout_marginHorizontal="5dp"-->
+<!--                            android:src="@drawable/logo" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/Home_StepCount"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="5dp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="1243"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="20dp"-->
+<!--                            android:textStyle="normal" />-->
 
-                        <androidx.constraintlayout.utils.widget.ImageFilterView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_location"
-                            android:layout_marginHorizontal="5dp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginLeft="5dp"-->
+<!--                            android:text="@string/Home_StepCount"-->
+<!--                            android:textSize="15dp" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1.1"
-                            android:textSize="20dp"
-                            android:textStyle="normal"
-                            android:textColor="@color/black"/>
+<!--                        <androidx.constraintlayout.utils.widget.ImageFilterView-->
+<!--                            android:layout_width="25dp"-->
+<!--                            android:layout_height="25dp"-->
+<!--                            android:layout_marginHorizontal="5dp"-->
+<!--                            android:src="@drawable/icon_location" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/Home_km"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="5dp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="1.1"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="20dp"-->
+<!--                            android:textStyle="normal" />-->
 
-                        <androidx.constraintlayout.utils.widget.ImageFilterView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/icon_kcal"
-                            android:layout_marginHorizontal="5dp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginLeft="5dp"-->
+<!--                            android:text="@string/Home_km"-->
+<!--                            android:textSize="15dp" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4"
-                            android:textSize="20dp"
-                            android:textStyle="normal"
-                            android:textColor="@color/black"/>
+<!--                        <androidx.constraintlayout.utils.widget.ImageFilterView-->
+<!--                            android:layout_width="25dp"-->
+<!--                            android:layout_height="25dp"-->
+<!--                            android:layout_marginHorizontal="5dp"-->
+<!--                            android:src="@drawable/icon_kcal" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/Home_Kcal"
-                            android:textSize="15dp"
-                            android:layout_marginLeft="5dp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="4"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="20dp"-->
+<!--                            android:textStyle="normal" />-->
 
-                    </LinearLayout>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginLeft="5dp"-->
+<!--                            android:text="@string/Home_Kcal"-->
+<!--                            android:textSize="15dp" />-->
+
+<!--                    </LinearLayout>-->
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
 
-            <DatePicker
-                android:id="@+id/calendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/edge_datepicker"
-                android:dayOfWeekBackground="@color/mainColor"
-                android:headerBackground="@color/mainColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView2"/>
-
-
-            <!--    <com.prolificinteractive.materialcalendarview.MaterialCalendarView-->
-            <!--        android:id="@+id/calendar"-->
-            <!--        android:layout_width="match_parent"-->
-            <!--        android:layout_height="0dp"-->
-            <!--        android:layout_marginHorizontal="25dp"-->
-            <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--        app:layout_constraintTop_toTopOf="@+id/guideline3"-->
-            <!--        app:mcv_selectionColor="@color/mainColor"-->
-            <!--        tools:layout_editor_absoluteX="25dp" />-->
+            <!--            <DatePicker-->
+            <!--                android:id="@+id/calendar"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginHorizontal="25dp"-->
+            <!--                android:layout_marginTop="15dp"-->
+            <!--                android:background="@drawable/edge_datepicker"-->
+            <!--                android:dayOfWeekBackground="@color/mainColor"-->
+            <!--                android:headerBackground="@color/mainColor"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/materialCardView2"/>-->
 
             <!--    <CalendarView-->
             <!--        android:id="@+id/calendar"-->
