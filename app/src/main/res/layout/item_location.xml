@@ -21,6 +21,7 @@
 
             <ImageView
                 android:id="@+id/iv_map"
+                android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -51,6 +52,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -62,9 +64,8 @@
                 android:backgroundTint="@color/white"
                 android:text="Detail"
                 android:textColor="@color/black"
-                android:id="@+id/btn_detail"
                 android:textSize="14dp"
-                app:cornerRadius="10dp"/>
+                app:cornerRadius="10dp" />
         </RelativeLayout>
     </LinearLayout>
 

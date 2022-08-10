@@ -19,6 +19,7 @@ import com.example.walgwalg_front_android.MainActivity;
 import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.home.HomeFragment;
 import com.example.walgwalg_front_android.location.LocationFragment;
+import com.example.walgwalg_front_android.location.LocationInfoActivity;
 import com.example.walgwalg_front_android.location.RecordActivity;
 import com.example.walgwalg_front_android.member.DTO.LoginRequest;
 import com.example.walgwalg_front_android.member.DTO.LoginResponse;
@@ -154,6 +155,8 @@ public class LoginFragment extends Fragment {
                         recordActivity.gettoken(getPreferenceString());
                         LocationFragment locationFragment = new LocationFragment();
                         locationFragment.gettoken(getPreferenceString());
+                        LocationInfoActivity locationInfoActivity=new LocationInfoActivity();
+                        locationInfoActivity.gettoken(getPreferenceString());
                         HomeFragment homeFragment = new HomeFragment();
                         homeFragment.gettoken(getPreferenceString());
                         Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);

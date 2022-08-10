@@ -44,6 +44,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -85,8 +86,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
     GPSListener gpsListener;
     private MapPolyline polyline;
     private List<Polyline> polylines = new ArrayList();
-    private LatLng startLatLng = new LatLng(0, 0);
-    private LatLng endLatLng = new LatLng(0, 0);
+    private static LatLng startLatLng = new LatLng(0, 0);
+    private static LatLng endLatLng = new LatLng(37.270197, 127.126007);
     private static double latitude,longitude;
 
     private static int distance, predistance = 0;
@@ -136,6 +137,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
     Finish finish;
     requestDto requestdto;
     MultipartBody.Part file;
+
+    private static LatLng firstLatLng = new LatLng(0, 0);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,7 +221,7 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                     return;
                 }
 
-                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*60*1, 1, gpsListener);
                 map.setMyLocationEnabled(true);
                 AutoPermissions.Companion.loadAllPermissions(RecordActivity.this, 101);
                 mapFragment.getView().setVisibility(View.VISIBLE);
@@ -242,9 +245,9 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 region=region.substring(5);
                 String [] arr=region.split(" ");
                 String result;
-                result=arr[2];
+                result=arr[0];
                 result+=" "+arr[1];
-                result+=" "+arr[0];
+                result+=" "+arr[2];
                 Log.d("test",result);
 
 
@@ -305,6 +308,12 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 kmTask.cancel();
                 kcalTask.cancel();
                 manager.removeUpdates(gpsListener);
+
+                LatLngBounds.Builder builder = LatLngBounds.builder();
+                builder.include(firstLatLng);
+                builder.include(endLatLng);
+                LatLngBounds bounds = builder.build();
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds,400) );
 
                 map.snapshot(new GoogleMap.SnapshotReadyCallback() {
                     @Override
@@ -477,7 +486,7 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
             }
 
         };
-        gpsapi.scheduleAtFixedRate(gpsapiTask, 0, 200000);
+        gpsapi.scheduleAtFixedRate(gpsapiTask, 0, 1000*60*1);
     }
 
     //km
@@ -558,8 +567,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
         try {
             location = null;
 
-            long minTime = 0;        // 0초마다 갱신 - 바로바로갱신
-            float minDistance = 0;
+            long minTime = 1000*60*1;
+            float minDistance = 1;
 
             if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -567,6 +576,8 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+                    startLatLng= new LatLng(latitude, longitude);
+                    firstLatLng = new LatLng(latitude, longitude);
                     String message = "최근 위치1 -> Latitude : " + latitude + " Longitude : " + longitude;
 
                     showCurrentLocation(latitude, longitude);
@@ -586,6 +597,7 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+                    startLatLng= new LatLng(latitude, longitude);
                     String message = "최근 위치2 -> Latitude : " + latitude + "\n Longitude : " + longitude;
 
                     Log.i("RecordActivity", "최근 위치1 " + message);
@@ -697,10 +709,10 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
         } else {
 
             if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*60*1, 1, gpsListener);
                 //manager.removeUpdates(gpsListener);
             } else if (manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gpsListener);
+                manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000*60*1, 1, gpsListener);
                 //manager.removeUpdates(gpsListener);
             }
 
@@ -755,18 +767,18 @@ public class RecordActivity extends AppCompatActivity implements AutoPermissions
         }
 
         // 반경추가
-        if (circle1KM == null) {
-            circle1KM = new CircleOptions().center(curPoint) // 원점
-                    .radius(1000)       // 반지름 단위 : m
-                    .strokeWidth(1.0f);    // 선너비 0f : 선없음
-            //.fillColor(Color.parseColor("#1AFFFFFF")); // 배경색
-            circle = map.addCircle(circle1KM);
-
-        } else {
-            circle.remove(); // 반경삭제
-            circle1KM.center(curPoint);
-            circle = map.addCircle(circle1KM);
-        }
+//        if (circle1KM == null) {
+//            circle1KM = new CircleOptions().center(curPoint) // 원점
+//                    .radius(1000)       // 반지름 단위 : m
+//                    .strokeWidth(1.0f);    // 선너비 0f : 선없음
+//            //.fillColor(Color.parseColor("#1AFFFFFF")); // 배경색
+//            circle = map.addCircle(circle1KM);
+//
+//        } else {
+//            circle.remove(); // 반경삭제
+//            circle1KM.center(curPoint);
+//            circle = map.addCircle(circle1KM);
+//        }
 
 
     }

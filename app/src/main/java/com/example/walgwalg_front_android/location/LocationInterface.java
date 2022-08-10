@@ -5,6 +5,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface LocationInterface {
-    @GET("/board/region/{region}")
+    @GET("/walk/region/{region}")
     Call<LocationItem> getLocationData(@Path("region") String region);
 }

@@ -2,6 +2,7 @@ package com.example.walgwalg_front_android.location;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.walgwalg_front_android.MainActivity;
 import com.example.walgwalg_front_android.R;
 
 import java.util.ArrayList;
@@ -40,14 +42,18 @@ public class Location_Adapter extends RecyclerView.Adapter<Location_Adapter.View
     @Override
     public void onBindViewHolder(@NonNull Location_Adapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-//        holder.tv_distance.setText(dataList.get(position).getDistance());
+        String distance= String.valueOf(dataList.get(position).getDistance());
+        holder.tv_distance.setText(distance);
         Glide.with(holder.itemView.getContext()).load(dataList.get(position).getCourse()).into(holder.iv_map);
 
         holder.btn_detail.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View view) {
-                Log.d("post","어댑터: "+dataList.get(position).getBoardId()+" "+dataList.get(position).getTitle());
-
+                Log.d("location","어댑터: "+dataList.get(position).getWalkId());
+                Context context=view.getContext();
+                Intent intent=new Intent(context,LocationInfoActivity.class);
+                intent.putExtra("id",dataList.get(position).getWalkId());
+                ((MainActivity)context).startActivity(intent);
             }
         });
 

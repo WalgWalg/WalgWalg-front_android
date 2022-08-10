@@ -49,7 +49,6 @@ public class Park_Adapter extends RecyclerView.Adapter<Park_Adapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull Park_Adapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-//        if("35.8599253741".equals(dataList.get(position).getLatitude())){
             holder.tv_parkname.setText(dataList.get(position).getParkName());
             holder.tv_address.setText(dataList.get(position).getNumberAddress());
 
@@ -67,7 +66,6 @@ public class Park_Adapter extends RecyclerView.Adapter<Park_Adapter.ViewHolder> 
                     }
                 }
             });
-//        }
 
     }
     @Override
