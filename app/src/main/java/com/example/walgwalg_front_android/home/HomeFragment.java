@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,10 +42,12 @@ import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
 import com.google.android.material.button.MaterialButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import retrofit2.Call;
@@ -67,12 +71,18 @@ public class HomeFragment extends Fragment {
     private HomeRetrofitClient homeRetrofitClient;
     private static String usertoken;
 
+    // Calendar
     private MaterialCalendarView materialCalendarView;
+    private RecyclerView recyclerviewRecord;
+    private ArrayList<RecordData> arrayRecords = new ArrayList<>();
+    private CalendarAdater calendarAdater = new CalendarAdater(arrayRecords, getContext());
+    private LinearLayoutManager linearLayoutManager;
+
     private MaterialButton btn_weather;
     private Button btn_start;
     private ImageView img_user;
     private TextView tv_nickname, txt_cntstep, txt_cntkm, txt_cntkcal;
-    private DatePicker calendar;
+//    private DatePicker calendar;
     public static FragmentManager fragmentManager;
     private boolean isNavigating = false;
     private String name, profile;
@@ -225,6 +235,24 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(getActivity(), RecordActivity.class));
         });
 
+        // 캘린더
+        materialCalendarView.setSelectedDate(CalendarDay.today());
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerviewRecord.setLayoutManager(linearLayoutManager);
+        recyclerviewRecord.setAdapter(calendarAdater);
+
+        //데이터 추가방법
+//        NailshopData nailshopData = new NailshopData(R.drawable.edge, R.drawable.ic_baseline_bookmark_white, "만두네일", null,"5.0", "(112)","11:00~21:00", "(휴무:일)", "경기도 용인시 수지구 현암로 123번길 33" ,null, null, null);
+//        arrayShops.add(nailshopData);
+//        nailshopAdapter.notifyDataSetChanged();
+
+        RecordData recordData = new RecordData("12:30", "1","2","3");
+        arrayRecords.add(recordData);
+        RecordData recordData2 = new RecordData("12:30", "3","2","1");
+        arrayRecords.add(recordData2);
+        calendarAdater.notifyDataSetChanged();
+
         return view;
     }
 
@@ -234,7 +262,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void init(View view) {
-//        materialCalendarView = view.findViewById(R.id.calendar);
+        materialCalendarView = view.findViewById(R.id.materialcalendar1);
+        recyclerviewRecord = view.findViewById(R.id.recyclerviewRecord);
         btn_weather = view.findViewById(R.id.btn_weather);
         btn_start = view.findViewById(R.id.btn_start);
         img_user = view.findViewById(R.id.img_user);
@@ -242,7 +271,7 @@ public class HomeFragment extends Fragment {
         txt_cntkcal = view.findViewById(R.id.txt_cntkcal);
         txt_cntkm = view.findViewById(R.id.txt_cntkm);
         txt_cntstep = view.findViewById(R.id.txt_cntstep);
-        calendar = view.findViewById(R.id.calendar);
+//        calendar = view.findViewById(R.id.calendar);
         homeRetrofitClient = new HomeRetrofitClient(usertoken);
     }
 }
