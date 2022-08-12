@@ -2,6 +2,9 @@ package com.example.walgwalg_front_android.member.DTO;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WalkCalendarResponse {
 
     @SerializedName("id")
@@ -17,7 +20,7 @@ public class WalkCalendarResponse {
     public String message;
 
     @SerializedName("list")
-    public WalkCalendarList walkCalendarList;
+    public List<WalkCalendarList> walkCalendarList;
 
     public String getId() {
         return id;
@@ -51,11 +54,11 @@ public class WalkCalendarResponse {
         this.message = message;
     }
 
-    public WalkCalendarList getWalkCalendarList() {
+    public List<WalkCalendarList> getWalkCalendarList() {
         return walkCalendarList;
     }
 
-    public void setWalkCalendarList(WalkCalendarList walkCalendarList) {
+    public void setWalkCalendarList(List<WalkCalendarList> walkCalendarList) {
         this.walkCalendarList = walkCalendarList;
     }
 }
