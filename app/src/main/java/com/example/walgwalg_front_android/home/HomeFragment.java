@@ -5,6 +5,7 @@ import static android.graphics.BlendMode.COLOR;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.compose.foundation.shape.RoundedCornerShape;
 import androidx.compose.ui.graphics.Color;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
@@ -44,6 +45,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -59,7 +62,7 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnDateSelectedListener, OnMonthChangedListener {
 
     private String TAG = "HomeFragment";
 
@@ -81,7 +84,7 @@ public class HomeFragment extends Fragment {
     private MaterialButton btn_weather;
     private Button btn_start;
     private ImageView img_user;
-    private TextView tv_nickname, txt_cntstep, txt_cntkm, txt_cntkcal;
+    private TextView tv_nickname, txt_cntstep, txt_cntkm, txt_cntkcal, txt_month, txt_day;
 //    private DatePicker calendar;
     public static FragmentManager fragmentManager;
     private boolean isNavigating = false;
@@ -238,6 +241,13 @@ public class HomeFragment extends Fragment {
         // 캘린더
         materialCalendarView.setSelectedDate(CalendarDay.today());
 
+        // 날짜 클릭 시 이벤트
+        materialCalendarView.setOnDateChangedListener(this);
+        // 달력이 변화할 때의 이벤트
+        materialCalendarView.setOnMonthChangedListener(this);
+
+
+
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerviewRecord.setLayoutManager(linearLayoutManager);
         recyclerviewRecord.setAdapter(calendarAdater);
@@ -263,6 +273,8 @@ public class HomeFragment extends Fragment {
 
     public void init(View view) {
         materialCalendarView = view.findViewById(R.id.materialcalendar1);
+        txt_month = view.findViewById(R.id.txt_month);
+        txt_day = view.findViewById(R.id.txt_day);
         recyclerviewRecord = view.findViewById(R.id.recyclerviewRecord);
         btn_weather = view.findViewById(R.id.btn_weather);
         btn_start = view.findViewById(R.id.btn_start);
@@ -273,5 +285,18 @@ public class HomeFragment extends Fragment {
         txt_cntstep = view.findViewById(R.id.txt_cntstep);
 //        calendar = view.findViewById(R.id.calendar);
         homeRetrofitClient = new HomeRetrofitClient(usertoken);
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        String month = String.valueOf(date.getMonth());
+        String day = String.valueOf(date.getDay());
+        txt_month.setText(month);
+        txt_day.setText(day);
+    }
+
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+
     }
 }
