@@ -4,32 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class CommunityPojo {
 
+    @SerializedName("boardId")
+    public String boardId;
+
     @SerializedName("title")
     public String title;
 
-    @SerializedName("contents")
-    public String contents;
+    @SerializedName("image")
+    public String image;
 
-    @SerializedName("hashTags")
+    @SerializedName("date")
+    public String date;
+
+     @SerializedName("hashTags")
     public String[] hashTags;
-
-    @SerializedName("step_count")
-    public int stepCount;
-
-    @SerializedName("distance")
-    public Double distance;
-
-    @SerializedName("calorie")
-    public int calorie;
-
-    @SerializedName("course")
-    public String course;
-
-    @SerializedName("location")
-    public String location;
-
-    @SerializedName("nickname")
-    public String nickname;
 
     @SerializedName("likes")
     public int likes;

@@ -35,9 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_person_24"
+            android:padding="0dp"
+            app:iconSize="25dp"
             app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_1"
-            app:layout_constraintEnd_toStartOf="@+id/top_guideline_ver_2"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/top_guideline_ver_2" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_guideline_hor_0"
@@ -54,6 +55,7 @@
             app:layout_constraintGuide_percent="0.30" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="MyPage"
@@ -125,15 +127,14 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideLine_ver_9"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.78"
-        />
+        app:layout_constraintGuide_percent="0.78" />
 
 
     <com.google.android.material.card.MaterialCardView
@@ -206,7 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
+                app:layout_constraintGuide_percent="0.7" />
 
             <TextView
                 android:id="@+id/tv_km_count"
@@ -291,7 +292,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.35" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline_ver_8"
@@ -305,6 +306,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_22"
         app:layout_constraintEnd_toStartOf="@+id/top_guideLine_ver_9"
         app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_3"
         app:layout_constraintTop_toTopOf="@+id/top_guideline_hor_7">
@@ -314,21 +316,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="최근에 좋아요 누른 산책로"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.Material3.Button.IconButton"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline_hor_22"
         android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.385" />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:icon="@drawable/more1"
+        android:autoSizeMaxTextSize="20dp"
+        android:autoSizeMinTextSize="5dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        android:text="더보기"
+        app:icon="@drawable/ic_navigate_next"
+        app:iconGravity="textEnd"
         app:iconTint="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/materialCardView3"
-        app:layout_constraintStart_toEndOf="@id/top_guideLine_ver_9"
-        app:layout_constraintEnd_toEndOf="@id/top_guideline_ver_4"
-        app:layout_constraintTop_toTopOf="@id/top_guideline_hor_7" />
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_22"
+        app:layout_constraintEnd_toStartOf="@+id/top_guideline_ver_4"
+        app:layout_constraintStart_toStartOf="@+id/top_guideLine_ver_9"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline_hor_7" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView3"
@@ -351,10 +369,10 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <ImageView
-                android:src="@drawable/icon_cloud"
                 android:id="@+id/imageView1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:src="@drawable/icon_cloud"
                 app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -370,7 +388,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:padding="5dp">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/top_guideline_hor_11"
@@ -411,19 +430,17 @@
                         android:textSize="18dp"
                         android:tooltipText="tooltip"
                         app:layout_constraintBottom_toTopOf="@id/top_guideline_hor_12"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_11"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_11" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="YYYY.MM.DD"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_12"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_12" />
 
                     <com.google.android.material.button.MaterialButton
                         style="@style/Widget.Material3.Button.IconButton"
@@ -444,6 +461,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView7"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_9"
@@ -463,10 +481,10 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <ImageView
-                android:src="@drawable/icon_cloud"
                 android:id="@+id/imageView2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:src="@drawable/icon_cloud"
                 app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_13"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -482,14 +500,15 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:padding="5dp">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/top_guideline_hor_14"
                         android:layout_width="wrap_content"
                         android:layout_height="1dp"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.3" />
+                        app:layout_constraintGuide_begin="26dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -523,19 +542,17 @@
                         android:textSize="18dp"
                         android:tooltipText="tooltip"
                         app:layout_constraintBottom_toTopOf="@id/top_guideline_hor_15"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_14"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_14" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="YYYY.MM.DD"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_15"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_15" />
 
                     <com.google.android.material.button.MaterialButton
                         style="@style/Widget.Material3.Button.IconButton"
@@ -560,59 +577,68 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.725" />
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline_hor_25"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.66" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_23"
         app:layout_constraintEnd_toStartOf="@+id/top_guideLine_ver_9"
         app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_3"
-        app:layout_constraintTop_toTopOf="@+id/top_guideline_hor_9">
+        app:layout_constraintTop_toTopOf="@+id/top_guideline_hor_25">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="최근에 "
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_nickname_bottom_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="홍길동"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="님이 기록한 산책로"
-            android:textSize="20dp"
+            android:layout_height="match_parent"
+            android:text="최근에 기록한 산책로"
+            android:textSize="18dp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="wrap_content"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:icon="@drawable/more1"
+        android:autoSizeMaxTextSize="20dp"
+        android:autoSizeMinTextSize="5dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        android:text="더보기"
+        app:icon="@drawable/ic_navigate_next"
+        app:iconGravity="textEnd"
         app:iconTint="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/materialCardView5"
-        app:layout_constraintStart_toEndOf="@id/top_guideLine_ver_9"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_23"
         app:layout_constraintEnd_toEndOf="@id/top_guideline_ver_4"
-        app:layout_constraintTop_toTopOf="@id/top_guideline_hor_9" />
+        app:layout_constraintStart_toEndOf="@id/top_guideLine_ver_9"
+        app:layout_constraintTop_toTopOf="@id/top_guideline_hor_25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline_hor_23"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.695" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView4"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_24"
         app:layout_constraintEnd_toStartOf="@+id/top_guideline_ver_8"
         app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_3"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" >
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -626,10 +652,10 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <ImageView
-                android:src="@drawable/icon_cloud"
                 android:id="@+id/imageView3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:src="@drawable/icon_cloud"
                 app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -645,7 +671,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:padding="5dp">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/top_guideline_hor_17"
@@ -686,19 +713,17 @@
                         android:textSize="18dp"
                         android:tooltipText="tooltip"
                         app:layout_constraintBottom_toTopOf="@id/top_guideline_hor_18"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_17"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_17" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="YYYY.MM.DD"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_18"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_18" />
 
                     <com.google.android.material.button.MaterialButton
                         style="@style/Widget.Material3.Button.IconButton"
@@ -722,10 +747,10 @@
         android:id="@+id/materialCardView5"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_24"
         app:layout_constraintEnd_toStartOf="@+id/top_guideline_ver_4"
         app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_8"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" >
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -739,10 +764,10 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <ImageView
-                android:src="@drawable/icon_cloud"
                 android:id="@+id/imageView4"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:src="@drawable/icon_cloud"
                 app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_19"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -758,7 +783,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:padding="5dp">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/top_guideline_hor_20"
@@ -799,19 +825,17 @@
                         android:textSize="18dp"
                         android:tooltipText="tooltip"
                         app:layout_constraintBottom_toTopOf="@id/top_guideline_hor_21"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_20"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_20" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="YYYY.MM.DD"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_21"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_21" />
 
                     <com.google.android.material.button.MaterialButton
                         style="@style/Widget.Material3.Button.IconButton"
@@ -831,5 +855,11 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline_hor_24"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.96" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

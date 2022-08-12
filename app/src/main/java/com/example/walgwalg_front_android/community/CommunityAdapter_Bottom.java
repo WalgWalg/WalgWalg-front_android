@@ -1,5 +1,6 @@
 package com.example.walgwalg_front_android.community;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +39,13 @@ public class CommunityAdapter_Bottom extends RecyclerView.Adapter<CommunityAdapt
             tv_datetime = view.findViewById(R.id.tv_datetime);
 //            btn_scrap = view.findViewById(R.id.btn_scrap);
             btn_like = view.findViewById(R.id.btn_like);
+
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Navigation.createNavigateOnClickListener(R.id.action_communityFragment_to_postFragment);
+//                }
+//            });
 
         }
 
@@ -96,8 +107,14 @@ public class CommunityAdapter_Bottom extends RecyclerView.Adapter<CommunityAdapt
         viewHolder.getTv_datetime().setText("2022.04.15");
 
         Glide.with(viewHolder.itemView)
-                .load(localDataSet.get(position).course)
+                .load(localDataSet.get(position).image)
                 .into(viewHolder.iv_map);
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString("boardId", localDataSet.get(position).boardId);
+        viewHolder.itemView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_communityFragment_to_postFragment, bundle));
+
 
     }
 

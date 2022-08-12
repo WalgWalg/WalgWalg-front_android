@@ -4,7 +4,6 @@ public class CommunityRequest {
 
     public CommunityRequest() {
 
-
     }
 
 }
