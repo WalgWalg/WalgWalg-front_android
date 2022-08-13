@@ -3,6 +3,7 @@ package com.example.walgwalg_front_android.community;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.ViewModel.MyInfoViewModel;
+import com.example.walgwalg_front_android.ViewModel.MyLocationViewModel;
 import com.example.walgwalg_front_android.member.DTO.CommunityPojo;
 import com.example.walgwalg_front_android.member.DTO.CommunityRequest;
 import com.example.walgwalg_front_android.member.DTO.CommunityResponse;
@@ -25,6 +28,8 @@ import com.example.walgwalg_front_android.member.Interface.CommunityInterface;
 import com.example.walgwalg_front_android.member.Interface.CommunityTopRankInterface;
 import com.example.walgwalg_front_android.member.PreferenceHelper;
 import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -41,6 +46,9 @@ public class CommunityFragment extends Fragment {
     private RecyclerView rv_top;
     private RecyclerView rv_bottom;
     private FloatingActionButton btn_add;
+    private ChipGroup location_chipGroup;
+
+    private MyLocationViewModel myLocationViewModel;
 
     private RecyclerView.LayoutManager layoutManager;
     private CommunityAdapter_Top communityAdapterTop;
@@ -58,6 +66,10 @@ public class CommunityFragment extends Fragment {
     private ArrayList<CommunityTopRankPojo> topRankData;
     private ArrayList<CommunityTopRankPojo> testData;
 
+    private String Si_Do;
+    private String Si_Gun_Gu;
+    private String Eup_Myeon_Dong;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +82,36 @@ public class CommunityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
         init(view);
+
+        myLocationViewModel = new ViewModelProvider(requireActivity()).get(MyLocationViewModel.class);
+
+        Si_Do = myLocationViewModel.getMyLocationData().getValue().Si_Do;
+        Si_Gun_Gu = myLocationViewModel.getMyLocationData().getValue().Si_Gun_Gu;
+        Eup_Myeon_Dong = myLocationViewModel.getMyLocationData().getValue().Eup_Myeon_Dong;
+
+        Chip chip_Si_Do = new Chip(getContext());
+        Chip chip_Si_Gun_Gu = new Chip(getContext());
+        Chip chip_Eup_Myeon_Dong = new Chip(getContext());
+
+        chip_Si_Do.setText(Si_Do);
+        chip_Si_Gun_Gu.setText(Si_Gun_Gu);
+        chip_Eup_Myeon_Dong.setText(Eup_Myeon_Dong);
+
+        chip_Si_Do.setCheckable(true);
+        chip_Si_Gun_Gu.setCheckable(true);
+        chip_Eup_Myeon_Dong.setCheckable(true);
+
+//        chip_Si_Do.setTextSize(18);
+//        chip_Si_Gun_Gu.setTextSize(18);
+//        chip_Eup_Myeon_Dong.setTextSize(18);
+
+        chip_Si_Do.setChipBackgroundColorResource(R.color.mainColor);
+        chip_Si_Gun_Gu.setChipBackgroundColorResource(R.color.mainColor);
+        chip_Eup_Myeon_Dong.setChipBackgroundColorResource(R.color.mainColor);
+
+        location_chipGroup.addView(chip_Si_Do);
+        location_chipGroup.addView(chip_Si_Gun_Gu);
+        location_chipGroup.addView(chip_Eup_Myeon_Dong);
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +202,7 @@ public class CommunityFragment extends Fragment {
         topRankData = new ArrayList<>();
         rv_top = view.findViewById(R.id.rv_top);
         rv_bottom = view.findViewById(R.id.rv_bottom);
+        location_chipGroup = view.findViewById(R.id.chipGroup);
         btn_add = view.findViewById(R.id.btn_add);
     }
 }

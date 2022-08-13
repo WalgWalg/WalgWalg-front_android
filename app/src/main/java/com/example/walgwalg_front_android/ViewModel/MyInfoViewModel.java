@@ -1,4 +1,4 @@
-package com.example.walgwalg_front_android.member;
+package com.example.walgwalg_front_android.ViewModel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

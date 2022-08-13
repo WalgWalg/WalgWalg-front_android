@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.ViewModel.MyLikeViewModel;
 import com.example.walgwalg_front_android.member.DTO.AddLikeRequest;
 import com.example.walgwalg_front_android.member.DTO.AddLikeResponse;
 import com.example.walgwalg_front_android.member.DTO.DelLikeRequest;
@@ -35,7 +36,7 @@ import com.example.walgwalg_front_android.member.Interface.DelLikeInterface;
 import com.example.walgwalg_front_android.member.Interface.DelPostInterface;
 import com.example.walgwalg_front_android.member.Interface.MyLikeInterface;
 import com.example.walgwalg_front_android.member.Interface.PostInterface;
-import com.example.walgwalg_front_android.member.MyInfoViewModel;
+import com.example.walgwalg_front_android.ViewModel.MyInfoViewModel;
 import com.example.walgwalg_front_android.member.PreferenceHelper;
 import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
 import com.google.android.material.button.MaterialButton;
