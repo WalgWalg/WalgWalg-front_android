@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -17,14 +18,25 @@ import android.widget.Toast;
 
 import com.example.walgwalg_front_android.MainActivity;
 import com.example.walgwalg_front_android.R;
+import com.example.walgwalg_front_android.community.MyLikeViewModel;
 import com.example.walgwalg_front_android.home.HomeFragment;
+import com.example.walgwalg_front_android.home.WeatherViewModel;
 import com.example.walgwalg_front_android.location.LocationFragment;
 import com.example.walgwalg_front_android.location.LocationInfoActivity;
 import com.example.walgwalg_front_android.location.RecordActivity;
+import com.example.walgwalg_front_android.member.DTO.AddLikeRequest;
+import com.example.walgwalg_front_android.member.DTO.AddLikeResponse;
 import com.example.walgwalg_front_android.member.DTO.LoginRequest;
 import com.example.walgwalg_front_android.member.DTO.LoginResponse;
+import com.example.walgwalg_front_android.member.DTO.MyLikeRequest;
+import com.example.walgwalg_front_android.member.DTO.MyLikeResponse;
+import com.example.walgwalg_front_android.member.DTO.PostRequest;
+import com.example.walgwalg_front_android.member.Interface.AddLikeInterface;
 import com.example.walgwalg_front_android.member.Interface.LoginInterface;
+import com.example.walgwalg_front_android.member.Interface.MyLikeInterface;
+import com.example.walgwalg_front_android.member.Interface.PostInterface;
 import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
+import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
@@ -36,12 +48,19 @@ public class LoginFragment extends Fragment {
 
     private String TAG = "LoginFragmentTAG";
 
+    private RetrofitClient retrofitClient;
+    private LoginInterface loginInterface;
+    private MyLikeInterface myLikeInterface;
+    private MyLikeRequest myLikeRequest;
+    private MyLikeResponse myLikeResponse;
+    private PreferenceHelper preferenceHelper;
+
+    private MyLikeViewModel myLikeViewModel;
+
     private Button btn_login;
     private MaterialCheckBox cb_autoLogin;
     private EditText edt_idInput, edt_pwInput;
-    private RetrofitClient retrofitClient;
-    private LoginInterface loginInterface;
-    private PreferenceHelper preferenceHelper;
+
     private String status;
     private String dateTime;
     private String accessToken;
@@ -155,11 +174,11 @@ public class LoginFragment extends Fragment {
                         recordActivity.gettoken(getPreferenceString());
                         LocationFragment locationFragment = new LocationFragment();
                         locationFragment.gettoken(getPreferenceString());
-                        LocationInfoActivity locationInfoActivity=new LocationInfoActivity();
+                        LocationInfoActivity locationInfoActivity = new LocationInfoActivity();
                         locationInfoActivity.gettoken(getPreferenceString());
                         HomeFragment homeFragment = new HomeFragment();
                         homeFragment.gettoken(getPreferenceString());
-                        Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+                        MyLikeResponse();
                     } else {
                         showError(status);
                     }
@@ -177,6 +196,35 @@ public class LoginFragment extends Fragment {
                         .show();
             }
         });
+    }
+
+    public void MyLikeResponse() {
+
+        preferenceHelper = new PreferenceHelper(getContext());
+        myLikeInterface = ServiceGenerator.createService(MyLikeInterface.class, preferenceHelper.getAccessToken());
+        myLikeRequest = new MyLikeRequest();
+        myLikeInterface.GetMyLike().enqueue(new Callback<MyLikeResponse>() {
+            @Override
+            public void onResponse(Call<MyLikeResponse> call, Response<MyLikeResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.isSuccessful()) {
+                        MyLikeResponse result = response.body();
+                        myLikeViewModel = new ViewModelProvider(requireActivity()).get(MyLikeViewModel.class);
+                        myLikeViewModel.SaveMyLikeData(result.myLikePojo);
+//                        Log.d(TAG, "MyLikeData : " + result.myLikePojo.get(0).title);
+                        Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+                    } else {
+                        Log.d(TAG, "Fail : " + response.errorBody());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyLikeResponse> call, Throwable t) {
+                Log.d(TAG, "Failure : " + t.getMessage());
+            }
+        });
+
     }
 
     //데이터를 내부 저장소에 저장하기
