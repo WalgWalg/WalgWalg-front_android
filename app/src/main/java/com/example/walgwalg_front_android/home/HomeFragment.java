@@ -1,54 +1,42 @@
 package com.example.walgwalg_front_android.home;
 
-import static android.graphics.BlendMode.COLOR;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.compose.foundation.shape.RoundedCornerShape;
-import androidx.compose.ui.graphics.Color;
-import androidx.constraintlayout.utils.widget.ImageFilterButton;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.RoundedCorner;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.location.RecordActivity;
-import com.example.walgwalg_front_android.member.DTO.RegisterResponse;
 import com.example.walgwalg_front_android.member.DTO.UserInfoResponse;
+import com.example.walgwalg_front_android.member.DTO.WalkCalendarList;
+import com.example.walgwalg_front_android.member.DTO.WalkCalendarResponse;
 import com.example.walgwalg_front_android.member.DTO.WalkTotalResponse;
-import com.example.walgwalg_front_android.member.Interface.CommunityAddInterface;
-import com.example.walgwalg_front_android.member.Interface.RegisterInterface;
 import com.example.walgwalg_front_android.member.Interface.UserInfoInterface;
+import com.example.walgwalg_front_android.member.Interface.WalkCalendarInterface;
 import com.example.walgwalg_front_android.member.Interface.WalkTotalInterface;
-import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
-import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
 import com.google.android.material.button.MaterialButton;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,14 +47,16 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnDateSelectedListener, OnMonthChangedListener {
 
     private String TAG = "HomeFragment";
 
     UserInfoResponse userInfoResponse;
     WalkTotalResponse walkTotalResponse;
+    WalkCalendarResponse walkCalendarResponse;
     private UserInfoInterface userInfoInterface;
     private WalkTotalInterface walkTotalInterface;
+    private WalkCalendarInterface walkCalendarInterface;
 //    private RetrofitClient retrofitClient;
     private HomeRetrofitClient homeRetrofitClient;
     private static String usertoken;
@@ -74,6 +64,7 @@ public class HomeFragment extends Fragment {
     // Calendar
     private MaterialCalendarView materialCalendarView;
     private RecyclerView recyclerviewRecord;
+    private List<WalkCalendarList> recordlists ;
     private ArrayList<RecordData> arrayRecords = new ArrayList<>();
     private CalendarAdater calendarAdater = new CalendarAdater(arrayRecords, getContext());
     private LinearLayoutManager linearLayoutManager;
@@ -81,7 +72,7 @@ public class HomeFragment extends Fragment {
     private MaterialButton btn_weather;
     private Button btn_start;
     private ImageView img_user;
-    private TextView tv_nickname, txt_cntstep, txt_cntkm, txt_cntkcal;
+    private TextView tv_nickname, txt_cntstep, txt_cntkm, txt_cntkcal, txt_month, txt_day;
 //    private DatePicker calendar;
     public static FragmentManager fragmentManager;
     private boolean isNavigating = false;
@@ -149,6 +140,7 @@ public class HomeFragment extends Fragment {
         homeRetrofitClient = HomeRetrofitClient.getInstance();
         userInfoInterface = HomeRetrofitClient.getUserInfoInterface();
         walkTotalInterface = HomeRetrofitClient.getWalkTotalInterface();
+        walkCalendarInterface = HomeRetrofitClient.getWalkCalendarInterface();
 
 //        userInfoInterface = ServiceGenerator.createService(UserInfoInterface.class, "PMAK-62c2bb573eaf6129f000481d-7a7ec096d3dd182e419dc0fb7e0473d544");
 //        walkTotalInterface = ServiceGenerator.createService(WalkTotalInterface.class, "PMAK-62c2bb573eaf6129f000481d-7a7ec096d3dd182e419dc0fb7e0473d544");
@@ -204,11 +196,11 @@ public class HomeFragment extends Fragment {
                                 }
                                 else {
                                     try {
-                                        Log.d("WalkTotalMonth REST FAILED MESSAGE", response.errorBody().string());
+                                        Log.d("WalkTotalMonth REST FAILED MESSAGE1", response.errorBody().string());
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    Log.d("WalkTotalMonth REST FAILED MESSAGE", response.message());
+                                    Log.d("WalkTotalMonth REST FAILED MESSAGE2", response.message());
 
                                 }
                             }
@@ -238,6 +230,41 @@ public class HomeFragment extends Fragment {
         // 캘린더
         materialCalendarView.setSelectedDate(CalendarDay.today());
 
+        // 날짜 클릭 시 이벤트
+        materialCalendarView.setOnDateChangedListener(this);
+        // 달력이 변화할 때의 이벤트
+        materialCalendarView.setOnMonthChangedListener(this);
+
+        walkCalendarInterface.getWalkCalendarResponse()
+                .enqueue(new Callback<WalkCalendarResponse>() {
+            @Override
+            public void onResponse(Call<WalkCalendarResponse> call, Response<WalkCalendarResponse> response) {
+                if (response.isSuccessful()){
+                    walkCalendarResponse = response.body();
+
+                    recordlists.addAll(walkCalendarResponse.walkCalendarList);
+                    Log.d(TAG, "lists : " + recordlists);
+
+
+                }
+                else {
+                    try {
+                        Log.d("WalkCalendar REST FAILED MESSAGE", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("WalkCalendar REST FAILED MESSAGE", response.message());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WalkCalendarResponse> call, Throwable t) {
+                Log.d("WalkCalendar REST ERROR!", t.getMessage());
+            }
+        });
+
+
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerviewRecord.setLayoutManager(linearLayoutManager);
         recyclerviewRecord.setAdapter(calendarAdater);
@@ -263,6 +290,8 @@ public class HomeFragment extends Fragment {
 
     public void init(View view) {
         materialCalendarView = view.findViewById(R.id.materialcalendar1);
+        txt_month = view.findViewById(R.id.txt_month);
+        txt_day = view.findViewById(R.id.txt_day);
         recyclerviewRecord = view.findViewById(R.id.recyclerviewRecord);
         btn_weather = view.findViewById(R.id.btn_weather);
         btn_start = view.findViewById(R.id.btn_start);
@@ -273,5 +302,18 @@ public class HomeFragment extends Fragment {
         txt_cntstep = view.findViewById(R.id.txt_cntstep);
 //        calendar = view.findViewById(R.id.calendar);
         homeRetrofitClient = new HomeRetrofitClient(usertoken);
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        String month = String.valueOf(date.getMonth());
+        String day = String.valueOf(date.getDay());
+        txt_month.setText(month);
+        txt_day.setText(day);
+    }
+
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+
     }
 }

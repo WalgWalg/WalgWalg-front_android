@@ -3,6 +3,7 @@ package com.example.walgwalg_front_android.home;
 import android.util.Log;
 
 import com.example.walgwalg_front_android.member.Interface.UserInfoInterface;
+import com.example.walgwalg_front_android.member.Interface.WalkCalendarInterface;
 import com.example.walgwalg_front_android.member.Interface.WalkTotalInterface;
 import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
 
@@ -22,6 +23,7 @@ public class HomeRetrofitClient {
     private static HomeRetrofitClient instance = null;
     private static UserInfoInterface userInfoInterface;
     private static WalkTotalInterface walkTotalInterface;
+    private static WalkCalendarInterface walkCalendarInterface;
     private static String authToken;
 
     public HomeRetrofitClient(String token) {
@@ -66,6 +68,9 @@ public class HomeRetrofitClient {
 
         // 산책 통계 조회
         walkTotalInterface = retrofit.create(WalkTotalInterface.class);
+
+        // 일별 산책 조회
+        walkCalendarInterface = retrofit.create(WalkCalendarInterface.class);
     }
 
     public static HomeRetrofitClient getInstance() {
@@ -81,5 +86,9 @@ public class HomeRetrofitClient {
 
     public static WalkTotalInterface getWalkTotalInterface() {
         return walkTotalInterface;
+    }
+
+    public static WalkCalendarInterface getWalkCalendarInterface() {
+        return walkCalendarInterface;
     }
 }
