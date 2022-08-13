@@ -28,11 +28,15 @@ import com.example.walgwalg_front_android.member.DTO.AddLikeRequest;
 import com.example.walgwalg_front_android.member.DTO.AddLikeResponse;
 import com.example.walgwalg_front_android.member.DTO.LoginRequest;
 import com.example.walgwalg_front_android.member.DTO.LoginResponse;
+import com.example.walgwalg_front_android.member.DTO.MyInfoPojo;
+import com.example.walgwalg_front_android.member.DTO.MyInfoRequest;
+import com.example.walgwalg_front_android.member.DTO.MyInfoResponse;
 import com.example.walgwalg_front_android.member.DTO.MyLikeRequest;
 import com.example.walgwalg_front_android.member.DTO.MyLikeResponse;
 import com.example.walgwalg_front_android.member.DTO.PostRequest;
 import com.example.walgwalg_front_android.member.Interface.AddLikeInterface;
 import com.example.walgwalg_front_android.member.Interface.LoginInterface;
+import com.example.walgwalg_front_android.member.Interface.MyInfoInterface;
 import com.example.walgwalg_front_android.member.Interface.MyLikeInterface;
 import com.example.walgwalg_front_android.member.Interface.PostInterface;
 import com.example.walgwalg_front_android.member.Retrofit.RetrofitClient;
@@ -50,11 +54,15 @@ public class LoginFragment extends Fragment {
 
     private RetrofitClient retrofitClient;
     private LoginInterface loginInterface;
+    private MyInfoInterface myInfoInterface;
+    private MyInfoRequest myInfoRequest;
+    private MyInfoResponse myInfoResponse;
     private MyLikeInterface myLikeInterface;
     private MyLikeRequest myLikeRequest;
     private MyLikeResponse myLikeResponse;
     private PreferenceHelper preferenceHelper;
 
+    private MyInfoViewModel myInfoViewModel;
     private MyLikeViewModel myLikeViewModel;
 
     private Button btn_login;
@@ -178,7 +186,7 @@ public class LoginFragment extends Fragment {
                         locationInfoActivity.gettoken(getPreferenceString());
                         HomeFragment homeFragment = new HomeFragment();
                         homeFragment.gettoken(getPreferenceString());
-                        MyLikeResponse();
+                        MyInfoResponse();
                     } else {
                         showError(status);
                     }
@@ -196,6 +204,30 @@ public class LoginFragment extends Fragment {
                         .show();
             }
         });
+    }
+
+    public void MyInfoResponse() {
+
+        preferenceHelper = new PreferenceHelper(getContext());
+        myInfoInterface = ServiceGenerator.createService(MyInfoInterface.class, preferenceHelper.getAccessToken());
+        myInfoRequest = new MyInfoRequest();
+        myInfoInterface.GET_MY_INFO().enqueue(new Callback<MyInfoResponse>() {
+            @Override
+            public void onResponse(Call<MyInfoResponse> call, Response<MyInfoResponse> response) {
+                if(response.isSuccessful()){
+                    MyInfoResponse result = response.body();
+                    myInfoViewModel = new ViewModelProvider(requireActivity()).get(MyInfoViewModel.class);
+                    myInfoViewModel.saveMyInfo(result.myInfoPojo);
+                    MyLikeResponse();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyInfoResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public void MyLikeResponse() {

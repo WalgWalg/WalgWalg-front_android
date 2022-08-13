@@ -1,5 +1,7 @@
 package com.example.walgwalg_front_android.community;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,8 @@ import com.example.walgwalg_front_android.member.DTO.AddLikeRequest;
 import com.example.walgwalg_front_android.member.DTO.AddLikeResponse;
 import com.example.walgwalg_front_android.member.DTO.DelLikeRequest;
 import com.example.walgwalg_front_android.member.DTO.DelLikeResponse;
+import com.example.walgwalg_front_android.member.DTO.DelPostRequest;
+import com.example.walgwalg_front_android.member.DTO.DelPostResponse;
 import com.example.walgwalg_front_android.member.DTO.MyLikePojo;
 import com.example.walgwalg_front_android.member.DTO.MyLikeRequest;
 import com.example.walgwalg_front_android.member.DTO.MyLikeResponse;
@@ -28,8 +32,10 @@ import com.example.walgwalg_front_android.member.DTO.PostRequest;
 import com.example.walgwalg_front_android.member.DTO.PostResponse;
 import com.example.walgwalg_front_android.member.Interface.AddLikeInterface;
 import com.example.walgwalg_front_android.member.Interface.DelLikeInterface;
+import com.example.walgwalg_front_android.member.Interface.DelPostInterface;
 import com.example.walgwalg_front_android.member.Interface.MyLikeInterface;
 import com.example.walgwalg_front_android.member.Interface.PostInterface;
+import com.example.walgwalg_front_android.member.MyInfoViewModel;
 import com.example.walgwalg_front_android.member.PreferenceHelper;
 import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
 import com.google.android.material.button.MaterialButton;
@@ -50,9 +56,9 @@ public class PostFragment extends Fragment {
 
     private String TAG = "PostFragmentTAG";
 
-    private TextView tv_name, tv_title, tv_contents, tv_step, tv_distance, tv_calorie, tv_favorite, tv_hashtag;
+    private TextView tv_name, tv_title, tv_location, tv_contents, tv_step, tv_distance, tv_calorie, tv_favorite, tv_hashtag;
     private ImageView img_route;
-    private MaterialButton btn_favorite, btn_share, btn_track;
+    private MaterialButton btn_favorite, btn_share, btn_track, btn_menu;
 
     private PostInterface postInterface;
     private PostRequest postRequest;
@@ -66,11 +72,15 @@ public class PostFragment extends Fragment {
     private DelLikeInterface delLikeInterface;
     private DelLikeRequest delLikeRequest;
     private DelLikeResponse delLikeResponse;
+    private DelPostInterface delPostInterface;
+    private DelPostRequest delPostRequest;
+    private DelPostResponse delPostResponse;
     private PreferenceHelper preferenceHelper;
 
+    private MyInfoViewModel myInfoViewModel;
     private MyLikeViewModel myLikeViewModel;
 
-    private String boardId;
+    private String name, boardId;
     private Boolean like_status = false;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -124,7 +134,11 @@ public class PostFragment extends Fragment {
 
         init(view);
 
+        myInfoViewModel = new ViewModelProvider(requireActivity()).get(MyInfoViewModel.class);
         myLikeViewModel = new ViewModelProvider(requireActivity()).get(MyLikeViewModel.class);
+
+        name = myInfoViewModel.getMyInfoData().getValue().nickname;
+
         myLikeViewModel.getMyLikeData().observe(getActivity(), new Observer<ArrayList<MyLikePojo>>() {
             @Override
             public void onChanged(ArrayList<MyLikePojo> myLikePojos) {
@@ -136,9 +150,9 @@ public class PostFragment extends Fragment {
                         Log.d(TAG, myLikePojos.get(i).boardId);
                     }
                 }
-                if(like_status){
+                if (like_status) {
                     btn_favorite.setIconResource(R.drawable.ic_favorite_filled_24);
-                }else{
+                } else {
                     btn_favorite.setIconResource(R.drawable.ic_like_empty_24);
                 }
             }
@@ -154,9 +168,13 @@ public class PostFragment extends Fragment {
                 if (response.isSuccessful()) {
                     PostResponse result = response.body();
                     tv_name.setText(result.postPojo.nickname);
+                    if (result.postPojo.nickname.equals(name)) {
+                        btn_menu.setVisibility(View.VISIBLE);
+                    }
                     tv_title.setText(result.postPojo.title);
                     String str_img = result.postPojo.course;
                     Log.d(TAG, str_img);
+                    tv_location.setText(result.postPojo.location);
                     Glide.with(getView()).load(str_img).into(img_route);
                     tv_step.setText(String.valueOf(result.postPojo.step_count));
                     tv_distance.setText(String.valueOf(result.postPojo.distance));
@@ -216,20 +234,20 @@ public class PostFragment extends Fragment {
                         }
                     });
 
-                }else {
+                } else {
                     delLikeInterface = ServiceGenerator.createService(DelLikeInterface.class, preferenceHelper.getAccessToken());
                     delLikeRequest = new DelLikeRequest();
                     delLikeInterface.DEL_LIKE_RESPONSE_CALL(boardId).enqueue(new Callback<DelLikeResponse>() {
                         @Override
                         public void onResponse(Call<DelLikeResponse> call, Response<DelLikeResponse> response) {
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 DelLikeResponse result = response.body();
                                 if (result.status.equals("200")) {
                                     Toast.makeText(getContext(), "좋아요를 취소하셨습니다.", Toast.LENGTH_SHORT).show();
 //                                btn_like.setIconResource(R.drawable.ic_favorite_filled_24);
                                     MyLikeResponse();
                                 }
-                            }else {
+                            } else {
                                 try {
                                     Log.d(TAG + " REST FAILED MESSAGE", response.errorBody().string());
                                 } catch (IOException e) {
@@ -248,8 +266,66 @@ public class PostFragment extends Fragment {
             }
         });
 
+        btn_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setTitle("게시물을");
+
+                builder.setItems(R.array.PostMenu, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int pos) {
+//                        String[] items = getResources().getStringArray(R.array.PostMenu);
+                        if (pos == 0) {
+                            // 삭제
+                            DelPostResponse(boardId);
+                        } else if (pos == 1) {
+                            // 수정
+                            Bundle bundle = new Bundle();
+                            bundle.putString("boardId", boardId);
+                            bundle.putString("title", tv_title.getText().toString());
+                            bundle.putString("hashtag", tv_hashtag.getText().toString());
+                            bundle.putString("location", tv_location.getText().toString());
+                            bundle.putString("contents", tv_contents.getText().toString());
+                            Navigation.findNavController(getView()).navigate(R.id.action_postFragment_to_communityAddFragment, bundle);
+                        }
+//                        Toast.makeText(getContext(), items[pos], Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
 
         return view;
+    }
+
+    public void DelPostResponse(String boardId) {
+        preferenceHelper = new PreferenceHelper(getContext());
+        delPostInterface = ServiceGenerator.createService(DelPostInterface.class, preferenceHelper.getAccessToken());
+        delPostRequest = new DelPostRequest();
+        delPostInterface.DEL_POST_RESPONSE_CALL(boardId).enqueue(new Callback<DelPostResponse>() {
+            @Override
+            public void onResponse(Call<DelPostResponse> call, Response<DelPostResponse> response) {
+                if (response.isSuccessful()) {
+                    DelPostResponse result = response.body();
+                    if (result.status.equals("200")) {
+                        Toast.makeText(getContext(), "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(getView()).navigate(R.id.action_postFragment_to_communityFragment);
+                    }
+                } else {
+                    Log.d(TAG, "Fail : " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DelPostResponse> call, Throwable t) {
+                Log.d(TAG, "Failure : " + t.getMessage());
+            }
+        });
     }
 
     public void MyLikeResponse() {
@@ -284,6 +360,7 @@ public class PostFragment extends Fragment {
     private void init(View view) {
         tv_name = view.findViewById(R.id.tv_name);
         tv_title = view.findViewById(R.id.tv_title);
+        tv_location = view.findViewById(R.id.tv_location);
         img_route = view.findViewById(R.id.img_route);
         tv_contents = view.findViewById(R.id.tv_contents);
         tv_step = view.findViewById(R.id.tv_step);
@@ -294,5 +371,6 @@ public class PostFragment extends Fragment {
         btn_favorite = view.findViewById(R.id.btn_favorite);
         btn_share = view.findViewById(R.id.btn_share);
         btn_track = view.findViewById(R.id.btn_track);
+        btn_menu = view.findViewById(R.id.btn_menu);
     }
 }

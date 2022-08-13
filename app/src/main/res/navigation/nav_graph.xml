@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_communityAddFragment_to_communityFragment"
             app:destination="@id/communityFragment" />
+        <action
+            android:id="@+id/action_communityAddFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -123,6 +126,9 @@
         <action
             android:id="@+id/action_postFragment_to_locationInfoFragment"
             app:destination="@id/locationInfoFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_communityAddFragment"
+            app:destination="@id/communityAddFragment" />
     </fragment>
     <fragment
         android:id="@+id/recordFragment"

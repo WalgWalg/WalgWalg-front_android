@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,15 +23,19 @@ import com.example.walgwalg_front_android.ProgressDialog;
 import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.member.DTO.CommunityAddRequest;
 import com.example.walgwalg_front_android.member.DTO.CommunityAddResponse;
+import com.example.walgwalg_front_android.member.DTO.EditPostRequest;
+import com.example.walgwalg_front_android.member.DTO.EditPostResponse;
 import com.example.walgwalg_front_android.member.DTO.MyWalkPojo;
 import com.example.walgwalg_front_android.member.DTO.MyWalkRequest;
 import com.example.walgwalg_front_android.member.DTO.MyWalkResponse;
 import com.example.walgwalg_front_android.member.Interface.CommunityAddInterface;
+import com.example.walgwalg_front_android.member.Interface.EditPostInterface;
 import com.example.walgwalg_front_android.member.Interface.MyWalkInterface;
 import com.example.walgwalg_front_android.member.PreferenceHelper;
 import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -55,16 +60,24 @@ public class CommunityAddFragment extends Fragment {
 
     private CommunityAddRequest communityAddRequest;
     private CommunityAddInterface communityAddInterface;
+    private EditPostInterface editPostInterface;
+    private EditPostRequest editPostRequest;
+    private EditPostResponse editPostResponse;
     private MyWalkRequest myWalkRequest;
     private MyWalkResponse myWalkResponse;
     private MyWalkInterface myWalkInterface;
     private PreferenceHelper preferenceHelper;
+
     private String authToken;
     private String walkId;
+    private String boardId, title, hashtag, location, contents;
+    private TextInputLayout layout_location;
     private TextInputEditText edt_title, edt_hashtag, edt_location, edt_content;
     private MaterialToolbar toolbar;
 
     private ArrayList<MyWalkPojo> myWalkData;
+
+    Bundle bundle = new Bundle();
 
     ProgressDialog customProgressDialog;
 
@@ -84,6 +97,21 @@ public class CommunityAddFragment extends Fragment {
         customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         init(view);
+//        Log.d(TAG, getArguments().getString("title"));
+
+        if (!getArguments().isEmpty()) {
+            edt_location.setEnabled(false);
+            layout_location.setHint("산책 이름(수정 불가)");
+            boardId = getArguments().getString("boardId");
+            title = getArguments().getString("title");
+            hashtag = getArguments().getString("hashtag");
+            location = getArguments().getString("location");
+            contents = getArguments().getString("contents");
+            edt_title.setText(title);
+            edt_hashtag.setText(hashtag);
+            edt_location.setText(location);
+            edt_content.setText(contents);
+        }
 
         preferenceHelper = new PreferenceHelper(getContext());
 
@@ -109,8 +137,8 @@ public class CommunityAddFragment extends Fragment {
 
                             for (int i = 0; i < myWalkData.size(); i++) {
                                 item01.put("walkDate", myWalkData.get(i).walkDate);
-                                Log.d(TAG+i, String.valueOf(myWalkData.get(i).walkDate));
-                                Log.d(TAG+i, String.valueOf(myWalkData.get(i).location));
+                                Log.d(TAG + i, String.valueOf(myWalkData.get(i).walkDate));
+                                Log.d(TAG + i, String.valueOf(myWalkData.get(i).location));
                                 item01.put("location", myWalkData.get(i).location);
 //                                item01.put("walkTime", myWalkData.get(i).walkTime);
 //                                item01.put("calorie", String.valueOf(myWalkData.get(i).calorie));
@@ -121,7 +149,7 @@ public class CommunityAddFragment extends Fragment {
 //
                             customProgressDialog.dismiss();
                             showAlertDialog(list);
-                        }else{
+                        } else {
                             try {
                                 Log.d(TAG, response.errorBody().string());
                             } catch (IOException e) {
@@ -151,34 +179,58 @@ public class CommunityAddFragment extends Fragment {
                         String[] hashTag = {"벚꽃", "산책"};
                         String location = edt_location.getText().toString();
                         String contents = edt_content.getText().toString();
+                        if (getArguments().isEmpty()) {
+                            communityAddInterface = ServiceGenerator.createService(CommunityAddInterface.class, preferenceHelper.getAccessToken());
 
-                        communityAddInterface = ServiceGenerator.createService(CommunityAddInterface.class, preferenceHelper.getAccessToken());
-
-                        communityAddRequest = new CommunityAddRequest(walkId, title, hashTag, contents);
-                        communityAddInterface.getCommunityAddResponse(communityAddRequest)
-                                .enqueue(new Callback<CommunityAddResponse>() {
-                                    @Override
-                                    public void onResponse(Call<CommunityAddResponse> call, Response<CommunityAddResponse> response) {
-                                        if (response.isSuccessful()) {
-                                            CommunityAddResponse result = (CommunityAddResponse) response.body();
-                                            Log.d("MyPageFragment", "응답" + response.isSuccessful());
-                                            Log.d("MyPageFragment", "응답" + result.status);
-                                        } else {
-                                            try {
-                                                Log.d("MyPageFragment REST FAILED MESSAGE", response.errorBody().string());
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
+                            communityAddRequest = new CommunityAddRequest(walkId, title, hashTag, contents);
+                            communityAddInterface.getCommunityAddResponse(communityAddRequest)
+                                    .enqueue(new Callback<CommunityAddResponse>() {
+                                        @Override
+                                        public void onResponse(Call<CommunityAddResponse> call, Response<CommunityAddResponse> response) {
+                                            if (response.isSuccessful()) {
+                                                CommunityAddResponse result = (CommunityAddResponse) response.body();
+                                                Log.d("MyPageFragment", "응답" + response.isSuccessful());
+                                                Log.d("MyPageFragment", "응답" + result.status);
+                                            } else {
+                                                try {
+                                                    Log.d("MyPageFragment REST FAILED MESSAGE", response.errorBody().string());
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                Log.d("MyPageFragment REST FAILED MESSAGE", response.message());
                                             }
-                                            Log.d("MyPageFragment REST FAILED MESSAGE", response.message());
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<CommunityAddResponse> call, Throwable
+                                                t) {
+                                            Log.d("MyPageFragment REST ERROR!", t.getMessage());
+                                        }
+                                    });
+                        } else if (!getArguments().isEmpty()) {
+                            editPostInterface = ServiceGenerator.createService(EditPostInterface.class, preferenceHelper.getAccessToken());
+                            editPostRequest = new EditPostRequest(boardId, title, hashTag, contents);
+                            editPostInterface.EDIT_POST_RESPONSE_CALL(editPostRequest).enqueue(new Callback<EditPostResponse>() {
+                                @Override
+                                public void onResponse(Call<EditPostResponse> call, Response<EditPostResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        editPostResponse = response.body();
+                                        if (editPostResponse.status.equals("200")) {
+                                            Toast.makeText(getContext(), "게시물이 수정되었습니다.", Toast.LENGTH_SHORT).show();
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("boardId", boardId);
+                                            Navigation.findNavController(getView()).navigate(R.id.action_communityAddFragment_to_postFragment, bundle);
                                         }
                                     }
+                                }
 
-                                    @Override
-                                    public void onFailure(Call<CommunityAddResponse> call, Throwable
-                                            t) {
-                                        Log.d("MyPageFragment REST ERROR!", t.getMessage());
-                                    }
-                                });
+                                @Override
+                                public void onFailure(Call<EditPostResponse> call, Throwable t) {
+
+                                }
+                            });
+                        }
+
 
                         break;
                     default:
@@ -199,7 +251,7 @@ public class CommunityAddFragment extends Fragment {
         builder.setView(view);
 
         String[] from = {"walkDate", "location"};
-        int[] to = new int[] {R.id.tv_datetime, R.id.tv_location};
+        int[] to = new int[]{R.id.tv_datetime, R.id.tv_location};
 
         final ListView listview = (ListView) view.findViewById(R.id.listview_alterdialog_list);
         final AlertDialog dialog = builder.create();
@@ -230,6 +282,7 @@ public class CommunityAddFragment extends Fragment {
         myWalkData = new ArrayList<>();
         edt_title = view.findViewById(R.id.edt_title);
         edt_hashtag = view.findViewById(R.id.edt_hashtag);
+        layout_location = view.findViewById(R.id.layout_location);
         edt_location = view.findViewById(R.id.edt_location);
         edt_content = view.findViewById(R.id.edt_content);
         toolbar = view.findViewById(R.id.toolbar);

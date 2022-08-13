@@ -84,16 +84,17 @@
             android:text="닉네임"
             android:textSize="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/materialButton2"
+            app:layout_constraintEnd_toStartOf="@+id/btn_menu"
             app:layout_constraintStart_toStartOf="@+id/top_guideline_hor_2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton2"
+            android:id="@+id/btn_menu"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="0dp"
+            android:visibility="gone"
             app:icon="@drawable/ic_post_menu_24"
             app:iconTint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -124,7 +125,6 @@
         android:text="제목"
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_3"
-        app:layout_constraintEnd_toStartOf="@+id/top_guideline_ver_1"
         app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_0" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -158,9 +158,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="위치"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/img_route" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_track"
                 android:layout_width="wrap_content"
+                android:layout_marginRight="5dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:minWidth="0dp"
