@@ -60,7 +60,11 @@ public class CommunityAdapter_Top extends RecyclerView.Adapter<CommunityAdapter_
         String link = localDataSet.get(position).image;
         String title = localDataSet.get(position).parkName;
 
-        Glide.with(viewHolder.itemView).load(link).into(viewHolder.getIv_map());
+        Glide.with(viewHolder.itemView)
+                .load(link)
+                .error(R.drawable.ic_error_24)
+                .fallback(R.drawable.ic_error_24)
+                .into(viewHolder.getIv_map());
         Log.d("CommunityAdapter_TOP", title);
         viewHolder.getTv_title().setText(title);
     }

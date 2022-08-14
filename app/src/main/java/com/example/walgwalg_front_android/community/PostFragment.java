@@ -174,7 +174,7 @@ public class PostFragment extends Fragment {
                     }
                     tv_title.setText(result.postPojo.title);
                     String str_img = result.postPojo.course;
-                    Log.d(TAG, str_img);
+//                    Log.d(TAG, str_img);
                     tv_location.setText(result.postPojo.location);
                     Glide.with(getView()).load(str_img).into(img_route);
                     tv_step.setText(String.valueOf(result.postPojo.step_count));

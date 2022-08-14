@@ -99,7 +99,7 @@ public class CommunityAddFragment extends Fragment {
         init(view);
 //        Log.d(TAG, getArguments().getString("title"));
 
-        if (!getArguments().isEmpty()) {
+        if (getArguments()!=null) {
             edt_location.setEnabled(false);
             layout_location.setHint("산책 이름(수정 불가)");
             boardId = getArguments().getString("boardId");
@@ -179,7 +179,7 @@ public class CommunityAddFragment extends Fragment {
                         String[] hashTag = {"벚꽃", "산책"};
                         String location = edt_location.getText().toString();
                         String contents = edt_content.getText().toString();
-                        if (getArguments().isEmpty()) {
+                        if (getArguments()==null) {
                             communityAddInterface = ServiceGenerator.createService(CommunityAddInterface.class, preferenceHelper.getAccessToken());
 
                             communityAddRequest = new CommunityAddRequest(walkId, title, hashTag, contents);
@@ -207,7 +207,7 @@ public class CommunityAddFragment extends Fragment {
                                             Log.d("MyPageFragment REST ERROR!", t.getMessage());
                                         }
                                     });
-                        } else if (!getArguments().isEmpty()) {
+                        } else if (getArguments()!=null) {
                             editPostInterface = ServiceGenerator.createService(EditPostInterface.class, preferenceHelper.getAccessToken());
                             editPostRequest = new EditPostRequest(boardId, title, hashTag, contents);
                             editPostInterface.EDIT_POST_RESPONSE_CALL(editPostRequest).enqueue(new Callback<EditPostResponse>() {
