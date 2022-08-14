@@ -245,7 +245,7 @@ public class LoginFragment extends Fragment {
                         myLocationViewModel.saveMyLocation(myLocationModel);
 
 
-                        Toast.makeText(getContext(), "현재위치 : " + address, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), "현재위치 : " + address, Toast.LENGTH_LONG).show();
 
                         MyInfoResponse();
                     } else {

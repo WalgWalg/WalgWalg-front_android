@@ -38,6 +38,7 @@
         <entry key="app/src/main/res/drawable/ic_search_24.xml" value="0.2525" />
         <entry key="app/src/main/res/drawable/ic_third_tab.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_title_24.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_location_info.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/layout/activity_record.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.2953125" />
