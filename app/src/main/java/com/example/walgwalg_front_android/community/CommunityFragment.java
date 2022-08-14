@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +38,11 @@ import com.example.walgwalg_front_android.member.Interface.CommunityTopRankInter
 import com.example.walgwalg_front_android.member.Interface.LocationCommunityInterface;
 import com.example.walgwalg_front_android.member.PreferenceHelper;
 import com.example.walgwalg_front_android.member.Retrofit.ServiceGenerator;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -61,6 +65,8 @@ public class CommunityFragment extends Fragment {
     private RecyclerView rv_bottom;
     private FloatingActionButton btn_add;
     private ChipGroup location_chipGroup;
+    private TextInputEditText edt_search;
+    private MaterialButton btn_search;
 
     private MyLocationViewModel myLocationViewModel;
     private MyLikeViewModel myLikeViewModel;
@@ -80,7 +86,7 @@ public class CommunityFragment extends Fragment {
     private LocationCommunityResponse locationCommunityResponse;
     private PreferenceHelper preferenceHelper;
 
-    private ArrayList<CommunityPojo> boardData;
+    private ArrayList<CommunityPojo> boardData, filteredList;
     private ArrayList<CommunityTopRankPojo> topRankData;
     private ArrayList<CommunityTopRankPojo> testData;
 
@@ -100,6 +106,20 @@ public class CommunityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
         init(view);
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String search = edt_search.getText().toString();
+
+                if(!search.isEmpty()){
+                    specificCommunity(edt_search.getText().toString());
+                }else{
+                    EntireCommunity();
+                }
+
+            }
+        });
 
         myLocationViewModel = new ViewModelProvider(requireActivity()).get(MyLocationViewModel.class);
         myLikeViewModel = new ViewModelProvider(requireActivity()).get(MyLikeViewModel.class);
@@ -343,10 +363,13 @@ public class CommunityFragment extends Fragment {
     private void init(View view) {
         boardData = new ArrayList<>();
         topRankData = new ArrayList<>();
+        filteredList = new ArrayList<>();
+        edt_search = view.findViewById(R.id.edt_search);
         rv_top = view.findViewById(R.id.rv_top);
         rv_bottom = view.findViewById(R.id.rv_bottom);
         location_chipGroup = view.findViewById(R.id.chipGroup);
         btn_add = view.findViewById(R.id.btn_add);
+        btn_search = view.findViewById(R.id.btn_search);
     }
 
     static class DateComparator implements Comparator<CommunityPojo> {
@@ -371,5 +394,17 @@ public class CommunityFragment extends Fragment {
             return result;
         }
     }
+
+//    public void searchFilter(String searchText) {
+//        filteredList.clear();
+//
+//        for (int i = 0; i < boardData.size(); i++) {
+//            if (boardData.get(i).toLowerCase().contains(searchText.toLowerCase())) {
+//                filteredList.add(boardData.get(i));
+//            }
+//        }
+//
+//        foodAdapter.filterList(filteredList);
+//    }
 
 }

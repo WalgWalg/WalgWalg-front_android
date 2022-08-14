@@ -120,17 +120,33 @@
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
         app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_5"
-        app:layout_constraintEnd_toStartOf="@+id/materialButton"
+        app:layout_constraintEnd_toStartOf="@+id/btn_search"
         app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_0"
         app:layout_constraintTop_toTopOf="@+id/top_guideline_hor_4"
         app:startIconDrawable="@drawable/ic_search_24">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="0dp"
             android:backgroundTint="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:backgroundTint="@color/mainColor"
+        android:id="@+id/btn_search"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        app:cornerRadius="10dp"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_search_24"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_5"
+        app:layout_constraintEnd_toStartOf="@+id/materialButton"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline_hor_4" />
 
 
     <com.google.android.material.button.MaterialButton
