@@ -1,9 +1,13 @@
 package com.example.walgwalg_front_android.home;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
@@ -21,7 +25,6 @@ import android.widget.TextView;
 import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.location.RecordActivity;
 import com.example.walgwalg_front_android.member.DTO.UserInfoResponse;
-import com.example.walgwalg_front_android.member.DTO.WalkCalendarList;
 import com.example.walgwalg_front_android.member.DTO.WalkCalendarResponse;
 import com.example.walgwalg_front_android.member.DTO.WalkTotalResponse;
 import com.example.walgwalg_front_android.member.Interface.UserInfoInterface;
@@ -35,7 +38,12 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -47,6 +55,7 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class HomeFragment extends Fragment implements OnDateSelectedListener, OnMonthChangedListener {
 
     private String TAG = "HomeFragment";
@@ -64,10 +73,18 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
     // Calendar
     private MaterialCalendarView materialCalendarView;
     private RecyclerView recyclerviewRecord;
-    private List<WalkCalendarList> recordlists ;
+    private List<String> recordlists  = new ArrayList<>();
+    private List<LocalDateTime> recordlistsDate = new ArrayList<LocalDateTime>();
+    private List<CalendarDay> recordCalendarDay = new ArrayList<>();
     private ArrayList<RecordData> arrayRecords = new ArrayList<>();
     private CalendarAdater calendarAdater = new CalendarAdater(arrayRecords, getContext());
     private LinearLayoutManager linearLayoutManager;
+//    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+    private LocalDateTime dateTime;
+    private EventDecorator eventDecorator;
+    private Calendar calendar = Calendar.getInstance();
+    private CalendarDay calendarDay;
 
     private MaterialButton btn_weather;
     private Button btn_start;
@@ -242,9 +259,27 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
                 if (response.isSuccessful()){
                     walkCalendarResponse = response.body();
 
-                    recordlists.addAll(walkCalendarResponse.walkCalendarList);
-                    Log.d(TAG, "lists : " + recordlists);
+                    int size = walkCalendarResponse.walkCalendarList.size();
 
+                    for(int i = 0; i<size; i++){
+                        String save = walkCalendarResponse.walkCalendarList.get(i).getWalkDate();
+                        int idx = save.indexOf(".");
+
+                        recordlists.add(save.substring(0,idx));
+
+//                            recordlistsDate.add(formatter.parse(recordlists.get(i)));
+                        recordlistsDate.add(LocalDateTime.parse(recordlists.get(i), formatter));
+
+
+                    }
+
+                    Log.d(TAG, "lists : " + recordlists);
+                    Log.d(TAG, "형변환 후 lists : " + recordlistsDate);
+
+                    if (recordlistsDate.size()>0){
+                        ApiSimulator apiSimulator = new ApiSimulator(recordlistsDate);
+                        apiSimulator.execute();
+                    }
 
                 }
                 else {
@@ -315,5 +350,54 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
 
+    }
+
+    class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
+
+        List<LocalDateTime> recordlistsDate;
+
+        public ApiSimulator(List<LocalDateTime> recordlistsDate) {
+            this.recordlistsDate = recordlistsDate;
+        }
+
+        @Override
+        protected List<CalendarDay> doInBackground(@NonNull Void... voids){
+            try{
+                Thread.sleep(500);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            ArrayList<CalendarDay> dates = new ArrayList<>();
+
+            for(int i=0; i<recordlistsDate.size(); i++){
+
+
+
+                int year = recordlistsDate.get(i).getYear();
+                int month = recordlistsDate.get(i).getMonthValue();
+                int dayy = recordlistsDate.get(i).getDayOfMonth();
+
+                calendar.set(year, month, dayy);
+
+                CalendarDay day = CalendarDay.from(year, month, dayy);
+
+                dates.add(day);
+            }
+
+            return dates;
+        }
+
+        @Override
+        protected void onPostExecute(@NonNull List<CalendarDay> calendarDays){
+            super.onPostExecute(calendarDays);
+
+            if (getActivity().isFinishing()){
+                return;
+            }
+
+            materialCalendarView.addDecorator(new EventDecorator(Color.RED, calendarDays));
+        }
     }
 }

@@ -6,14 +6,47 @@ import java.util.List;
 
 public class WalkCalendarList {
 
-    @SerializedName("date")
-    public List<WalkCalendarRecord> walkCalendarRecord;
+    @SerializedName("walkDate")
+    public String walkDate;
 
-    public List<WalkCalendarRecord> getWalkCalendarRecord() {
-        return walkCalendarRecord;
+    @SerializedName("stepCount")
+    public int stepCount;
+
+    @SerializedName("distance")
+    public int distance;
+
+    @SerializedName("walkTime")
+    public String walkTime;
+
+    public int getStepCount() {
+        return stepCount;
     }
 
-    public void setWalkCalendarRecord(List<WalkCalendarRecord> walkCalendarRecord) {
-        this.walkCalendarRecord = walkCalendarRecord;
+    public String getWalkDate() {
+        return walkDate;
+    }
+
+    public void setWalkDate(String walkDate) {
+        this.walkDate = walkDate;
+    }
+
+    public void setStepCount(int stepCount) {
+        this.stepCount = stepCount;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public String getWalkTime() {
+        return walkTime;
+    }
+
+    public void setWalkTime(String walkTime) {
+        this.walkTime = walkTime;
     }
 }
