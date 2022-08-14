@@ -118,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.28" />
+        app:layout_constraintGuide_percent="0.30" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
@@ -143,12 +143,21 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tv_hashtag"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline_hor_4"
+        app:layout_constraintEnd_toStartOf="@+id/top_guideline_ver_1"
+        app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_0"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline_hor_5"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.28" />
+        app:layout_constraintGuide_percent="0.31" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_location"
@@ -179,14 +188,14 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
+        app:layout_constraintGuide_percent="0.38" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline_hor_7"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.37" />
+        app:layout_constraintGuide_percent="0.40" />
 
      <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout5"

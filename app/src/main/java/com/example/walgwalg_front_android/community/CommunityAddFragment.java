@@ -9,6 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walgwalg_front_android.ProgressDialog;
@@ -73,6 +76,7 @@ public class CommunityAddFragment extends Fragment {
     private String boardId, title, hashtag, location, contents;
     private TextInputLayout layout_location;
     private TextInputEditText edt_title, edt_hashtag, edt_location, edt_content;
+    private TextView tv_hashtag;
     private MaterialToolbar toolbar;
 
     private ArrayList<MyWalkPojo> myWalkData;
@@ -99,7 +103,7 @@ public class CommunityAddFragment extends Fragment {
         init(view);
 //        Log.d(TAG, getArguments().getString("title"));
 
-        if (getArguments()!=null) {
+        if (getArguments() != null) {
             edt_location.setEnabled(false);
             layout_location.setHint("산책 이름(수정 불가)");
             boardId = getArguments().getString("boardId");
@@ -112,6 +116,34 @@ public class CommunityAddFragment extends Fragment {
             edt_location.setText(location);
             edt_content.setText(contents);
         }
+
+
+        edt_hashtag.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d(TAG, "beforeTextChanged : charSequence->" + charSequence + "i->" + i + "i1->" + i1 + "i2->" + i);
+//                edt_hashtag.append("#");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d(TAG, "onTextChanged : charSequence->" + charSequence + "i->" + i + "i1->" + i1 + "i2->" + i);
+                if (charSequence.length() > 0) {
+                    if (charSequence.charAt(i) == ' ') {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("#");
+                        sb.append(charSequence);
+                        tv_hashtag.append(sb);
+                        edt_hashtag.setText(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Log.d(TAG, "afterTextChanged : Editable->" + editable);
+            }
+        });
 
         preferenceHelper = new PreferenceHelper(getContext());
 
@@ -176,10 +208,16 @@ public class CommunityAddFragment extends Fragment {
                     case R.id.finish:
                         Log.d("MyPageFragment", "버튼 누름");
                         String title = edt_title.getText().toString();
-                        String[] hashTag = {"벚꽃", "산책"};
+
+                        String prev_hashTag = tv_hashtag.getText().toString();
+                        prev_hashTag = prev_hashTag.replaceAll("#", "");
+                        String[] hashTag = prev_hashTag.split("\\s");
+                        for (int i = 0; i < hashTag.length; i++) {
+                            Log.d(TAG, "해시태그 : " + hashTag[i]);
+                        }
                         String location = edt_location.getText().toString();
                         String contents = edt_content.getText().toString();
-                        if (getArguments()==null) {
+                        if (getArguments() == null) {
                             communityAddInterface = ServiceGenerator.createService(CommunityAddInterface.class, preferenceHelper.getAccessToken());
 
                             communityAddRequest = new CommunityAddRequest(walkId, title, hashTag, contents);
@@ -191,6 +229,7 @@ public class CommunityAddFragment extends Fragment {
                                                 CommunityAddResponse result = (CommunityAddResponse) response.body();
                                                 Log.d("MyPageFragment", "응답" + response.isSuccessful());
                                                 Log.d("MyPageFragment", "응답" + result.status);
+                                                Navigation.findNavController(getView()).navigate(R.id.action_communityAddFragment_to_communityFragment);
                                             } else {
                                                 try {
                                                     Log.d("MyPageFragment REST FAILED MESSAGE", response.errorBody().string());
@@ -207,7 +246,7 @@ public class CommunityAddFragment extends Fragment {
                                             Log.d("MyPageFragment REST ERROR!", t.getMessage());
                                         }
                                     });
-                        } else if (getArguments()!=null) {
+                        } else if (getArguments() != null) {
                             editPostInterface = ServiceGenerator.createService(EditPostInterface.class, preferenceHelper.getAccessToken());
                             editPostRequest = new EditPostRequest(boardId, title, hashTag, contents);
                             editPostInterface.EDIT_POST_RESPONSE_CALL(editPostRequest).enqueue(new Callback<EditPostResponse>() {
@@ -282,6 +321,7 @@ public class CommunityAddFragment extends Fragment {
         myWalkData = new ArrayList<>();
         edt_title = view.findViewById(R.id.edt_title);
         edt_hashtag = view.findViewById(R.id.edt_hashtag);
+        tv_hashtag = view.findViewById(R.id.tv_hashtag);
         layout_location = view.findViewById(R.id.layout_location);
         edt_location = view.findViewById(R.id.edt_location);
         edt_content = view.findViewById(R.id.edt_content);
