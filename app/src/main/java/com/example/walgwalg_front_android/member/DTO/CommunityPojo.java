@@ -2,7 +2,7 @@ package com.example.walgwalg_front_android.member.DTO;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CommunityPojo{
+public class CommunityPojo {
 
     @SerializedName("boardId")
     public String boardId;
@@ -16,7 +16,7 @@ public class CommunityPojo{
     @SerializedName("date")
     public String date;
 
-     @SerializedName("hashTags")
+    @SerializedName("hashTags")
     public String[] hashTags;
 
     @SerializedName("likes")

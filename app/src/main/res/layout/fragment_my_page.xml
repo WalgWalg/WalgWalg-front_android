@@ -221,7 +221,7 @@
                 app:layout_constraintStart_toStartOf="@+id/top_guideline_ver_5" />
 
             <TextView
-                android:id="@+id/tv_number_count"
+                android:id="@+id/tv_walk_count"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -369,7 +369,7 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/iv_map_1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/icon_cloud"
@@ -399,6 +399,7 @@
                         app:layout_constraintGuide_percent="0.3" />
 
                     <TextView
+                        android:id="@+id/tv_title_1"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="게시물 제목"
@@ -424,6 +425,7 @@
                         app:layout_constraintGuide_percent="0.7" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_hashtag_1"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:text="hashtag"
@@ -435,6 +437,7 @@
                         app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_11" />
 
                     <TextView
+                        android:id="@+id/tv_date_1"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="YYYY.MM.DD"
@@ -443,6 +446,7 @@
                         app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_12" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_favorite_1"
                         style="@style/Widget.Material3.Button.IconButton"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -481,7 +485,7 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/iv_map_2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/icon_cloud"
@@ -511,6 +515,7 @@
                         app:layout_constraintGuide_begin="26dp" />
 
                     <TextView
+                        android:id="@+id/tv_title_2"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="게시물 제목"
@@ -536,6 +541,7 @@
                         app:layout_constraintGuide_percent="0.7" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_hashtag_2"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:text="hashtag"
@@ -547,6 +553,7 @@
                         app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_14" />
 
                     <TextView
+                        android:id="@+id/tv_date_2"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:text="YYYY.MM.DD"
@@ -555,6 +562,7 @@
                         app:layout_constraintTop_toBottomOf="@id/top_guideline_hor_15" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_favorite_2"
                         style="@style/Widget.Material3.Button.IconButton"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
