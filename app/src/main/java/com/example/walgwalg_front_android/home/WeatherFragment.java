@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -146,6 +147,7 @@ public class WeatherFragment extends Fragment {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -382,6 +384,7 @@ public class WeatherFragment extends Fragment {
 //        return super.onOptionsItemSelected(item);
 //    }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void init(View view) {
 //        tb_weather = view.findViewById(R.id.tb_weather);
         homeFragment = new HomeFragment();

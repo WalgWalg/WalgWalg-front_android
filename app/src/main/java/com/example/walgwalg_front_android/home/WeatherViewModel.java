@@ -7,7 +7,7 @@ public class WeatherViewModel extends ViewModel {
 
     private final MutableLiveData<Double> cur_longitude = new MutableLiveData<>();
     private final MutableLiveData<Double> cur_latitude = new MutableLiveData<>();
-    // 웨더프래그먼트에서 더블형이양
+
     public void save(Double cur_longitude, Double cur_latitude){
         this.cur_longitude.setValue(cur_longitude);
         this.cur_latitude.setValue(cur_latitude);

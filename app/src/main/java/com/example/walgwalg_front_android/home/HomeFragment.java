@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,8 +77,7 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
     private List<String> recordlists  = new ArrayList<>();
     private List<LocalDateTime> recordlistsDate = new ArrayList<LocalDateTime>();
     private List<CalendarDay> recordCalendarDay = new ArrayList<>();
-    private ArrayList<RecordData> arrayRecords = new ArrayList<>();
-    private CalendarAdater calendarAdater = new CalendarAdater(arrayRecords, getContext());
+    private CalendarAdater calendarAdater;
     private LinearLayoutManager linearLayoutManager;
 //    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
@@ -85,6 +85,8 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
     private EventDecorator eventDecorator;
     private Calendar calendar = Calendar.getInstance();
     private CalendarDay calendarDay;
+    private String select_year, select_month, select_day, selectDay;
+    // TODO: 완성 후 RecordData 파일 삭제
 
     private MaterialButton btn_weather;
     private Button btn_start;
@@ -143,16 +145,6 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
 
         init(view);
 
-//        CalendarView.setTop(R.color.mainColor);
-
-//        materialCalendarView.setColor;
-
-//        materialCalendarView.state().edit()
-//                .setFirstDayOfWeek(Calendar.SUNDAY)
-//                .setMinimumDate(CalendarDay.from(2021, 0,1))
-//                .setMaximumDate(CalendarDay.from(2030,12,31))
-//                .setCalendarDisplayMode(CalendarMode.MONTHS)
-//                .commit();
         //retrofit 생성
         homeRetrofitClient = HomeRetrofitClient.getInstance();
         userInfoInterface = HomeRetrofitClient.getUserInfoInterface();
@@ -228,9 +220,6 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
                             }
                         });
 
-
-
-
         btn_weather.setOnClickListener(task -> {
 //            fragmentManager = getActivity().getSupportFragmentManager();
 //            fragmentManager.beginTransaction().replace(R.id.homeFragment, new WeatherFragment()).addToBackStack(null).commit();
@@ -247,11 +236,16 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
         // 캘린더
         materialCalendarView.setSelectedDate(CalendarDay.today());
 
-        // 날짜 클릭 시 이벤트
-        materialCalendarView.setOnDateChangedListener(this);
-        // 달력이 변화할 때의 이벤트
-        materialCalendarView.setOnMonthChangedListener(this);
+        select_month = String.valueOf(CalendarDay.today().getMonth());
+        select_day = String.valueOf(CalendarDay.today().getDay());
+        select_year = String.valueOf(CalendarDay.today().getYear());
+        selectDay = String.valueOf(CalendarDay.today().getDate());
+        Log.d(TAG, "오늘 날짜 : "+selectDay);
 
+        txt_month.setText(select_month);
+        txt_day.setText(select_day);
+
+        // 달력에 점 표시
         walkCalendarInterface.getWalkCalendarResponse()
                 .enqueue(new Callback<WalkCalendarResponse>() {
             @Override
@@ -299,21 +293,28 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
             }
         });
 
+        // 날짜 클릭 시 이벤트
+        materialCalendarView.setOnDateChangedListener(this);
+        // 달력이 변화할 때의 이벤트
+        materialCalendarView.setOnMonthChangedListener(this);
 
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerviewRecord.setLayoutManager(linearLayoutManager);
-        recyclerviewRecord.setAdapter(calendarAdater);
 
         //데이터 추가방법
 //        NailshopData nailshopData = new NailshopData(R.drawable.edge, R.drawable.ic_baseline_bookmark_white, "만두네일", null,"5.0", "(112)","11:00~21:00", "(휴무:일)", "경기도 용인시 수지구 현암로 123번길 33" ,null, null, null);
 //        arrayShops.add(nailshopData);
 //        nailshopAdapter.notifyDataSetChanged();
 
-        RecordData recordData = new RecordData("12:30", "1","2","3");
-        arrayRecords.add(recordData);
-        RecordData recordData2 = new RecordData("12:30", "3","2","1");
-        arrayRecords.add(recordData2);
+//        RecordData recordData = new RecordData("12:30", "1","2","3");
+//        arrayRecords.add(recordData);
+//        RecordData recordData2 = new RecordData("12:30", "3","2","1");
+//        arrayRecords.add(recordData2);
+
+        calendarAdater = new CalendarAdater(walkCalendarResponse, getContext(), selectDay);
         calendarAdater.notifyDataSetChanged();
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerviewRecord.setLayoutManager(linearLayoutManager);
+        recyclerviewRecord.setAdapter(calendarAdater);
 
         return view;
     }
@@ -341,10 +342,23 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        String month = String.valueOf(date.getMonth());
-        String day = String.valueOf(date.getDay());
-        txt_month.setText(month);
-        txt_day.setText(day);
+        select_month = String.valueOf(date.getMonth());
+        select_day = String.valueOf(date.getDay());
+        select_year = String.valueOf(date.getYear());
+
+        selectDay = String.valueOf(date.getDate());
+        Log.d(TAG, "선택된 날짜 : " + selectDay);
+
+        calendarAdater = new CalendarAdater(walkCalendarResponse, getContext(), selectDay);
+        calendarAdater.notifyDataSetChanged();
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerviewRecord.setLayoutManager(linearLayoutManager);
+        recyclerviewRecord.setAdapter(calendarAdater);
+
+        txt_month.setText(select_month);
+        txt_day.setText(select_day);
+
     }
 
     @Override
@@ -372,8 +386,6 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
             ArrayList<CalendarDay> dates = new ArrayList<>();
 
             for(int i=0; i<recordlistsDate.size(); i++){
-
-
 
                 int year = recordlistsDate.get(i).getYear();
                 int month = recordlistsDate.get(i).getMonthValue();
