@@ -242,14 +242,14 @@
 
             </Button>
 
-            <!-- ToDo: 자바에서 수정해보기(또는 MterialDatePicker 사용 -->
-
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                 android:id="@+id/materialcalendar1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginVertical="15dp"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/edge_datepicker"
                 app:cardCornerRadius="30dp"
                 app:cardElevation="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
@@ -326,7 +326,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerviewRecord"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:overScrollMode="never"
                         android:nestedScrollingEnabled="false"/>
 
