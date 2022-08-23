@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +25,7 @@ import android.widget.TextView;
 import com.example.walgwalg_front_android.R;
 import com.example.walgwalg_front_android.location.RecordActivity;
 import com.example.walgwalg_front_android.member.DTO.UserInfoResponse;
+import com.example.walgwalg_front_android.member.DTO.WalkCalendarList;
 import com.example.walgwalg_front_android.member.DTO.WalkCalendarResponse;
 import com.example.walgwalg_front_android.member.DTO.WalkTotalResponse;
 import com.example.walgwalg_front_android.member.Interface.UserInfoInterface;
@@ -39,8 +39,6 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -77,6 +75,7 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
     private List<String> recordlists  = new ArrayList<>();
     private List<LocalDateTime> recordlistsDate = new ArrayList<LocalDateTime>();
     private List<CalendarDay> recordCalendarDay = new ArrayList<>();
+    private ArrayList<WalkCalendarList> arraywalkcalendar = new ArrayList<com.example.walgwalg_front_android.member.DTO.WalkCalendarList>();
     private CalendarAdater calendarAdater;
     private LinearLayoutManager linearLayoutManager;
 //    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
@@ -275,6 +274,26 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
                         apiSimulator.execute();
                     }
 
+                    for(int i=0; i<walkCalendarResponse.walkCalendarList.size(); i++){
+                        String recordDay = walkCalendarResponse.walkCalendarList.get(i).getWalkDate();
+
+                        int idx = recordDay.indexOf("T");
+                        String check = recordDay.substring(0, idx);
+
+                        if(selectDay.equals(check)){
+                            arraywalkcalendar.add(walkCalendarResponse.walkCalendarList.get(i));
+                            Log.d(TAG, "arraywalkcalendar1 : " + arraywalkcalendar);
+                        }
+
+                    }
+
+                    calendarAdater = new CalendarAdater(arraywalkcalendar, getContext(), selectDay);
+                    calendarAdater.notifyDataSetChanged();
+
+                    linearLayoutManager = new LinearLayoutManager(getContext());
+                    recyclerviewRecord.setLayoutManager(linearLayoutManager);
+                    recyclerviewRecord.setAdapter(calendarAdater);
+
                 }
                 else {
                     try {
@@ -309,12 +328,25 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
 //        RecordData recordData2 = new RecordData("12:30", "3","2","1");
 //        arrayRecords.add(recordData2);
 
-        calendarAdater = new CalendarAdater(walkCalendarResponse, getContext(), selectDay);
-        calendarAdater.notifyDataSetChanged();
-
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerviewRecord.setLayoutManager(linearLayoutManager);
-        recyclerviewRecord.setAdapter(calendarAdater);
+//        for(int i=0; i<walkCalendarResponse.walkCalendarList.size(); i++){
+//            String recordDay = walkCalendarResponse.walkCalendarList.get(i).getWalkDate();
+//
+//            int idx = recordDay.indexOf("T");
+//            String check = recordDay.substring(0, idx);
+//
+//            if(selectDay.equals(check)){
+//                arraywalkcalendar.add(walkCalendarResponse.walkCalendarList.get(i));
+//                Log.d(TAG, "arraywalkcalendar1 : " + arraywalkcalendar);
+//            }
+//
+//        }
+//
+//        calendarAdater = new CalendarAdater(arraywalkcalendar, getContext(), selectDay);
+//        calendarAdater.notifyDataSetChanged();
+//
+//        linearLayoutManager = new LinearLayoutManager(getContext());
+//        recyclerviewRecord.setLayoutManager(linearLayoutManager);
+//        recyclerviewRecord.setAdapter(calendarAdater);
 
         return view;
     }
@@ -348,8 +380,23 @@ public class HomeFragment extends Fragment implements OnDateSelectedListener, On
 
         selectDay = String.valueOf(date.getDate());
         Log.d(TAG, "선택된 날짜 : " + selectDay);
+        arraywalkcalendar = new ArrayList<>();
 
-        calendarAdater = new CalendarAdater(walkCalendarResponse, getContext(), selectDay);
+        for(int i=0; i<walkCalendarResponse.walkCalendarList.size(); i++){
+            String recordDay = walkCalendarResponse.walkCalendarList.get(i).getWalkDate();
+
+            int idx = recordDay.indexOf("T");
+            String check = recordDay.substring(0, idx);
+
+            if(selectDay.equals(check)){
+                arraywalkcalendar.add(walkCalendarResponse.walkCalendarList.get(i));
+                Log.d(TAG, "arraywalkcalendar2 : " + arraywalkcalendar);
+            }
+
+        }
+
+
+        calendarAdater = new CalendarAdater(arraywalkcalendar, getContext(), selectDay);
         calendarAdater.notifyDataSetChanged();
 
         linearLayoutManager = new LinearLayoutManager(getContext());
